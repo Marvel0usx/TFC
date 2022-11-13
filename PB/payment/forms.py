@@ -2,7 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 import datetime
-import time
 
 
 try:
@@ -18,15 +17,13 @@ error_msg = {
 }
 
 
-class SubscriptionForm(forms.Form):
-    """
-    TFC subscription form. Validate user input.
-    """
-
-
 class PaymentForm(forms.Form):
+    pass
+
+
+class CardInfoUpdateForm(forms.Form):
     """
-    TFC checkout form. Validates user input at checkout.
+    Updates card info of the current user. Validates user input at checkout.
     """
     card_number = forms.CharField(max_length=20, min_length=12, required=True)
     card_expiration_date = forms.DateField(required=True, widget=forms.DateInput())
@@ -39,7 +36,7 @@ class PaymentForm(forms.Form):
         data = super().clean()
 
         error = False
-        for field in PaymentForm.__attributes__:
+        for field in CardInfoUpdateForm.__attributes__:
             if data.get(field) == "":
                 self.add_error(field, "This field is required")
                 error = True
@@ -49,7 +46,7 @@ class PaymentForm(forms.Form):
 
         # validate content
         exp_date = data.get("card_expiration_date")
-        exp_date = datetime.date(exp_date[0], exp_date[1], exp_date[2])
+        exp_date = datetime.date(int(exp_date[:4]), int(exp_date[5:7]), int(exp_date[8:10]))
         if exp_date < datetime.date.today():
             self.add_error("card_expiration_date", error_msg["card_expiration_date"])
 

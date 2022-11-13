@@ -36,13 +36,23 @@ class Subscriptions(models.Model):
 class Payment(models.Model):
     """
     Payment records for the users of TFC according to the subscription plan.
-
     """
     # never delete a payment record on cascade. we need the users or *police officers* to be able to trace transactions.
     user = models.ForeignKey(to=User, related_name="payment", null=True, on_delete=SET_NULL)
     subscription = models.ForeignKey(to=SubscriptionPlans, related_name="payment", null=True, on_delete=SET_NULL)
     amount = models.FloatField(null=False, blank=False)
     date_time = models.DateTimeField(auto_now=True)
+    card_number = models.BigIntegerField(blank=False)
+    card_expiration_date = models.DateField(blank=False)
+    card_holder_firstname = models.CharField(max_length=MAX_LENGTH, blank=False)
+    card_holder_lastname = models.CharField(max_length=MAX_LENGTH, blank=False)
+
+
+class CardInfo(models.Model):
+    """
+    Table that saves the card information of users.
+    """
+    user = models.ForeignKey(to=User, related_name="payment", null=True, on_delete=CASCADE)
     card_number = models.BigIntegerField(blank=False)
     card_expiration_date = models.DateField(blank=False)
     card_holder_firstname = models.CharField(max_length=MAX_LENGTH, blank=False)
