@@ -7,6 +7,7 @@ class FitnessClass(models.Model):
     coach = models.TextField()
     keywords = models.TextField()
     capacity = models.PositiveIntegerField()
+    enrolled = models.PositiveIntegerField() # number of enrolled users, cannot exceed capacity
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     studio = models.ForeignKey(
