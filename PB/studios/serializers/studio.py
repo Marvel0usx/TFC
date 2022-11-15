@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from PB.studios.models.studio import Studio
+from studios.models.studio import Studio
 
 class StudioSerializer(serializers.Serializer):
     class Meta:

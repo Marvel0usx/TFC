@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from PB.studios.models.fitnessClass import FitnessClass
+from studios.models.fitnessClass import FitnessClass
 
 class FitnessClassSerializer(serializers.Serializer):
     class Meta:

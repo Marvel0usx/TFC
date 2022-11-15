@@ -1,5 +1,5 @@
 from django.db import models
-from PB.studios.models.studio import Studio
+from studios.models import studio
 
 class FitnessClass(models.Model):
     name = models.TextField()
@@ -11,7 +11,7 @@ class FitnessClass(models.Model):
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     studio = models.ForeignKey(
-        to=Studio,
+        to=studio.Studio,
         on_delete=models.CASCADE
     )
 
