@@ -27,4 +27,4 @@ jobs:
         pip install django==4.1.2 djangorestframework
     - name: Run Tests
       run: |
-        python manage.py makemigrations
+        python ../PB/manage.py makemigrations
