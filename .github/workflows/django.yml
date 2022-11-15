@@ -29,4 +29,5 @@ jobs:
       run: |
         pwd
         ls
-        python ../PB/manage.py makemigrations
+        cd PB
+        python manage.py makemigrations
