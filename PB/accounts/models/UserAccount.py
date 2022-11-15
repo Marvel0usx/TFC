@@ -1,5 +1,5 @@
 from django.db import models
-from PB.studios.models.fitnessClass import FitnessClass
+from studios.models.fitnessClass import FitnessClass
 from PB.payment.models.card import Card
 from PB.payment.models.subscription import Subscription_Plan
 
