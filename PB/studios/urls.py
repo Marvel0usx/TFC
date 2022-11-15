@@ -5,7 +5,7 @@ from django.urls import path
 app_name = 'studios'
 
 urlpatterns = [
-    path('studio/view/<str:studio_id/', ViewStudio.as_view(), name='view-studio'),
-    path('studio/create', CreateStudio.as_view(), name='create-studio'),
-    path('class/view/<str:class_id/', ViewClass.as_view(), name='view-class'),
+    path('<str:studio_id>/view/', ViewStudio.as_view()),
+    path('create/', CreateStudio.as_view()),
+    path('class/<str:class_id>/view/', ViewClass.as_view()),
 ]
