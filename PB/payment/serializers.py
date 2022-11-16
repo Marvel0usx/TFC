@@ -1,22 +1,23 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
 from .models import *
+from django.utils import timezone
 
 
 class PaymentSerializer(ModelSerializer):
     class Meta:
         model = Payment
-        fields = ["id", "user_id", "subsciprion_id", "amount", "date_time",
+        fields = ["id", "user_id", "subscription_plan_id", "amount", "date_time",
         "card_number", "card_expiration_date", "card_holder_firstname",
-        "card_holder_lastname"]
+        "card_holder_lastname", "is_paid"]
 
     def validate(self, attrs):
         errors = []
         if attrs["amount"] < 0:
             errors.append({"amount": "Amount must be a non-negative number."})
-        subscription_id = int(attrs["subscription_id"])
-        if Subscriptions.objects.get(id=subscription_id) is None:
-            errors.append({"subscription_id": "Invalid subscription plan."})
+        subscription_plan_id = int(attrs["subscription_plan_id"])
+        if SubscriptionPlans.objects.get(id=subscription_plan_id) is None:
+            errors.append({"subscription_plan_id": "Invalid subscription plan."})
         if not attrs["card_number"].isnumeric():
             errors.append({"card_number": "Card number contains invalid characters."})
         if errors:
@@ -39,7 +40,7 @@ class CardInfoSerializer(ModelSerializer):
         if not attrs["card_number"].isnumeric():
             errors.append({"card_number": "Card number contains invalid characters."})
 
-        if attrs["card_expiration_date"] <= datetime.datetime.now():
+        if attrs["card_expiration_date"] <= timezone.now():
             errors.append({"card_expiration_date": "Invalid expiration date."})
 
         if not attrs["card_holder_firstname"].isalpha():
@@ -53,12 +54,21 @@ class CardInfoSerializer(ModelSerializer):
         else:
             return attrs
 
+    def update(self, instance, validated_data):
+        instance.card_number = validated_data.get("card_number", instance.card_number)
+        instance.card_expiration_date = validated_data.get("card_expiration_date", instance.card_expiration_date)
+        instance.card_holder_firstname = validated_data.get("card_holder_firstname", instance.card_holder_firstname)
+        instance.card_holder_lastname = validated_data.get('card_holder_lastname', instance.card_holder_lastname)
+
+        instance.save()
+        return instance
+
 
 class SubscriptionPlansSerializer(ModelSerializer):
     class Meta:
         model = SubscriptionPlans
         fields = ["id", "name", "description", "price", "is_live", "is_monthly"]
-    
+
 
 class SubscriptionSerializer(ModelSerializer):
     class Meta:
@@ -78,3 +88,9 @@ class SubscriptionSerializer(ModelSerializer):
         else:
             return attrs
 
+    def update(self, instance, validated_data):
+        instance.subscription_plan_id = validated_data.get("subscription_plan_id", instance.subscription_plan_id)
+        instance.date_time = timezone.now()
+
+        instance.save()
+        return instance

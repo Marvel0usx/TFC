@@ -15,7 +15,7 @@ class SubscriptionPlans(models.Model):
     """
     name = models.CharField(max_length=MAX_LENGTH)
     description = models.CharField(max_length=MAX_LENGTH)
-    price = models.FloatField(min_value=0., blank=False)
+    price = models.FloatField(blank=False)
     # indicated that this plan is active
     is_live = models.BooleanField(default=True)
     is_monthly = models.BooleanField(default=True)
@@ -29,7 +29,7 @@ class Subscriptions(models.Model):
     # ForeignKey relation to User so that we can easily retrieve all subscription plans
     # for a certain user.
     user = models.ForeignKey(to=User, related_name="subscription_record", on_delete=CASCADE)
-    subscription = models.ForeignKey(to=SubscriptionPlans, related_name="subscription_record", on_delete=CASCADE)
+    subscription_plan = models.ForeignKey(to=SubscriptionPlans, related_name="subscription_record", on_delete=CASCADE)
     date_time = models.DateTimeField(auto_now=True)
 
 
@@ -46,6 +46,7 @@ class Payment(models.Model):
     card_expiration_date = models.DateField(blank=False)
     card_holder_firstname = models.CharField(max_length=MAX_LENGTH, blank=False)
     card_holder_lastname = models.CharField(max_length=MAX_LENGTH, blank=False)
+    is_paid = models.BooleanField(default=False)
 
 
 class CardInfo(models.Model):
