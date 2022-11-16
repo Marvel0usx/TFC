@@ -75,7 +75,6 @@ class SearchStudio(generics.ListAPIView):
     search_fields = ['name', 'fitnessclass__name', 'amenity__type', 'fitnessclass__coach']
 
 
-# to be tested
 class StudioSchedule(generics.ListAPIView):
     serializer_class = FitnessClassSerializer
     
