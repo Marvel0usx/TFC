@@ -18,7 +18,7 @@ from rest_framework import generics
 from .serializers import CardInfoSerializer, PaymentSerializer, SubscriptionPlansSerializer, SubscriptionSerializer
 
 
-class CardInfoGet(APIView):
+class CardInfoView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -28,6 +28,15 @@ class CardInfoGet(APIView):
 
         return Response({"data": serializer.data})
 
+    def post(self, request, *args, **kwargs):
+        data = request.data.get("cardinfo")
+        # Create an instance of cardinfo from above information
+        serializer = CardInfoSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            cardinfo_saved = serializer.save()
+        return HttpResponse(status=200)
+    
+    def put
 
 class PaymentHistoryView(APIView):
     authentication_classes = [TokenAuthentication]
@@ -73,19 +82,3 @@ class SubscriptionHistoryGet(APIView):
         serializer = SubscriptionSerializer(instances)
 
         return Response({"data": serializer.data})
-
-
-class CardInfoCreate(CreateAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        pass
-
-
-class CardInfoUpdate(UpdateAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def patch(self, request, *args, **kwargs):
-        pass

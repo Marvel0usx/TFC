@@ -1,11 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
-class Account(models.Model):
-    first_name = models.TextField()
-    last_name = models.TextField()
-    email_address = models.EmailField()
-    address = models.TextField()
+class Account(AbstractUser):
     phoneNumber = models.TextField()
 
     class Meta:
