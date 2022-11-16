@@ -1,9 +1,9 @@
 
-from PB.studios.models.fitnessClass import FitnessClass
-from PB.studios.models.studios import Studio
-from PB.payment.models.subscription import Subscription
+from studios.models.fitnessClass import FitnessClass
+from studios.models.studios import Studio
+payment.models.subscription import Subscription
 
-from PB.accounts.models.account import Account
+accounts.models.account import Account
 
 
 class AdminAccount(Account):

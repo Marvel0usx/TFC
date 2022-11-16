@@ -1,5 +1,5 @@
 from django.db import models
-from PB.studios.models.studio import Studio
+from studios.models.studio import Studio
 
 
 
