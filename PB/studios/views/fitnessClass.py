@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics, filters
+from rest_framework import generics
+from django_filters import rest_framework as filters
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.models.studio import Studio
 from studios.models.fitnessClass import FitnessClass
 from django.shortcuts import get_object_or_404, get_list_or_404
+from studios.filters import ClassFilter
 
 class ViewClass(generics.RetrieveAPIView):
     serializer_class = FitnessClassSerializer
@@ -49,14 +51,19 @@ class EnrollClass():
     pass
 
 
-# yet to implement time range, but date works
+
 class SearchClass(generics.ListAPIView):
     """
-    Usage: search/?search=[query]
-    -   takes partial matches
-    -   separate arguments separated by comma ,
+    Usage: search/?=[name]=[query]&...
+    -   takes partial matches (amenity type must be exact)
+    -   supports name, coach, date, and time_range
+    -   name and coach are strings
+    -   date follows the format YYYY-MM-DD
+    -   time_range (24 hour time) follows the format (start)HH:MM-(end)HH:MM
+    
+    Example: search/?name=church&coach=jesus&date=2022-12-15&time_range=7:00-19:00
     """
     serializer_class = FitnessClassSerializer
     queryset = FitnessClass.objects.all()
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'coach', 'startTime']
+    filterset_class = ClassFilter
+    filter_backends = (filters.DjangoFilterBackend,)
