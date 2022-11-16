@@ -1,9 +1,9 @@
 
 from studios.models.fitnessClass import FitnessClass
-from studios.models.studios import Studio
-payment.models.subscription import Subscription
+from studios.models.studio import Studio
+from payment.models import Subscription
 
-accounts.models.account import Account
+from accounts.models.account import Account
 
 
 class AdminAccount(Account):
