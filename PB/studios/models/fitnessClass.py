@@ -5,9 +5,9 @@ class FitnessClass(models.Model):
     name = models.TextField()
     description = models.TextField()
     coach = models.TextField()
-    keywords = models.TextField()
-    capacity = models.PositiveIntegerField()
-    enrolled = models.PositiveIntegerField() # number of enrolled users, cannot exceed capacity
+    keywords = models.TextField() # a list stored as a string, convert to JSON before using
+    capacity = models.PositiveIntegerField(default=1)
+    enrolled = models.PositiveIntegerField(default=0) # number of enrolled users, cannot exceed capacity
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
     studio = models.ForeignKey(
@@ -16,4 +16,8 @@ class FitnessClass(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name} class taught by {self.coach} at {self.time}'
+        return f'{self.name} class taught by {self.coach} at {self.startTime}'
+    
+    @property
+    def timeRange(self):
+        return (self.startTime.time(), self.endTime.time())
