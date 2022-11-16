@@ -18,6 +18,6 @@ class FitnessClass(models.Model):
     def __str__(self):
         return f'{self.name} class taught by {self.coach} at {self.startTime}'
     
-    @property
-    def timeRange(self):
-        return (self.startTime.time(), self.endTime.time())
+    
+    class Meta:
+        unique_together = (('name', 'coach', 'startTime'),)

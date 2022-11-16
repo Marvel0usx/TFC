@@ -13,3 +13,6 @@ class Amenity(models.Model):
 
     def __str__(self):
         return f'Amenity type: {self.type}\n Quantity: {self.quantity}\n Studio: {self.studio}'
+    
+    class Meta:
+        unique_together = (('type', 'studio'),)

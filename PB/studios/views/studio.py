@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, filters
+from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
 from studios.serializers.amenity import AmenitySerializer
 from studios.models.amenity import Amenity
@@ -8,9 +9,15 @@ from studios.models.fitnessClass import FitnessClass
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from studios.serializers.fitnessClass import FitnessClassSerializer
+from studios.filters import StudioFilter
 
 
+# TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
+    """
+    path: studios/[studio_id]/view
+    Takes a GET request from any user to generate an information page.
+    """
     serializer_class = StudioSerializer
 
     def get_object(self):
@@ -18,10 +25,18 @@ class ViewStudio(generics.RetrieveAPIView):
     
 
 class CreateStudio(generics.CreateAPIView):
+    """
+    path: studios/create
+    Takes a POST request from an admin to create a new studio.
+    """
     serializer_class = StudioSerializer
 
 
 class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/[studio_id]/edit
+    Takes a PATCH/PUT request from an admin to update studio information.
+    """
     serializer_class = StudioSerializer
     
     def get_object(self):
@@ -30,11 +45,20 @@ class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
 
 
 class CreateAmenity(generics.CreateAPIView):
+    """
+    path: studios/[studio_id]/amenities/create
+    Takes a POST request from an admin to create a new amenity in 
+    [studio_id] studio.
+    """
     serializer_class = AmenitySerializer
 
 
 
 class UpdateAmenities(generics.ListAPIView, generics.UpdateAPIView):
+    """
+    path: studios/[studio_id]/amenities/edit
+    Takes a PATCH/PUT request from an admin to update amenity quantity.
+    """
     serializer_class = AmenitySerializer
     
     def get_queryset(self):
@@ -55,6 +79,10 @@ class UpdateAmenities(generics.ListAPIView, generics.UpdateAPIView):
 
 
 class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/create
+    Takes a DELETE request from an admin to delete a studio.
+    """
     serializer_class = StudioSerializer
     
     def get_object(self):
@@ -64,18 +92,27 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
-    Usage: search/?search=[query]
+    path: studios/search
+    Usage: search/?=[name]=[query]&...
     -   takes partial matches
-    -   separate arguments separated by comma
-    -   searches every field for the queries
+    -   supports name, fitnessclass, amenity, coach
+    -   all fields are strings
+    
+    Example: search/?name=church&amenity=cross
     """
     serializer_class = StudioSerializer
     queryset = Studio.objects.all()
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'fitnessclass__name', 'amenity__type', 'fitnessclass__coach']
+    filterset_class = StudioFilter
+    filter_backends = (filters.DjangoFilterBackend,)
+
 
 
 class StudioSchedule(generics.ListAPIView):
+    """
+    path: studios/[studio_id]/schedule
+    Takes a GET request from any user to create a schedule of upcoming
+    classes for that studio.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_queryset(self):

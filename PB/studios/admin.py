@@ -4,6 +4,16 @@ from .models.fitnessClass import FitnessClass
 from .models.amenity import Amenity
 
 # Register your models here.
-admin.site.register(Studio)
-admin.site.register(FitnessClass)
-admin.site.register(Amenity)
+class StudioAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'phoneNumber', 'address', 'location']
+    
+class ClassAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'studio', 'coach', 'startTime', 'endTime', 'capacity', 'enrolled']
+    
+class AmenityAdmin(admin.ModelAdmin):
+    fields = ['studio', 'type']
+    list_display = ['id', 'studio', 'type', 'quantity']
+    
+admin.site.register(Studio, StudioAdmin)
+admin.site.register(FitnessClass, ClassAdmin)
+admin.site.register(Amenity, AmenityAdmin)
