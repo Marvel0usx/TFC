@@ -20,4 +20,4 @@ class FitnessClass(models.Model):
     
     
     class Meta:
-        unique_together = (('name', 'coach', 'startTime'),)
+        unique_together = (('coach', 'startTime'),)
