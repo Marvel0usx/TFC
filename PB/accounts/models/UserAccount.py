@@ -1,15 +1,15 @@
 from django.db import models
 from PB.studios.models.fitnessClass import FitnessClass
-from PB.payment.models.card import Card
-from PB.payment.models.subscription import Subscription_Plan
+from PB.payment.models import CardInfo
+from PB.payment.models import Subscriptions
 
 from PB.accounts.models.account import Account
 
 
 class UserAccount(Account):
-    credit_card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    credit_card = models.ForeignKey(CardInfo, on_delete=models.CASCADE)
     fitness_class = models.ManyToManyField(FitnessClass, on_delete=models.CASCADE)
-    subscription_plan = models.ForeignKey(Subscription_Plan, on_delete=models.CASCADE)
+    subscription_plan = models.ForeignKey(Subscriptions, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'UserAccount {self.first_name}, {self.last_name}.'

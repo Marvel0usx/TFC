@@ -1,7 +1,7 @@
 
 from PB.studios.models.fitnessClass import FitnessClass
-from PB.studios.models.studios import Studio
-from PB.payment.models.subscription import Subscription
+from PB.studios.models.studio import Studio
+from PB.payment.models import Subscriptions
 
 from PB.accounts.models.account import Account
 
