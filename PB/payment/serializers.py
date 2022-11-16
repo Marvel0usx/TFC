@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 from rest_framework import serializers
 from .models import *
 from django.utils import timezone
+import datetime
 
 
 class PaymentSerializer(ModelSerializer):
@@ -34,13 +35,9 @@ class CardInfoSerializer(ModelSerializer):
 
     def validate(self, attrs):
         errors = []
-        if not User.object.filter(id=attrs["user_id"]).exists():
-            errors.append({"user_id": "User does not exist."})
+        # Potential credit card check: ^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$
 
-        if not attrs["card_number"].isnumeric():
-            errors.append({"card_number": "Card number contains invalid characters."})
-
-        if attrs["card_expiration_date"] <= timezone.now():
+        if attrs["card_expiration_date"] <= datetime.date.today():
             errors.append({"card_expiration_date": "Invalid expiration date."})
 
         if not attrs["card_holder_firstname"].isalpha():
@@ -53,6 +50,7 @@ class CardInfoSerializer(ModelSerializer):
             raise ValidationError(errors)
         else:
             return attrs
+
 
     def update(self, instance, validated_data):
         instance.card_number = validated_data.get("card_number", instance.card_number)
@@ -75,19 +73,6 @@ class SubscriptionSerializer(ModelSerializer):
         model = Subscriptions
         fields = ["id", "user_id", "subscription_plan_id", "date_time"]
     
-    def validate(self, attrs):
-        errors = []
-        if not User.object.filter(id=attrs["user_id"]).exists():
-            errors.append({"user_id": "User does not exist."})
-
-        if not SubscriptionPlans.object.filter(id=attrs["subscription_plan_id"]).exists():
-            errors.append({"subscription_plan_id": "Subscription plan does not exist."})
-        
-        if errors:
-            raise ValidationError(errors)
-        else:
-            return attrs
-
     def update(self, instance, validated_data):
         instance.subscription_plan_id = validated_data.get("subscription_plan_id", instance.subscription_plan_id)
         instance.date_time = timezone.now()
