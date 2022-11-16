@@ -12,6 +12,6 @@ urlpatterns = [
     path("subscription/subscribe/", SubscriptionsView.as_view()),
     path("subscription/edit/", SubscriptionsView.as_view()),
     path("subscription/cancel/", SubscriptionsView.as_view()),
-    path("payment/upcoming/", PaymentFutureView.as_view()),
-    path("payment/history/", PaymentHistoryView.as_view()),
+    path("upcoming/", PaymentFutureView.as_view()),
+    path("history/", PaymentHistoryView.as_view()),
 ]

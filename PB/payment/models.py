@@ -39,7 +39,7 @@ class Payment(models.Model):
     """
     # never delete a payment record on cascade. we need the users or *police officers* to be able to trace transactions.
     user = models.ForeignKey(to=User, related_name="payment", null=True, on_delete=SET_NULL)
-    subscription = models.ForeignKey(to=SubscriptionPlans, related_name="payment", null=True, on_delete=SET_NULL)
+    subscription_plan = models.ForeignKey(to=SubscriptionPlans, related_name="payment", null=True, on_delete=SET_NULL)
     amount = models.FloatField(null=False, blank=False)
     date_time = models.DateTimeField(auto_now=True)
     card_number = models.CharField(max_length=20, blank=False)

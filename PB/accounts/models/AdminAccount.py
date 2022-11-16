@@ -1,7 +1,6 @@
-
 from studios.models.fitnessClass import FitnessClass
 from studios.models.studio import Studio
-from payment.models import Subscription
+from payment.models import Subscriptions
 
 from accounts.models.account import Account
 
