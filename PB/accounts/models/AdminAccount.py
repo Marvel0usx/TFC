@@ -1,4 +1,4 @@
-from PB.accounts.models.account import Account
+from accounts.models import Account
 
 
 class AdminAccount(Account):

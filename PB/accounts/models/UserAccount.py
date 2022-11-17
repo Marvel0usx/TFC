@@ -1,7 +1,7 @@
 from django.db import models
-from PB.studios.models.fitnessClass import FitnessClass
-from PB.payment.models import CardInfo
-from PB.payment.models import Subscriptions
+from studios.models.fitnessClass import FitnessClass
+from payment.models import CardInfo
+from payment.models import Subscriptions
 
 from PB.accounts.models.account import Account
 
