@@ -1,8 +1,8 @@
 from rest_framework.serializers import ModelSerializer, ValidationError
-from rest_framework import serializers
 from .models import *
 from django.utils import timezone
 import datetime
+import re
 
 
 class PaymentSerializer(ModelSerializer):
@@ -35,7 +35,11 @@ class CardInfoSerializer(ModelSerializer):
 
     def validate(self, attrs):
         errors = []
-        # Potential credit card check: ^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$
+
+        pattern = re.compile("""^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$""")
+
+        if (not attrs["card_number"].isnumeric()) or (len(attrs["card_number"]) > 18) or (re.match(pattern, attrs["card_number"]) is None):
+            errors.append({"card_number": "Invalid card number."})
 
         if attrs["card_expiration_date"] <= datetime.date.today():
             errors.append({"card_expiration_date": "Invalid expiration date."})
