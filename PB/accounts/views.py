@@ -1,4 +1,4 @@
-from .models import AdminAccount, UserAccount, account
+from .models import AdminAccount, UserAccount, abstractaccount
 from .forms import AdminAccountUpdateForm, UserAccountUpdateForm
 from .serializers import AdminUpdateSerializer, UserUpdateSerializer
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication

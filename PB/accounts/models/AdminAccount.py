@@ -1,7 +1,8 @@
-from .models import Account
+
+from accounts.models.abstractaccount import AbstractAccount
 
 
-class AdminAccount(Account):
+class AdminAccount(AbstractAccount):
 
     def __str__(self):
         return f'AdminAccount {self.first_name}, {self.last_name}.'
