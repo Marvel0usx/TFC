@@ -54,7 +54,7 @@ class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
     serializer_class = FitnessClassSerializer
     
     def get_object(self):
-        return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
+        return get_object_or_404(FitnessClass, id=self.kwargs['class_id'], endTime__lt=timezone.now())
 
 
 
