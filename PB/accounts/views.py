@@ -5,18 +5,16 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
+from rest_framework import viewsets
 
 
-class AdminAccountUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+class AdminAccountUpdateViewsets(viewsets.ModelViewSet):
 
-    queryset = account.objects.all()
+    queryset = AdminAccount.objects.all()
     serializer_class = AdminUpdateSerializer
 
 
-class UserAccountUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+class UserAccountUpdateViewsets(viewsets.ModelViewSet):
 
-    queryset = account.objects.all()
+    queryset = UserAccount.objects.all()
     serializer_class = UserUpdateSerializer
