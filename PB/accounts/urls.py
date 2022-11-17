@@ -13,6 +13,6 @@ urlpatterns = [
     path('register/', RegisterView.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('update_profile/<int:pk>/', UserAccountUpdateView.as_view(), name='auth_update_profile'),
+    path('update_profile/<str:username>/', UserAccountUpdateView.as_view(), name='auth_update_profile'),
     path('logout/', LogoutView.as_view(), name='token_logout')
 ]
