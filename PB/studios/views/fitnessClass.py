@@ -6,8 +6,15 @@ from studios.models.studio import Studio
 from studios.models.fitnessClass import FitnessClass
 from django.shortcuts import get_object_or_404, get_list_or_404
 from studios.filters import ClassFilter
+from rest_framework import status
+from rest_framework.response import Response
+from django.utils import timezone
 
 class ViewClass(generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/details
+    Takes a GET request from any user to generate an information page.
+    """
     serializer_class = FitnessClassSerializer
 
     def get_object(self):
@@ -15,6 +22,10 @@ class ViewClass(generics.RetrieveAPIView):
     
     
 class CreateClass(generics.CreateAPIView):
+    """
+    path: studios/[studio_id]/class/create
+    Takes a POST request from an admin to create a class for studio_id studio.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_serializer_context(self):
@@ -24,14 +35,22 @@ class CreateClass(generics.CreateAPIView):
     
 
 class UpdateClass(generics.UpdateAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/edit
+    Takes a PUT/PATCH request from an admin to update class_id class.
+    """
     serializer_class = FitnessClassSerializer
 
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
 
 
-# can currently only cancel 1 class, not recurring classes
+
 class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/cancel/single
+    Takes a DELETE request from an admin to delete a single class_id class.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_object(self):
@@ -39,7 +58,36 @@ class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 
 
+class CancelRecurringClasses(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/cancel/all
+    Takes a DELETE request from an admin to delete all future recurring classes 
+    associated with class_id.
+    """
+    serializer_class = FitnessClassSerializer
+    
+    def get_object(self):
+        return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        base = instance.baseClass
+        if base is not None:
+            # filter all the classes that have the same base class and have yet to begin
+            allClasses = FitnessClass.objects.filter(baseClass=base, startTime__gt=timezone.now())
+            for fclass in allClasses:
+                self.perform_destroy(fclass)
+        else:
+            self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ListClasses(generics.ListAPIView):
+    """
+    path: studios/[studio_id]/class/list
+    Takes a GET request from any user to generate a list of classes
+    taking place in studio_id studio.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_queryset(self):

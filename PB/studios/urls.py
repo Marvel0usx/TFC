@@ -14,9 +14,10 @@ urlpatterns = [
     path('<str:studio_id>/delete/', studio.DeleteStudio.as_view()),
     path('<str:studio_id>/schedule/', studio.StudioSchedule.as_view()),
     path('<str:studio_id>/class/list', fitnessClass.ListClasses.as_view()),
-    path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),
     path('<str:studio_id>/class/create/', fitnessClass.CreateClass.as_view()),
-    path('<str:studio_id>/class/<str:class_id>/edit/', fitnessClass.UpdateClass.as_view()),
-    path('class/<str:class_id>/cancel/', fitnessClass.CancelClass.as_view()),
+    path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),
+    path('class/<str:class_id>/edit/', fitnessClass.UpdateClass.as_view()),
+    path('class/<str:class_id>/cancel/single', fitnessClass.CancelClass.as_view()),
+    path('class/<str:class_id>/cancel/all', fitnessClass.CancelRecurringClasses.as_view()),
     path('class/search/', fitnessClass.SearchClass.as_view()),
 ]
