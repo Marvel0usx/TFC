@@ -1,11 +1,129 @@
 from django.shortcuts import render
-from rest_framework.generics import RetrieveAPIView
-from PB.studios.serializers.studio import StudioSerializer
-from PB.studios.models.studio import Studio
-from django.shortcuts import get_object_or_404
+from rest_framework import generics, filters
+from django_filters import rest_framework as filters
+from studios.serializers.studio import StudioSerializer
+from studios.serializers.amenity import AmenitySerializer
+from studios.models.amenity import Amenity
+from studios.models.studio import Studio
+from studios.models.fitnessClass import FitnessClass
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.utils import timezone
+from studios.serializers.fitnessClass import FitnessClassSerializer
+from studios.filters import StudioFilter
 
-class StudioView(RetrieveAPIView):
+
+# TODO: implement directions and such
+class ViewStudio(generics.RetrieveAPIView):
+    """
+    path: studios/[studio_id]/view
+    Takes a GET request from any user to generate an information page.
+    """
     serializer_class = StudioSerializer
 
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
+    
+
+class CreateStudio(generics.CreateAPIView):
+    """
+    path: studios/create
+    Takes a POST request from an admin to create a new studio.
+    """
+    serializer_class = StudioSerializer
+
+
+class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/[studio_id]/edit
+    Takes a PATCH/PUT request from an admin to update studio information.
+    """
+    serializer_class = StudioSerializer
+    
+    def get_object(self):
+        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
+
+
+
+class CreateAmenity(generics.CreateAPIView):
+    """
+    path: studios/[studio_id]/amenities/create
+    Takes a POST request from an admin to create a new amenity in 
+    [studio_id] studio.
+    """
+    serializer_class = AmenitySerializer
+
+
+
+class UpdateAmenities(generics.ListAPIView, generics.UpdateAPIView):
+    """
+    path: studios/[studio_id]/amenities/edit
+    Takes a PATCH/PUT request from an admin to update amenity quantity.
+    """
+    serializer_class = AmenitySerializer
+    
+    def get_queryset(self):
+        return get_list_or_404(Amenity, studio=Studio.objects.get(id=self.kwargs['studio_id']))
+
+    def get_object(self):
+        return get_object_or_404(
+            Amenity,
+            studio=Studio.objects.get(id=self.kwargs['studio_id']),
+            type=self.request.data['type']
+        )
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({'studio_id': self.kwargs['studio_id']})
+        return context
+
+
+
+class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/create
+    Takes a DELETE request from an admin to delete a studio.
+    """
+    serializer_class = StudioSerializer
+    
+    def get_object(self):
+        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
+    
+
+
+class SearchStudio(generics.ListAPIView):
+    """
+    path: studios/search
+    Usage: search/?=[name]=[query]&...
+    -   takes partial matches
+    -   supports name, fitnessclass, amenity, coach
+    -   all fields are strings
+    
+    Example: search/?name=church&amenity=cross
+    """
+    serializer_class = StudioSerializer
+    queryset = Studio.objects.all()
+    filterset_class = StudioFilter
+    filter_backends = (filters.DjangoFilterBackend,)
+
+
+
+class StudioSchedule(generics.ListAPIView):
+    """
+    path: studios/[studio_id]/schedule
+    Takes a GET request from any user to create a schedule of upcoming
+    classes for that studio.
+    """
+    serializer_class = FitnessClassSerializer
+    
+    def get_queryset(self):
+        # returns list of classes that have not yet started
+        return get_list_or_404(
+            FitnessClass,
+            studio_id=self.kwargs['studio_id'],
+            startTime__gt=timezone.now()
+        )
+
+
+
+class ListClosestStudios():
+    pass
