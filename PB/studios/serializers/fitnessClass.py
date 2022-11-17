@@ -12,11 +12,13 @@ class FitnessClassSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = FitnessClass
-        fields = ['name', 'description', 'coach', 
+        fields = ['id', 'name', 'description', 'coach', 
                   'keywords', 'capacity', 'enrolled', 
                   'startTime', 'endTime', 'studio',
                   'endDate', 'recurrence',]
-
+        read_only_fields = ['id']
+        
+        
     def create(self, validated_data):
         """
         Creates classes. 
