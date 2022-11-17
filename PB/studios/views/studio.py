@@ -24,7 +24,23 @@ class ViewStudio(generics.RetrieveAPIView):
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
     
+    def finalize_response(self, request, response, *args, **kwargs):
+        response = super().finalize_response(request, response, *args, **kwargs)
+        try:
+            if self.kwargs['x'] is not None:
+                x = self.kwargs['x']
+                y = self.kwargs['y']
+                studio = self.get_object()
+                directions = f'https://www.google.com/maps/dir/?api=1&origin=\
+{y},{x}&destination={studio.locationY},{studio.locationX}'
+                response.data['link to directions'] = directions
+            return response
+        except KeyError:
+            response.data['message'] = 'To get directions, append /mylocation=[longitude],[latitude] to the URL.'
+            return response
 
+        
+        
 class CreateStudio(generics.CreateAPIView):
     """
     path: studios/create
@@ -93,7 +109,6 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
-    User can search for desired studio through the URL.
     path: studios/search
     Usage: search/?=[name]=[query]&...
     -   takes partial matches
@@ -128,11 +143,6 @@ class StudioSchedule(generics.ListAPIView):
 
 
 class ListClosestStudios(views.APIView):
-    """
-    path: studios/list
-    Takes a POST request from any user to generate studio list sorted by 
-    closest to furthest from provided latitude (x) and longitude (y).
-    """
     def get(self, request, *args, **kwargs):
         return response.Response('give me location in terms of x and y')
     

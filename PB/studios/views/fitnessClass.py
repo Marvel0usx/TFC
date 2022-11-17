@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, views
 from django_filters import rest_framework as filters
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.models.studio import Studio
@@ -19,7 +19,7 @@ class ViewClass(generics.RetrieveAPIView):
 
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
-    
+
     
 class CreateClass(generics.CreateAPIView):
     """
@@ -54,7 +54,7 @@ class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
     serializer_class = FitnessClassSerializer
     
     def get_object(self):
-        return get_object_or_404(FitnessClass, id=self.kwargs['class_id'], endTime__lt=timezone.now())
+        return get_object_or_404(FitnessClass, id=self.kwargs['class_id'], startTime__gt=timezone.now())
 
 
 
@@ -95,8 +95,13 @@ class ListClasses(generics.ListAPIView):
 
 
 # need to wait for user implementation
-class EnrollClass():
-    pass
+class EnrollClass(views.APIView):
+    def get(self, request, args, kwargs):
+        object = FitnessClass.objects.get(id=self.kwargs['class_id'])
+        if object.capacity > object.enrolled:
+            #enroll the user
+            pass
+        return Response('success')
 
 
 
