@@ -10,6 +10,7 @@ class FitnessClass(models.Model):
     enrolled = models.PositiveIntegerField(default=0) # number of enrolled users, cannot exceed capacity
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
+    baseClass = models.IntegerField(blank=True, null=True)
     studio = models.ForeignKey(
         to=studio.Studio,
         on_delete=models.CASCADE

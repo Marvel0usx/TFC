@@ -38,7 +38,6 @@ class FitnessClassSerializer(serializers.ModelSerializer):
                 studio=Studio.objects.get(id=studio_id)
             )
         
-        classesCreated = []
         curr = validated_data['startTime']
         end = validated_data['endDate']
         
@@ -46,6 +45,26 @@ class FitnessClassSerializer(serializers.ModelSerializer):
             increment = 1
         else:
             increment = 7
+            
+        new = FitnessClass(
+                name=validated_data['name'],
+                description=validated_data['description'],
+                coach=validated_data['coach'],
+                keywords=validated_data['keywords'],
+                capacity=validated_data['capacity'],
+                enrolled=validated_data['enrolled'],
+                startTime=validated_data['startTime'],
+                endTime=validated_data['endTime'],
+                studio=Studio.objects.get(id=studio_id)
+            )
+        new.save()
+        new.baseClass = new.id
+        new.save()
+        baseClass = new.id
+        validated_data['startTime'] += datetime.timedelta(days=increment)
+        validated_data['endTime'] += datetime.timedelta(days=increment)
+        curr += datetime.timedelta(days=increment)
+        
         
         while curr.date() <= end:
             new = FitnessClass(
@@ -57,12 +76,12 @@ class FitnessClassSerializer(serializers.ModelSerializer):
                 enrolled=validated_data['enrolled'],
                 startTime=validated_data['startTime'],
                 endTime=validated_data['endTime'],
+                baseClass=baseClass,
                 studio=Studio.objects.get(id=studio_id)
             )
             new.save()
-            classesCreated.append(new)
             validated_data['startTime'] += datetime.timedelta(days=increment)
             validated_data['endTime'] += datetime.timedelta(days=increment)
             curr += datetime.timedelta(days=increment)
         
-        return classesCreated[len(classesCreated) - 1]
+        return new
