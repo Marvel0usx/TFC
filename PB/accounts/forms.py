@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+
 from PB.studios.models.fitnessClass import FitnessClass
 from PB.payment.models import CardInfo
 from PB.payment.models import Subscriptions
@@ -9,51 +12,28 @@ except ImportError:
     MAX_LENGTH = 250
 
 
-class AdminAccountUpdateForm(forms.Form):
-    first_name = forms.CharField(max_length=MAX_LENGTH, required=True)
-    last_name = forms.CharField(max_length=MAX_LENGTH, required=True)
-    email_address = forms.EmailField(max_length=MAX_LENGTH, required=True)
-    address = forms.CharField(max_length=MAX_LENGTH, required=True)
-    phoneNumber = forms.CharField(max_length=MAX_LENGTH, required=True)
-
-    __attributes__ = ("first_name", "last_name", "email_address", "address", "phoneNumber")
-
-    def clean(self):
-        data = super().clean()
-
-        error = False
-        for field in AdminAccountUpdateForm.__attributes__:
-            if data.get(field) == "":
-                self.add_error(field, "This field is required")
-                error = True
-
-        if error:
-            return data
-
-        # TODO: validate content
-
-
-class UserAccountUpdateForm(forms.Form):
-    first_name = forms.CharField(max_length=MAX_LENGTH, required=True)
-    last_name = forms.CharField(max_length=MAX_LENGTH, required=True)
-    email_address = forms.EmailField(max_length=MAX_LENGTH, required=True)
-    address = forms.CharField(max_length=MAX_LENGTH, required=True)
-    phoneNumber = forms.CharField(max_length=MAX_LENGTH, required=True)
-
-    # TODO: Foreignkey fields
-
-    __attributes__ = ("first_name", "last_name", "email_address", "address", "phoneNumber")
+class SignupForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()
+    password2 = forms.CharField()
+    email = forms.EmailField(widget=forms.EmailInput(), required=False,
+                             error_messages={'invalid': "Enter a valid email address"})
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    phoneNumber = forms.IntegerField(required=False)
 
     def clean(self):
         data = super().clean()
 
-        error = False
-        for field in AdminAccountUpdateForm.__attributes__:
-            if data.get(field) == "":
-                self.add_error(field, "This field is required")
-                error = True
+        if len(data.get('username')) < 4:
+            self.add_error('username', 'Username must be at least 4 characters')
+        if data.get('password') != data.get('password2'):
+            self.add_error('password2', 'Passwords do not match')
+        if User.objects.filter(username=data.get('username')).exists():
+            self.add_error('username', 'Username already exists')
 
-        if error:
-            return data
+        return data
 
-        # TODO: validate content
+
+
+

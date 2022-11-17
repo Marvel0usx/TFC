@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from studios.models.fitnessClass import FitnessClass
 from payment.models import CardInfo
@@ -6,7 +7,10 @@ from payment.models import Subscriptions
 from accounts.models.account import Account
 
 
-class UserAccount(Account):
+class UserAccount(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phoneNumber = models.TextField()
+    avatar = models.ImageField()
     credit_card = models.ForeignKey(CardInfo, on_delete=models.CASCADE)
     fitness_class = models.ManyToManyField(FitnessClass)
     subscription_plan = models.ForeignKey(Subscriptions, on_delete=models.CASCADE)
