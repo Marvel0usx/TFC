@@ -8,6 +8,7 @@ urlpatterns = [
     path('<str:studio_id>/view/', studio.ViewStudio.as_view()),
     path('create/', studio.CreateStudio.as_view()),
     path('search/', studio.SearchStudio.as_view()),
+    path('list/', studio.ListClosestStudios.as_view()),
     path('<str:studio_id>/edit/', studio.UpdateStudio.as_view()),
     path('<str:studio_id>/amenities/create/', studio.CreateAmenity.as_view()),
     path('<str:studio_id>/amenities/edit/', studio.UpdateAmenities.as_view()),

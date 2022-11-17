@@ -5,7 +5,7 @@ from .models.amenity import Amenity
 
 # Register your models here.
 class StudioAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'phoneNumber', 'address', 'location']
+    list_display = ['id', 'name', 'phoneNumber', 'address']
     
 class ClassAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'studio', 'coach', 'startTime', 'endTime', 'capacity', 'enrolled', 'baseClass']

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views, response
 from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
 from studios.serializers.amenity import AmenitySerializer
@@ -10,7 +10,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.filters import StudioFilter
-
+import math
+from operator import itemgetter
 
 # TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
@@ -125,5 +126,23 @@ class StudioSchedule(generics.ListAPIView):
 
 
 
-class ListClosestStudios():
-    pass
+class ListClosestStudios(views.APIView):
+    def get(self, request, *args, **kwargs):
+        return response.Response('give me location in terms of x and y')
+    
+    def post(self, request, *args, **kwargs):
+        studios = Studio.objects.all()
+        x = request.data['x']
+        y = request.data['y']
+        pairs = []
+        for studio in studios:
+            print(studio)
+            pairs.append((studio.distance(x, y), studio))
+            
+        pairs = sorted(pairs, key=itemgetter(0))
+        studiosSorted = []
+        for pair in pairs:
+            studiosSorted.append(pair[1])
+        
+        serializer = StudioSerializer(studiosSorted, many=True)
+        return response.Response({'studios by location': serializer.data})
