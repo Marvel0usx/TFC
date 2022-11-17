@@ -1,4 +1,4 @@
-from accounts.models import Account
+from .models import Account
 
 
 class AdminAccount(Account):
