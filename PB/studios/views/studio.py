@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics, filters, views, response
 from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
-from studios.serializers.amenity import AmenitySerializer
+from studios.serializers.amenity import AmenitySerializer, AmenityUpdateSerializer
 from studios.models.amenity import Amenity
 from studios.models.studio import Studio
 from studios.models.fitnessClass import FitnessClass
