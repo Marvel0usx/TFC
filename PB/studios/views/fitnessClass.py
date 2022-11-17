@@ -11,6 +11,10 @@ from rest_framework.response import Response
 from django.utils import timezone
 
 class ViewClass(generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/details
+    Takes a GET request from any user to generate an information page.
+    """
     serializer_class = FitnessClassSerializer
 
     def get_object(self):
@@ -18,6 +22,10 @@ class ViewClass(generics.RetrieveAPIView):
     
     
 class CreateClass(generics.CreateAPIView):
+    """
+    path: studios/[studio_id]/class/create
+    Takes a POST request from an admin to create a class for studio_id studio.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_serializer_context(self):
@@ -27,6 +35,10 @@ class CreateClass(generics.CreateAPIView):
     
 
 class UpdateClass(generics.UpdateAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/edit
+    Takes a PUT/PATCH request from an admin to update class_id class.
+    """
     serializer_class = FitnessClassSerializer
 
     def get_object(self):
@@ -35,6 +47,10 @@ class UpdateClass(generics.UpdateAPIView, generics.RetrieveAPIView):
 
 
 class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/cancel/single
+    Takes a DELETE request from an admin to delete a single class_id class.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_object(self):
@@ -43,6 +59,11 @@ class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 
 class CancelRecurringClasses(generics.DestroyAPIView, generics.RetrieveAPIView):
+    """
+    path: studios/class/[class_id]/cancel/all
+    Takes a DELETE request from an admin to delete all future recurring classes 
+    associated with class_id.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_object(self):
@@ -52,6 +73,7 @@ class CancelRecurringClasses(generics.DestroyAPIView, generics.RetrieveAPIView):
         instance = self.get_object()
         base = instance.baseClass
         if base is not None:
+            # filter all the classes that have the same base class and have yet to begin
             allClasses = FitnessClass.objects.filter(baseClass=base, startTime__gt=timezone.now())
             for fclass in allClasses:
                 self.perform_destroy(fclass)
@@ -61,6 +83,11 @@ class CancelRecurringClasses(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 
 class ListClasses(generics.ListAPIView):
+    """
+    path: studios/[studio_id]/class/list
+    Takes a GET request from any user to generate a list of classes
+    taking place in studio_id studio.
+    """
     serializer_class = FitnessClassSerializer
     
     def get_queryset(self):

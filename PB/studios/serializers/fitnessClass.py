@@ -20,12 +20,17 @@ class FitnessClassSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """
         Creates classes. 
-        -   If reccurence is none, create one class and return.
-        -   If reccurence is daily or monthly, create as many sessions as
+        -   If recurrence is none, create one class and return.
+        
+        -   If recurrence is daily or monthly, create as many sessions as
             it takes up until endDate and returns ONLY THE LAST CLASS.
+            
+        -   If the class is recurring, set the baseClass of every class
+            created to the id of the first class.
         """
         studio_id = self.context['studio_id']
         if validated_data['recurrence'] == 'none':
+            # create one class and return
             return FitnessClass(
                 name=validated_data['name'],
                 description=validated_data['description'],
@@ -42,7 +47,7 @@ class FitnessClassSerializer(serializers.ModelSerializer):
         end = validated_data['endDate']
         
         if validated_data['recurrence'] == 'daily':
-            increment = 1
+            increment = 1   # determine if the recurrence is everyday or every 7 days
         else:
             increment = 7
             
