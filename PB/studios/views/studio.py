@@ -127,6 +127,11 @@ class StudioSchedule(generics.ListAPIView):
 
 
 class ListClosestStudios(views.APIView):
+    """
+    path: studios/list
+    Takes a POST request from any user to generate studio list sorted by 
+    closest to furthest from provided latitude (x) and longitude (y).
+    """
     def get(self, request, *args, **kwargs):
         return response.Response('give me location in terms of x and y')
     
