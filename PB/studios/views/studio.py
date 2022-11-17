@@ -93,6 +93,7 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
+    User can search for desired studio through the URL.
     path: studios/search
     Usage: search/?=[name]=[query]&...
     -   takes partial matches
