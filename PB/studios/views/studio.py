@@ -150,15 +150,11 @@ class ListClosestStudios(views.APIView):
     closest to furthest from provided latitude (x) and longitude (y).
     """
     def get(self, request, *args, **kwargs):
-        return response.Response('give me location in terms of x and y')
-    
-    def post(self, request, *args, **kwargs):
         studios = Studio.objects.all()
-        x = request.data['x']
-        y = request.data['y']
+        x = float(kwargs['x'])
+        y = float(kwargs['y'])
         pairs = []
         for studio in studios:
-            print(studio)
             pairs.append((studio.distance(x, y), studio))
             
         pairs = sorted(pairs, key=itemgetter(0))

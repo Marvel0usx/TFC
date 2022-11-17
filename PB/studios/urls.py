@@ -13,7 +13,7 @@ urlpatterns = [
     path('<str:studio_id>/view/', studio.ViewStudio.as_view()),                             # users
     path('<str:studio_id>/view/mylocation=<str:x>,<str:y>', studio.ViewStudio.as_view()),   # users
     path('search/', studio.SearchStudio.as_view()),                                         # users
-    path('list/', studio.ListClosestStudios.as_view()),                                     # users        
+    path('list/mylocation=<str:x>,<str:y>', studio.ListClosestStudios.as_view()),           # users        
     path('<str:studio_id>/schedule/', studio.StudioSchedule.as_view()),                     # users                
     path('<str:studio_id>/class/list', fitnessClass.ListClasses.as_view()),                 # users                 
     path('<str:studio_id>/class/create/', fitnessClass.CreateClass.as_view()),              # admins                             
