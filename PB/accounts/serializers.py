@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework.validators import UniqueValidator
 
-from .models.useraccount import UserAccount
+from .models import UserAccount
 
 
 # Serializer for creating user profile
@@ -14,7 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True
     )
     avatar = serializers.ImageField()
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -34,7 +34,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             avatar=validated_data['avatar'],
-            phone_number=validated_data['phone_number']
+            phone_number=validated_data['phone_number'],
+            credit_card=None,
+            subscription_plan=None
         )
 
         user.set_password(validated_data['password'])
