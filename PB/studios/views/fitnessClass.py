@@ -12,6 +12,7 @@ from django.utils import timezone
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
+from studios.pagination import StudioPaginator
 
 class ViewClass(generics.RetrieveAPIView):
     """
@@ -100,6 +101,7 @@ class ListClasses(generics.ListAPIView):
     taking place in studio_id studio.
     """
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -194,6 +196,7 @@ class DropClass(views.APIView):
 
 class ViewSchedule(generics.ListAPIView):
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -206,6 +209,7 @@ class ViewSchedule(generics.ListAPIView):
 
 class ViewHistory(generics.ListAPIView):
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -229,5 +233,6 @@ class SearchClass(generics.ListAPIView):
     """
     serializer_class = FitnessClassSerializer
     queryset = FitnessClass.objects.all()
+    pagination_class = StudioPaginator
     filterset_class = ClassFilter
     filter_backends = (filters.DjangoFilterBackend,)

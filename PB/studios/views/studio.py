@@ -13,6 +13,7 @@ from studios.filters import StudioFilter
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from operator import itemgetter
+from studios.pagination import StudioPaginator
 
 # TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
@@ -86,6 +87,7 @@ class AmenitiesList(generics.ListAPIView):
     specific amenity.
     """
     serializer_class = AmenitySerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -132,6 +134,7 @@ class SearchStudio(generics.ListAPIView):
     Example: search/?name=church&amenity=cross
     """
     serializer_class = StudioSerializer
+    pagination_class = StudioPaginator
     queryset = Studio.objects.all()
     filterset_class = StudioFilter
     filter_backends = (filters.DjangoFilterBackend,)
@@ -145,6 +148,7 @@ class StudioSchedule(generics.ListAPIView):
     classes for that studio.
     """
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     
     def get_queryset(self):
         # returns list of classes that have not yet started
@@ -155,17 +159,19 @@ class StudioSchedule(generics.ListAPIView):
         )
 
 
-
-class ListClosestStudios(views.APIView):
+class ListClosestStudios(generics.ListAPIView):
     """
     path: studios/list
     Takes a POST request from any user to generate studio list sorted by 
     closest to furthest from provided latitude (x) and longitude (y).
     """
-    def get(self, request, *args, **kwargs):
+    serializer_class = StudioSerializer
+    pagination_class = StudioPaginator
+    
+    def get_queryset(self):
         studios = Studio.objects.all()
-        x = float(kwargs['x'])
-        y = float(kwargs['y'])
+        x = float(self.kwargs['x'])
+        y = float(self.kwargs['y'])
         pairs = []
         for studio in studios:
             pairs.append((studio.distance(x, y), studio))
@@ -175,5 +181,5 @@ class ListClosestStudios(views.APIView):
         for pair in pairs:
             studiosSorted.append(pair[1])
         
-        serializer = StudioSerializer(studiosSorted, many=True)
-        return response.Response({'studios by location': serializer.data})
+        serializer = self.serializer_class(studiosSorted, many=True)
+        return serializer.data
