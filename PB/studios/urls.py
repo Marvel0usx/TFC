@@ -23,5 +23,8 @@ urlpatterns = [
     path('class/<str:class_id>/cancel/all', fitnessClass.CancelRecurringClasses.as_view()), # admins          
     path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),                   # users                              
     path('class/search/', fitnessClass.SearchClass.as_view()),                              # users
-    path('class/<str:class_id>/enroll', fitnessClass.EnrollClass.as_view()),                # users                
+    path('class/<str:class_id>/enroll_<str:mode>', fitnessClass.EnrollClass.as_view()),     # users
+    path('class/<str:class_id>/drop_<str:mode>', fitnessClass.DropClass.as_view()),         # users
+    path('class/my_schedule', fitnessClass.ViewSchedule.as_view()),     # users
+    path('class/history', fitnessClass.ViewHistory.as_view()),         # users                          
 ]

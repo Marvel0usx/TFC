@@ -18,11 +18,9 @@ from operator import itemgetter
 class ViewStudio(generics.RetrieveAPIView):
     """
     path: studios/[studio_id]/view
-    Takes a GET request from any user to generate an information page.
+    Takes a GET request from anyone to generate an information page.
     """
     serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
@@ -124,7 +122,7 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
-    User can search for desired studio through the URL.
+    Anyone can search for desired studio through the URL.
     path: studios/search
     Usage: search/?=[name]=[query]&...
     -   takes partial matches
@@ -134,8 +132,6 @@ class SearchStudio(generics.ListAPIView):
     Example: search/?name=church&amenity=cross
     """
     serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = Studio.objects.all()
     filterset_class = StudioFilter
     filter_backends = (filters.DjangoFilterBackend,)
@@ -145,7 +141,7 @@ class SearchStudio(generics.ListAPIView):
 class StudioSchedule(generics.ListAPIView):
     """
     path: studios/[studio_id]/schedule
-    Takes a GET request from any user to create a schedule of upcoming
+    Takes a GET request from anyone to create a schedule of upcoming
     classes for that studio.
     """
     serializer_class = FitnessClassSerializer
