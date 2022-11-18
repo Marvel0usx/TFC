@@ -13,21 +13,12 @@ from .serializers import CardInfoSerializer, PaymentSerializer, SubscriptionPlan
 
 EMPTY_RESPONSE = Response({"data": {}}, status=404)
 
-DEBUG = 1
-class Dobj:
-    pass
-
 
 class CardInfoView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        ####
-        if DEBUG:
-            request = Dobj()
-            request.user = User.objects.get(id=1)
-        ####
         instances = CardInfo.objects.filter(user=request.user.id)
         if not instances.exists():
             return EMPTY_RESPONSE
@@ -36,30 +27,19 @@ class CardInfoView(APIView):
         return Response({"data": serializer.data})
 
     def post(self, request, *args, **kwargs):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = User.objects.get(id=1)
-        ####
         # Disallow more than one card.
-        if CardInfo.objects.filter(user=requestt.user.id).exists():
+        if CardInfo.objects.filter(user=request.user.id).exists():
             return EMPTY_RESPONSE
 
         data = request.data.get("data")
         # Create an instance of cardinfo from above information
         serializer = CardInfoSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
-            cardinfo_saved = serializer.save(user=requestt.user)
+            cardinfo_saved = serializer.save(user=request.user)
         return Response({"success": "Card saved."})
     
     def put(self, request, *args, **kwargs):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = User.objects.get(id=1)
-            requestt.user.id = 1
-        ####
-        card_record = CardInfo.objects.filter(user=requestt.user.id)
+        card_record = CardInfo.objects.filter(user=request.user.id)
         if not card_record.exists():
             return EMPTY_RESPONSE
         data = request.data.get("data")
@@ -72,18 +52,12 @@ class CardInfoView(APIView):
 
 
 class PaymentHistoryView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = Dobj()
-            requestt.user.id = 1
-        ####
         # Filter out payments in the past.
-        instances = Payment.objects.filter(user=requestt.user.id, date_time__lt=timezone.now()).all()
+        instances = Payment.objects.filter(user=request.user.id, date_time__lt=timezone.now()).all()
         if not instances.exists():
             return EMPTY_RESPONSE
         serializer = PaymentSerializer(instances, many=True)
@@ -92,18 +66,12 @@ class PaymentHistoryView(APIView):
 
 
 class PaymentFutureView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = Dobj()
-            requestt.user.id = 1
-        ####
         # Filter out upcoming payment.
-        instances = Payment.objects.filter(user=requestt.user.id, date_time__gt=timezone.now()).all()
+        instances = Payment.objects.filter(user=request.user.id, date_time__gt=timezone.now()).all()
         if not instances.exists():
             return EMPTY_RESPONSE
         serializer = PaymentSerializer(instances.first())
@@ -122,16 +90,10 @@ class SubscriptionPlansView(APIView):
 
 
 class SubscriptionsView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        ####
-        if DEBUG:
-            request = Dobj()
-            request.user = Dobj()
-            request.user.id = 1
-        ####
         instances = Subscriptions.objects.filter(user=request.user.id)
         if not instances.exists():
             return EMPTY_RESPONSE
@@ -140,31 +102,27 @@ class SubscriptionsView(APIView):
         return Response({"data": serializer.data})
 
     def post(self, request, *args, **kwargs):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = User.objects.get(id=1)
-            requestt.user.id = 1
-        ####
         data = request.data.get("data")
         if data is None:
             return EMPTY_RESPONSE
         serializer = SubscriptionSerializer(data=data)
         if data.get("subscription_plan_id") is None:
             return EMPTY_RESPONSE
+        if not data.get("subscription_plan_id").isnumeric():
+            return EMPTY_RESPONSE
         subscription_plan = get_object_or_404(SubscriptionPlans.objects.all(), id=int(data.get("subscription_plan_id")))
         if not subscription_plan.is_live:
             return EMPTY_RESPONSE
         # If there is a plan for the user, do not repeat the subscription.
-        if Subscriptions.objects.filter(user=requestt.user).exists():
+        if Subscriptions.objects.filter(user=request.user).exists():
             return EMPTY_RESPONSE
         # Save new subscription
         if serializer.is_valid(raise_exception=True):
-            subscription = serializer.save(user=requestt.user, subscription_plan=subscription_plan)
+            subscription = serializer.save(user=request.user, subscription_plan=subscription_plan)
         # Bill the card and start payment cycle.
-        cardifo = CardInfo.objects.get(user=requestt.user.id)
+        cardifo = CardInfo.objects.get(user=request.user.id)
         Payment.objects.create(
-            user=requestt.user,
+            user=request.user,
             subscription_plan=subscription_plan,
             amount=subscription_plan.price,
             card_number=cardifo.card_number,
@@ -174,7 +132,7 @@ class SubscriptionsView(APIView):
             is_paid=True
         )
         upcoming = Payment.objects.create(
-            user=requestt.user,
+            user=request.user,
             subscription_plan=subscription_plan,
             amount=subscription_plan.price,
             card_number=cardifo.card_number,
@@ -188,14 +146,9 @@ class SubscriptionsView(APIView):
         return Response({"success": f"Successfully subscribed to {subscription.subscription_plan.name}."})
 
     def put(self, request, *args, **kwargs):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = User.objects.get(id=1)
-        ####
         # Error checking: return 404 if error found.
-        subscription = get_object_or_404(Subscriptions.objects.all(), user=requestt.user)
-        payment = Payment.objects.filter(user=requestt.user.id, is_paid=False)
+        subscription = get_object_or_404(Subscriptions.objects.all(), user=request.user)
+        payment = Payment.objects.filter(user=request.user.id, is_paid=False)
         if not payment.exists():
             return EMPTY_RESPONSE
         data = request.data.get("data")
@@ -205,17 +158,19 @@ class SubscriptionsView(APIView):
         # Validate subscription plan.
         if data.get("subscription_plan_id") is None:
             return EMPTY_RESPONSE
+        if not data.get("subscription_plan_id").isnumeric():
+            return EMPTY_RESPONSE
         subscription_plan = get_object_or_404(SubscriptionPlans.objects.all(), id=int(data.get("subscription_plan_id")))
         if not subscription_plan.is_live:
             return EMPTY_RESPONSE
         if serializer.is_valid(raise_exception=True):
             new_subscription = serializer.save()
-        cardifo = get_object_or_404(CardInfo.objects.all(), user=requestt.user.id)
+        cardifo = get_object_or_404(CardInfo.objects.all(), user=request.user.id)
 
         # Update subscription
         subscription.delete()
         Subscriptions.objects.create(
-            user=requestt.user,
+            user=request.user,
             subscription_plan=subscription_plan
         )
 
@@ -223,7 +178,7 @@ class SubscriptionsView(APIView):
         payment.delete()
         # Start new bill cycle.
         Payment.objects.create(
-            user=requestt.user,
+            user=request.user,
             subscription_plan=subscription_plan,
             amount=subscription_plan.price,
             card_number=cardifo.card_number,
@@ -233,7 +188,7 @@ class SubscriptionsView(APIView):
             is_paid=True
         )
         upcoming = Payment.objects.create(
-            user=requestt.user,
+            user=request.user,
             subscription_plan=subscription_plan,
             amount=subscription_plan.price,
             card_number=cardifo.card_number,
@@ -248,14 +203,9 @@ class SubscriptionsView(APIView):
         return Response({"success": "Subscription plan updated successfully"})
 
     def delete(self, request, *args, **kwargs):
-        ####
-        if DEBUG:
-            requestt = Dobj()
-            requestt.user = User.objects.get(id=1)
-        ####
-        subscription = get_object_or_404(Subscriptions.objects.all(), user=requestt.user)
+        subscription = get_object_or_404(Subscriptions.objects.all(), user=request.user)
         # Also delete the upcoming payment.
-        payment = Payment.objects.filter(user=requestt.user,
+        payment = Payment.objects.filter(user=request.user,
                                          subscription_plan=SubscriptionPlans.objects.get(id=subscription.subscription_plan.id),
                                          is_paid=False)
         payment.delete()
