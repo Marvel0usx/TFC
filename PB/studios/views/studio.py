@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from rest_framework import generics, filters, views, response
+from rest_framework import generics, filters
 from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
 from studios.serializers.amenity import AmenitySerializer, AmenityUpdateSerializer
@@ -81,7 +80,7 @@ class CreateAmenity(generics.CreateAPIView):
 
 class AmenitiesList(generics.ListAPIView):
     """
-    path: studios/[studio_id]/amenities/edit
+    path: studios/[studio_id]/amenities/list
     Generates a list of amenities belonging to studio_id studio.
     Go to studios/amenities/edit/[amenity_id] to edit the quantity of a 
     specific amenity.
