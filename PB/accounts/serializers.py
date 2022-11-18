@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework.validators import UniqueValidator
 
-from .models import UserAccount, AdminAccount
+from .models import UserAccount
 
 
 # Serializer for creating user profile
@@ -42,6 +42,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
 
+
 # Serializer for editing user profile
 # https://medium.com/django-rest/django-rest-framework-change-password-and-update-profile-1db0c144c0a3
 class UserUpdateSerializer(ModelSerializer):
@@ -57,9 +58,3 @@ class UserUpdateSerializer(ModelSerializer):
         instance.save()
 
         return instance
-
-
-class AdminUpdateSerializer(ModelSerializer):
-    class Meta:
-        model = AdminAccount
-        fields = ["first_name", "last_name", "email_address", "address", "phoneNumber"]
