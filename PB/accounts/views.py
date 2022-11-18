@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models.useraccount import UserAccount
+from .models import UserAccount
 
 from .serializers import UserUpdateSerializer, RegisterSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny

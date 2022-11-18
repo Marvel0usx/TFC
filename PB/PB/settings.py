@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "payment"
 ]
 
+AUTH_USER_MODEL = 'accounts.UserAccount'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -121,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'accounts.UserAccount'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
