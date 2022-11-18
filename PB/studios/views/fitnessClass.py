@@ -113,7 +113,7 @@ class EnrollClass(views.APIView):
     def get(self, request, args, kwargs):
         clas = FitnessClass.objects.get(id=self.kwargs['class_id'])
         if clas.capacity > clas.enrolled:
-            #enroll the user
+            clas
             pass
         else:
             #return error message that says full

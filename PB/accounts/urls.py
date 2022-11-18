@@ -6,7 +6,7 @@ from .views import *
 from rest_framework.authtoken import views
 from .router import router
 
-app_name = 'account'
+app_name = 'accounts'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
