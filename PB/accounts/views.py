@@ -15,13 +15,13 @@ from rest_framework import status, generics
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = UserAccount.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
 
 class UserAccountUpdateView(generics.UpdateAPIView):
-    queryset = User.objects.all()
+    queryset = UserAccount.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
