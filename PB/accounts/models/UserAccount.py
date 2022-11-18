@@ -9,7 +9,7 @@ from accounts.models.account import Account
 
 class UserAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phoneNumber = models.TextField()
+    phone_number = models.TextField()
     avatar = models.ImageField()
     credit_card = models.ForeignKey(CardInfo, on_delete=models.CASCADE)
     fitness_class = models.ManyToManyField(FitnessClass)
