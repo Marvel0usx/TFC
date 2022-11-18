@@ -5,18 +5,22 @@ from django.urls import path
 app_name = 'studios'
 
 urlpatterns = [
-    path('<str:studio_id>/view/', studio.ViewStudio.as_view()),
-    path('create/', studio.CreateStudio.as_view()),
-    path('search/', studio.SearchStudio.as_view()),
-    path('<str:studio_id>/edit/', studio.UpdateStudio.as_view()),
-    path('<str:studio_id>/amenities/create/', studio.CreateAmenity.as_view()),
-    path('<str:studio_id>/amenities/edit/', studio.UpdateAmenities.as_view()),
-    path('<str:studio_id>/delete/', studio.DeleteStudio.as_view()),
-    path('<str:studio_id>/schedule/', studio.StudioSchedule.as_view()),
-    path('<str:studio_id>/class/list', fitnessClass.ListClasses.as_view()),
-    path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),
-    path('<str:studio_id>/class/create/', fitnessClass.CreateClass.as_view()),
-    path('<str:studio_id>/class/<str:class_id>/edit/', fitnessClass.UpdateClass.as_view()),
-    path('class/<str:class_id>/cancel/', fitnessClass.CancelClass.as_view()),
-    path('class/search/', fitnessClass.SearchClass.as_view()),
+    path('create/', studio.CreateStudio.as_view()),                                         # admins
+    path('<str:studio_id>/edit/', studio.UpdateStudio.as_view()),                           # admins
+    path('<str:studio_id>/delete/', studio.DeleteStudio.as_view()),                         # admins 
+    path('<str:studio_id>/amenities/create/', studio.CreateAmenity.as_view()),              # admins
+    path('<str:studio_id>/amenities/edit/', studio.AmenitiesList.as_view()),                # admins  
+    path('<str:studio_id>/amenities/edit/', studio.UpdateAmenity.as_view()),                # admins  
+    path('<str:studio_id>/view/', studio.ViewStudio.as_view()),                             # users
+    path('<str:studio_id>/view/mylocation=<str:x>,<str:y>', studio.ViewStudio.as_view()),   # users
+    path('search/', studio.SearchStudio.as_view()),                                         # users
+    path('list/mylocation=<str:x>,<str:y>', studio.ListClosestStudios.as_view()),           # users        
+    path('<str:studio_id>/schedule/', studio.StudioSchedule.as_view()),                     # users                
+    path('<str:studio_id>/class/list', fitnessClass.ListClasses.as_view()),                 # users                 
+    path('<str:studio_id>/class/create/', fitnessClass.CreateClass.as_view()),              # admins                             
+    path('class/<str:class_id>/edit/', fitnessClass.UpdateClass.as_view()),                 # admins                              
+    path('class/<str:class_id>/cancel/single', fitnessClass.CancelClass.as_view()),         # admins                                  
+    path('class/<str:class_id>/cancel/all', fitnessClass.CancelRecurringClasses.as_view()), # admins          
+    path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),                   # users                              
+    path('class/search/', fitnessClass.SearchClass.as_view()),                              # users                
 ]

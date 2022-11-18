@@ -8,3 +8,9 @@ class AmenitySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data)
+        
+class AmenityUpdateSerializer(AmenitySerializer):
+    
+    class Meta:
+        model = Amenity
+        fields=['quantity']

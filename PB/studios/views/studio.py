@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views, response
 from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
-from studios.serializers.amenity import AmenitySerializer
+from studios.serializers.amenity import AmenitySerializer, AmenityUpdateSerializer
 from studios.models.amenity import Amenity
 from studios.models.studio import Studio
 from studios.models.fitnessClass import FitnessClass
@@ -10,7 +10,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.filters import StudioFilter
-
+import math
+from operator import itemgetter
 
 # TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
@@ -23,6 +24,22 @@ class ViewStudio(generics.RetrieveAPIView):
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
     
+    def finalize_response(self, request, response, *args, **kwargs):
+        response = super().finalize_response(request, response, *args, **kwargs)
+        try:
+            if self.kwargs['x'] is not None:
+                x = self.kwargs['x']
+                y = self.kwargs['y']
+                studio = self.get_object()
+                directions = f'https://www.google.com/maps/dir/?api=1&origin=\
+{y},{x}&destination={studio.locationY},{studio.locationX}'
+                response.data['link to directions'] = directions
+            return response
+        except KeyError:
+            response.data['message'] = 'To get directions, append /mylocation=[longitude],[latitude] to the URL.'
+            return response
+        
+        
 
 class CreateStudio(generics.CreateAPIView):
     """
@@ -92,6 +109,7 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
+    User can search for desired studio through the URL.
     path: studios/search
     Usage: search/?=[name]=[query]&...
     -   takes partial matches
@@ -125,5 +143,24 @@ class StudioSchedule(generics.ListAPIView):
 
 
 
-class ListClosestStudios():
-    pass
+class ListClosestStudios(views.APIView):
+    """
+    path: studios/list
+    Takes a POST request from any user to generate studio list sorted by 
+    closest to furthest from provided latitude (x) and longitude (y).
+    """
+    def get(self, request, *args, **kwargs):
+        studios = Studio.objects.all()
+        x = float(kwargs['x'])
+        y = float(kwargs['y'])
+        pairs = []
+        for studio in studios:
+            pairs.append((studio.distance(x, y), studio))
+            
+        pairs = sorted(pairs, key=itemgetter(0))
+        studiosSorted = []
+        for pair in pairs:
+            studiosSorted.append(pair[1])
+        
+        serializer = StudioSerializer(studiosSorted, many=True)
+        return response.Response({'studios by location': serializer.data})

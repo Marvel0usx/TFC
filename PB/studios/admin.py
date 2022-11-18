@@ -5,13 +5,12 @@ from .models.amenity import Amenity
 
 # Register your models here.
 class StudioAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'phoneNumber', 'address', 'location']
+    list_display = ['id', 'name', 'phoneNumber', 'address']
     
 class ClassAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'studio', 'coach', 'startTime', 'endTime', 'capacity', 'enrolled']
+    list_display = ['id', 'name', 'studio', 'coach', 'startTime', 'endTime', 'capacity', 'enrolled', 'baseClass']
     
 class AmenityAdmin(admin.ModelAdmin):
-    fields = ['studio', 'type']
     list_display = ['id', 'studio', 'type', 'quantity']
     
 admin.site.register(Studio, StudioAdmin)
