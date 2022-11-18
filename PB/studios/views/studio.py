@@ -10,7 +10,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.filters import StudioFilter
-import math
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from operator import itemgetter
 
 # TODO: implement directions and such
@@ -20,6 +21,8 @@ class ViewStudio(generics.RetrieveAPIView):
     Takes a GET request from any user to generate an information page.
     """
     serializer_class = StudioSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
@@ -47,6 +50,8 @@ class CreateStudio(generics.CreateAPIView):
     Takes a POST request from an admin to create a new studio.
     """
     serializer_class = StudioSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
@@ -55,6 +60,8 @@ class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
     Takes a PATCH/PUT request from an admin to update studio information.
     """
     serializer_class = StudioSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
@@ -68,6 +75,8 @@ class CreateAmenity(generics.CreateAPIView):
     [studio_id] studio.
     """
     serializer_class = AmenitySerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 
@@ -79,6 +88,8 @@ class AmenitiesList(generics.ListAPIView):
     specific amenity.
     """
     serializer_class = AmenitySerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return get_list_or_404(Amenity, studio=Studio.objects.get(id=self.kwargs['studio_id']))
@@ -90,6 +101,8 @@ class UpdateAmenity(generics.UpdateAPIView):
     Takes a PATCH/PUT request from an admin to update amenity quantity.
     """
     serializer_class = AmenityUpdateSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get_object(self):
         return get_object_or_404(Amenity, id=self.kwargs['amenity_id'])
 
@@ -101,6 +114,8 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
     Takes a DELETE request from an admin to delete a studio.
     """
     serializer_class = StudioSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
@@ -119,6 +134,8 @@ class SearchStudio(generics.ListAPIView):
     Example: search/?name=church&amenity=cross
     """
     serializer_class = StudioSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Studio.objects.all()
     filterset_class = StudioFilter
     filter_backends = (filters.DjangoFilterBackend,)

@@ -9,6 +9,8 @@ from studios.filters import ClassFilter
 from rest_framework import status
 from rest_framework.response import Response
 from django.utils import timezone
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class ViewClass(generics.RetrieveAPIView):
     """
@@ -16,6 +18,8 @@ class ViewClass(generics.RetrieveAPIView):
     Takes a GET request from any user to generate an information page.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
@@ -27,6 +31,8 @@ class CreateClass(generics.CreateAPIView):
     Takes a POST request from an admin to create a class for studio_id studio.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -40,6 +46,8 @@ class UpdateClass(generics.UpdateAPIView, generics.RetrieveAPIView):
     Takes a PUT/PATCH request from an admin to update class_id class.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
@@ -52,6 +60,8 @@ class CancelClass(generics.DestroyAPIView, generics.RetrieveAPIView):
     Takes a DELETE request from an admin to delete a single class_id class.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'], startTime__gt=timezone.now())
@@ -65,6 +75,8 @@ class CancelRecurringClasses(generics.DestroyAPIView, generics.RetrieveAPIView):
     associated with class_id.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
@@ -89,6 +101,8 @@ class ListClasses(generics.ListAPIView):
     taking place in studio_id studio.
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return get_list_or_404(FitnessClass, studio=Studio.objects.get(id=self.kwargs['studio_id']))
@@ -117,6 +131,8 @@ class SearchClass(generics.ListAPIView):
     Example: search/?name=church&coach=jesus&date=2022-12-15&time_range=7:00-19:00
     """
     serializer_class = FitnessClassSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = FitnessClass.objects.all()
     filterset_class = ClassFilter
     filter_backends = (filters.DjangoFilterBackend,)
