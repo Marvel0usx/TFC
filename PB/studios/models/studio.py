@@ -1,27 +1,19 @@
 from django.db import models
-from PB.studios.models.fitnessClass import FitnessClass
-from django.utils import timezone
-from PB.studios.serializers import 
+import math
 
 # TODO: implement images correctly
 class Studio(models.Model):
     name = models.TextField()
     address = models.TextField()
-    location = models.TextField()
+    locationX = models.FloatField(default=0)
+    locationY = models.FloatField(default=0)
     postalCode = models.TextField()
     phoneNumber = models.TextField()
-    images = models.TextField()
-
-
+    images = models.ImageField(blank=True, null=True) # need to install pillow, can only be accessed through admin panel
 
     def __str__(self):
-        return f'Studio {self.name} located at {self.address}, {self.location}.'
+        return f'Studio {self.name} located at {self.address}'
 
 
-    # implement get_info in view
-
-    
-    def create_schedule(self):
-        """Returns a queryset of the classes that have yet to start."""
-        return FitnessClass.objects.get_queryset(studio=self.id, startTime__gt=timezone.now())
-
+    def distance(self, x, y):
+        return math.sqrt(math.pow(self.locationX-x, 2)+math.pow(self.locationY-y, 2))

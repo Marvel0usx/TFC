@@ -1,7 +1,11 @@
 from rest_framework import serializers
-from PB.studios.models.studio import Studio
+from studios.models.studio import Studio
 
-class StudioSerializer(serializers.Serializer):
+class StudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Studio
-        fields = ['name', 'address', 'location', 'postalCode', 'phoneNumber', 'images']
+        fields = ['id', 'name', 'address', 'locationX', 'locationY', 'postalCode', 'phoneNumber', 'images']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return super().create(validated_data)
