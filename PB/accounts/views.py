@@ -1,11 +1,6 @@
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.views.generic import FormView
-from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import UserAccount
+from .models.useraccount import UserAccount
 
 from .serializers import UserUpdateSerializer, RegisterSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -15,13 +10,13 @@ from rest_framework import status, generics
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = UserAccount.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
 
 class UserAccountUpdateView(generics.UpdateAPIView):
-    queryset = User.objects.all()
+    queryset = UserAccount.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
