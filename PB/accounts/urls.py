@@ -3,8 +3,6 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import *
-from rest_framework.authtoken import views
-from .router import router
 
 app_name = 'accounts'
 
