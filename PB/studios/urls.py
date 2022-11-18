@@ -10,7 +10,7 @@ urlpatterns = [
     path('<str:studio_id>/delete/', studio.DeleteStudio.as_view()),                         # admins 
     path('<str:studio_id>/amenities/create/', studio.CreateAmenity.as_view()),              # admins
     path('<str:studio_id>/amenities/edit/', studio.AmenitiesList.as_view()),                # admins  
-    path('<str:studio_id>/amenities/edit/', studio.UpdateAmenity.as_view()),                # admins  
+    path('amenities/edit/<str:amenity_id>/', studio.UpdateAmenity.as_view()),               # admins  
     path('<str:studio_id>/view/', studio.ViewStudio.as_view()),                             # users
     path('<str:studio_id>/view/mylocation=<str:x>,<str:y>', studio.ViewStudio.as_view()),   # users
     path('search/', studio.SearchStudio.as_view()),                                         # users

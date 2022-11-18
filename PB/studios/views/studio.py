@@ -71,27 +71,27 @@ class CreateAmenity(generics.CreateAPIView):
 
 
 
-class UpdateAmenities(generics.ListAPIView, generics.UpdateAPIView):
+class AmenitiesList(generics.ListAPIView):
     """
     path: studios/[studio_id]/amenities/edit
-    Takes a PATCH/PUT request from an admin to update amenity quantity.
+    Generates a list of amenities belonging to studio_id studio.
+    Go to studios/amenities/edit/[amenity_id] to edit the quantity of a 
+    specific amenity.
     """
     serializer_class = AmenitySerializer
     
     def get_queryset(self):
         return get_list_or_404(Amenity, studio=Studio.objects.get(id=self.kwargs['studio_id']))
 
+
+class UpdateAmenity(generics.UpdateAPIView):
+    """
+    path: studios/amenities/edit/[amenity_id]
+    Takes a PATCH/PUT request from an admin to update amenity quantity.
+    """
+    serializer_class = AmenityUpdateSerializer
     def get_object(self):
-        return get_object_or_404(
-            Amenity,
-            studio=Studio.objects.get(id=self.kwargs['studio_id']),
-            type=self.request.data['type']
-        )
-    
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({'studio_id': self.kwargs['studio_id']})
-        return context
+        return get_object_or_404(Amenity, id=self.kwargs['amenity_id'])
 
 
 
