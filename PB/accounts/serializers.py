@@ -14,11 +14,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True
     )
     avatar = serializers.ImageField()
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
-        model = User
+        model = UserAccount
         fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'avatar', 'phone_number')
 
     def validate(self, attrs):
@@ -28,18 +28,19 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        user = User.objects.create(
+        user = UserAccount.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             avatar=validated_data['avatar'],
-            phone_number=validated_data['phone_number']
+            phone_number=validated_data['phone_number'],
+            credit_card=None,
+            subscription_plan=None
         )
 
         user.set_password(validated_data['password'])
         user.save()
-
         return user
 
 

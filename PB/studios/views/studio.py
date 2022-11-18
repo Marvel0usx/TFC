@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from rest_framework import generics, filters, views, response
+from rest_framework import generics, filters
 from django_filters import rest_framework as filters
 from studios.serializers.studio import StudioSerializer
 from studios.serializers.amenity import AmenitySerializer, AmenityUpdateSerializer
@@ -13,16 +12,15 @@ from studios.filters import StudioFilter
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from operator import itemgetter
+from studios.pagination import StudioPaginator
 
 # TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
     """
     path: studios/[studio_id]/view
-    Takes a GET request from any user to generate an information page.
+    Takes a GET request from anyone to generate an information page.
     """
     serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(Studio, id=self.kwargs['studio_id'])
@@ -82,12 +80,13 @@ class CreateAmenity(generics.CreateAPIView):
 
 class AmenitiesList(generics.ListAPIView):
     """
-    path: studios/[studio_id]/amenities/edit
+    path: studios/[studio_id]/amenities/list
     Generates a list of amenities belonging to studio_id studio.
     Go to studios/amenities/edit/[amenity_id] to edit the quantity of a 
     specific amenity.
     """
     serializer_class = AmenitySerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -124,7 +123,7 @@ class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
 
 class SearchStudio(generics.ListAPIView):
     """
-    User can search for desired studio through the URL.
+    Anyone can search for desired studio through the URL.
     path: studios/search
     Usage: search/?=[name]=[query]&...
     -   takes partial matches
@@ -134,8 +133,7 @@ class SearchStudio(generics.ListAPIView):
     Example: search/?name=church&amenity=cross
     """
     serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    pagination_class = StudioPaginator
     queryset = Studio.objects.all()
     filterset_class = StudioFilter
     filter_backends = (filters.DjangoFilterBackend,)
@@ -145,10 +143,11 @@ class SearchStudio(generics.ListAPIView):
 class StudioSchedule(generics.ListAPIView):
     """
     path: studios/[studio_id]/schedule
-    Takes a GET request from any user to create a schedule of upcoming
+    Takes a GET request from anyone to create a schedule of upcoming
     classes for that studio.
     """
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     
     def get_queryset(self):
         # returns list of classes that have not yet started
@@ -159,17 +158,19 @@ class StudioSchedule(generics.ListAPIView):
         )
 
 
-
-class ListClosestStudios(views.APIView):
+class ListClosestStudios(generics.ListAPIView):
     """
     path: studios/list
     Takes a POST request from any user to generate studio list sorted by 
     closest to furthest from provided latitude (x) and longitude (y).
     """
-    def get(self, request, *args, **kwargs):
+    serializer_class = StudioSerializer
+    pagination_class = StudioPaginator
+    
+    def get_queryset(self):
         studios = Studio.objects.all()
-        x = float(kwargs['x'])
-        y = float(kwargs['y'])
+        x = float(self.kwargs['x'])
+        y = float(self.kwargs['y'])
         pairs = []
         for studio in studios:
             pairs.append((studio.distance(x, y), studio))
@@ -179,5 +180,5 @@ class ListClosestStudios(views.APIView):
         for pair in pairs:
             studiosSorted.append(pair[1])
         
-        serializer = StudioSerializer(studiosSorted, many=True)
-        return response.Response({'studios by location': serializer.data})
+        serializer = self.serializer_class(studiosSorted, many=True)
+        return serializer.data

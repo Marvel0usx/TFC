@@ -38,7 +38,6 @@ class StudioFilter(django_filters.FilterSet):
     
     
     def amenityFilter(self, queryset, name, value):
-        print(value)
         return queryset.filter(**{
             'amenity__type': value,
             'amenity__quantity__gt': 0,

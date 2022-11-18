@@ -9,7 +9,7 @@ urlpatterns = [
     path('<str:studio_id>/edit/', studio.UpdateStudio.as_view()),                           # admins
     path('<str:studio_id>/delete/', studio.DeleteStudio.as_view()),                         # admins 
     path('<str:studio_id>/amenities/create/', studio.CreateAmenity.as_view()),              # admins
-    path('<str:studio_id>/amenities/edit/', studio.AmenitiesList.as_view()),                # admins  
+    path('<str:studio_id>/amenities/list/', studio.AmenitiesList.as_view()),                # admins  
     path('amenities/edit/<str:amenity_id>/', studio.UpdateAmenity.as_view()),               # admins  
     path('<str:studio_id>/view/', studio.ViewStudio.as_view()),                             # users
     path('<str:studio_id>/view/mylocation=<str:x>,<str:y>', studio.ViewStudio.as_view()),   # users
@@ -22,5 +22,9 @@ urlpatterns = [
     path('class/<str:class_id>/cancel/single', fitnessClass.CancelClass.as_view()),         # admins                                  
     path('class/<str:class_id>/cancel/all', fitnessClass.CancelRecurringClasses.as_view()), # admins          
     path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),                   # users                              
-    path('class/search/', fitnessClass.SearchClass.as_view()),                              # users                
+    path('class/search/', fitnessClass.SearchClass.as_view()),                              # users
+    path('class/<str:class_id>/enroll_<str:mode>', fitnessClass.EnrollClass.as_view()),     # users
+    path('class/<str:class_id>/drop_<str:mode>', fitnessClass.DropClass.as_view()),         # users
+    path('class/my_schedule', fitnessClass.ViewSchedule.as_view()),     # users
+    path('class/history', fitnessClass.ViewHistory.as_view()),         # users                          
 ]

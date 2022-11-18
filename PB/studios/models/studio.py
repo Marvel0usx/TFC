@@ -1,7 +1,6 @@
 from django.db import models
 import math
 
-# TODO: implement images correctly
 class Studio(models.Model):
     name = models.TextField()
     address = models.TextField()

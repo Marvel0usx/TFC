@@ -11,15 +11,15 @@ from rest_framework.response import Response
 from django.utils import timezone
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from studios.pagination import StudioPaginator
 
 class ViewClass(generics.RetrieveAPIView):
     """
     path: studios/class/[class_id]/details
-    Takes a GET request from any user to generate an information page.
+    Takes a GET request from anyone to generate an information page.
     """
     serializer_class = FitnessClassSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(FitnessClass, id=self.kwargs['class_id'])
@@ -101,6 +101,7 @@ class ListClasses(generics.ListAPIView):
     taking place in studio_id studio.
     """
     serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
@@ -111,11 +112,111 @@ class ListClasses(generics.ListAPIView):
 # need to wait for user implementation
 class EnrollClass(views.APIView):
     def get(self, request, args, kwargs):
-        object = FitnessClass.objects.get(id=self.kwargs['class_id'])
-        if object.capacity > object.enrolled:
-            #enroll the user
-            pass
-        return Response('success')
+        try:
+            searchClass = FitnessClass.objects.get(id=self.kwargs['class_id'])
+        except FitnessClass.DoesNotExist:
+            return Response({'ERROR': 'Class does not exist.'}, status=404)
+        
+        user_id = Token.objects.get(key=request.auth.key).user_id
+        user = UserAccount.objects.get(id=user_id)
+        
+        if not searchClass.enrolled < searchClass.capacity:
+            return Response({'ERROR': 'Class is at max capacity.'})
+        mode = self.kwargs['mode']
+        if mode == 'one':
+            user.fitness_class.add(searchClass)
+            user.save()
+            searchClass.enrolled += 1
+            searchClass.save()
+            successMessage = f'You have enrolled in class {searchClass.id}'
+            return Response({'Success': successMessage})
+        elif mode== 'all':
+            user.fitness_class.add(searchClass)
+            user.save()
+            searchClass.enrolled += 1
+            searchClass.save()
+            recurringClasses = FitnessClass.objects.filter(
+                baseClass = searchClass.baseClass,
+                startTime__gt = timezone.now()
+            )
+            for recurringClass in recurringClasses:
+                if recurringClasses.enrolled < recurringClasses.capacity:
+                    user.fitness_class.add(recurringClass)
+                    user.save()
+                    recurringClass.enrolled += 1
+                    recurringClass.save()
+                    pass
+            successMessage = f'You have enrolled in class {searchClass.id} and recurring open sessions.'
+            return Response({'Success': successMessage})
+        else:
+            return Response({'ERROR': 'Mode options: [one, all]'}, status=404)
+
+
+
+class DropClass(views.APIView):
+    def get(self, request, args, kwargs):
+        user_id = Token.objects.get(key=request.auth.key).user_id
+        user = UserAccount.objects.get(id=user_id)
+        
+        try:
+            searchClass = user.fitness_class.objects.get(id=self.kwargs['class_id'])
+        except FitnessClass.DoesNotExist:
+            return Response({'ERROR': 'You\'re not enrolled in this class'}, status=404)
+        
+        mode = self.kwargs['mode']
+        if mode == 'one':
+            user.fitness_class.remove(searchClass)
+            user.save()
+            searchClass.enrolled -= 1
+            searchClass.save()
+            successMessage = f'You have dropped class {searchClass.id}'
+            return Response({'Success': successMessage})
+        elif mode== 'all':
+            user.fitness_class.remove(searchClass)
+            user.save()
+            searchClass.enrolled -= 1
+            searchClass.save()
+            recurringClasses = user.fitness_class.objects.filter(
+                baseClass = searchClass.baseClass,
+                startTime__gt = timezone.now()
+            )
+            for recurringClass in recurringClasses:
+                    user.fitness_class.remove(recurringClass)
+                    user.save()
+                    recurringClass.enrolled -= 1
+                    recurringClass.save()
+                    pass
+            successMessage = f'You have dropped class {searchClass.id} and recurring sessions.'
+            return Response({'Success': successMessage})
+        else:
+            return Response({'ERROR': 'Mode options: [one, all]'}, status=404)
+
+
+
+
+class ViewSchedule(generics.ListAPIView):
+    serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user_id = Token.objects.get(key=self.request.auth.key).user_id
+        user = UserAccount.objects.get(id=user_id)
+        return user.fitness_class.objects.filter(startTime__gt=timezone.now())
+
+
+
+class ViewHistory(generics.ListAPIView):
+    serializer_class = FitnessClassSerializer
+    pagination_class = StudioPaginator
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user_id = Token.objects.get(key=self.request.auth.key).user_id
+        user = UserAccount.objects.get(id=user_id)
+        return user.fitness_class.objects.filter()
 
 
 
@@ -131,8 +232,7 @@ class SearchClass(generics.ListAPIView):
     Example: search/?name=church&coach=jesus&date=2022-12-15&time_range=7:00-19:00
     """
     serializer_class = FitnessClassSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = FitnessClass.objects.all()
+    pagination_class = StudioPaginator
     filterset_class = ClassFilter
     filter_backends = (filters.DjangoFilterBackend,)
