@@ -111,9 +111,12 @@ class ListClasses(generics.ListAPIView):
 # need to wait for user implementation
 class EnrollClass(views.APIView):
     def get(self, request, args, kwargs):
-        object = FitnessClass.objects.get(id=self.kwargs['class_id'])
-        if object.capacity > object.enrolled:
+        clas = FitnessClass.objects.get(id=self.kwargs['class_id'])
+        if clas.capacity > clas.enrolled:
             #enroll the user
+            pass
+        else:
+            #return error message that says full
             pass
         return Response('success')
 
