@@ -7,6 +7,8 @@ python -m venv 309project
 . ./309project/bin/activate
 
 echo Install update
+
+alias python=$(which python3)
 python -m pip install --upgrade pip
 
 echo Install requirements
