@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'PB.wsgi.application'
 # https://www.geeksforgeeks.org/implement-token-authentication-using-django-rest-framework/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-               'rest_framework.authentication.TokenAuthentication',
+               'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
                 'rest_framework.permissions.IsAuthenticated',

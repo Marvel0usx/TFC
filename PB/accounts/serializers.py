@@ -21,6 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = UserAccount
         fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'avatar', 'phone_number')
 
+
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
@@ -46,16 +47,36 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 # Serializer for editing user profile
 # https://medium.com/django-rest/django-rest-framework-change-password-and-update-profile-1db0c144c0a3
-class UserUpdateSerializer(ModelSerializer):
+class UserUpdateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+    avatar = serializers.ImageField(required=True)
+    phone_number = serializers.IntegerField(required=True)
+
+    def validate(self, attrs):
+        if attrs['first_name'] is None:
+            raise serializers.ValidationError({"first_name": "Empty first_name field"})
+
+        if attrs['last_name'] is None:
+            raise serializers.ValidationError({"last_name": "Empty first_name field"})
+
+        if attrs['avatar'] is None:
+            raise serializers.ValidationError({"avatar": "Empty first_name field"})
+
+        if attrs['phone_number'] is None:
+            raise serializers.ValidationError({"phone_number": "Empty first_name field"})
+
+        return attrs
+
     class Meta:
         model = UserAccount
-        fields = ["first_name", "last_name", "avatar", "phoneNumber"]
+        fields = ["first_name", "last_name", "avatar", "phone_number"]
 
     def update(self, instance, validated_data):
         instance.first_name = validated_data['first_name']
         instance.last_name = validated_data['last_name']
         instance.avatar = validated_data['avatar']
-        instance.phoneNumber = validated_data['phoneNumber']
+        instance.phone_number = validated_data['phone_number']
         instance.save()
 
         return instance
