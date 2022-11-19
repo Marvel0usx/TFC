@@ -19,6 +19,7 @@ class UserAccountUpdateView(generics.UpdateAPIView):
     queryset = UserAccount.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = 'username'
 
 
 # logout the user and abandon the token
