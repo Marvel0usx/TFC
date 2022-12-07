@@ -1,6 +1,6 @@
 <<<<<<< HEAD
 import Button from "../Button"
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import {Link} from 'react-router-dom'
 import Input from "../Input/Input"
  
@@ -15,6 +15,7 @@ const ClassList = () => {
                 .then(response=>response.json())
                 .then(data => setFitnessClasses(data.results))
             }
+            console.log(query)
     }, [search])
 
     const go = () => setSearch(search + 1)
@@ -28,7 +29,8 @@ const ClassList = () => {
             <Input title="Coach" value={query.coach} update={(value)=>setQuery({...query, coach: value})} />
         </div>
         <div>
-            <Input title="Date" value={query.amenity} update={(value)=>setQuery({...query, amenity: value})} />
+            <span>Date </span>
+            <input type="date" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
         </div>
         <div>
             <Input title="Time Range" value={query.class} update={(value)=>setQuery({...query, class: value})} />
