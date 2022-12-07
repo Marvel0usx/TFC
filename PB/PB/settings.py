@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-w_@%63n(qmrenvegf6614y)zu^#+&ujp0f$@^4!*uf8$2(%9yr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     "accounts",
     "studios",
-    "payment"
+    "payment",
+    "corsheaders",
 ]
 
 AUTH_USER_MODEL = 'accounts.UserAccount'
@@ -55,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'PB.urls'
@@ -81,7 +85,7 @@ WSGI_APPLICATION = 'PB.wsgi.application'
 # https://www.geeksforgeeks.org/implement-token-authentication-using-django-rest-framework/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-               'rest_framework.authentication.TokenAuthentication',
+               'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
                 'rest_framework.permissions.IsAuthenticated',
@@ -141,7 +145,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_URL = 'media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CSRF_TRUSTED_ORIGINS = [
+     "http://localhost:3000",
+    ]

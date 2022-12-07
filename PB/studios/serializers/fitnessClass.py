@@ -9,13 +9,15 @@ class FitnessClassSerializer(serializers.ModelSerializer):
     RECURRENCE_CHOICES = ['none', 'daily', 'weekly']
     recurrence = serializers.ChoiceField(choices=RECURRENCE_CHOICES, write_only=True)
     endDate = serializers.DateField(write_only=True)
+    capacity = serializers.IntegerField(default=1)
+    enrolled = serializers.IntegerField(default=0)
     
     class Meta:
         model = FitnessClass
         fields = ['id', 'name', 'description', 'coach', 
                   'keywords', 'capacity', 'enrolled', 
                   'startTime', 'endTime', 'studio',
-                  'endDate', 'recurrence',]
+                  'endDate', 'recurrence', 'baseClass']
         read_only_fields = ['id']
         
         

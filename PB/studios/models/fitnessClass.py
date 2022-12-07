@@ -18,7 +18,7 @@ class FitnessClass(models.Model):
 
     def __str__(self):
         return f'{self.name} class taught by {self.coach} at {self.startTime}'
-    
+
     
     # basically a primary key pair
     class Meta:

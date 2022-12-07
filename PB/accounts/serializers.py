@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework.validators import UniqueValidator
@@ -20,6 +21,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
         fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name', 'avatar', 'phone_number')
+        extra_kwargs = {'phone_number': {'required': True},
+                        'first_name': {'required': True},
+                        'last_name': {'required': True},
+                        'avatar': {'required': True}}
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -46,16 +51,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 # Serializer for editing user profile
 # https://medium.com/django-rest/django-rest-framework-change-password-and-update-profile-1db0c144c0a3
-class UserUpdateSerializer(ModelSerializer):
+class UserUpdateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserAccount
-        fields = ["first_name", "last_name", "avatar", "phoneNumber"]
+        fields = ["first_name", "last_name", "avatar", "phone_number"]
 
-    def update(self, instance, validated_data):
-        instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
-        instance.avatar = validated_data['avatar']
-        instance.phoneNumber = validated_data['phoneNumber']
-        instance.save()
 
-        return instance

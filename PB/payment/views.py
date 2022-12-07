@@ -3,15 +3,21 @@ import datetime
 from django.shortcuts import get_object_or_404
 from .models import CardInfo, Payment, SubscriptionPlans, Subscriptions
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+from rest_framework.pagination import LimitOffsetPagination
+
 from .serializers import CardInfoSerializer, PaymentSerializer, SubscriptionPlansSerializer, SubscriptionSerializer
 
 EMPTY_RESPONSE = Response({"data": {}}, status=404)
+
+
+class Pagination(LimitOffsetPagination):
+    default_limit = 10
 
 
 class CardInfoView(APIView):
@@ -60,7 +66,11 @@ class PaymentHistoryView(APIView):
         instances = Payment.objects.filter(user=request.user.id, date_time__lt=timezone.now()).all()
         if not instances.exists():
             return EMPTY_RESPONSE
-        serializer = PaymentSerializer(instances, many=True)
+        
+        # Pagination
+        paginator = Pagination()
+        page = paginator.paginate_queryset(instances, request)
+        serializer = PaymentSerializer(page, many=True)
 
         return Response({"data": serializer.data})
 
@@ -80,11 +90,16 @@ class PaymentFutureView(APIView):
 
 
 class SubscriptionPlansView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         instances = SubscriptionPlans.objects.exclude(is_live=False).order_by("is_monthly")
         if not instances.exists():
             return EMPTY_RESPONSE
-        serializer = SubscriptionPlansSerializer(instances, many=True)
+
+        # Pagination
+        paginator = Pagination()
+        page = paginator.paginate_queryset(instances, request)
+        serializer = SubscriptionPlansSerializer(page, many=True)
 
         return Response({"data": serializer.data})
 

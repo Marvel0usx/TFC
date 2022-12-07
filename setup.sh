@@ -12,11 +12,11 @@ alias python=$(which python3)
 python -m pip install --upgrade pip
 
 echo Install requirements
-pip install django==4.1.2
-pip install djangorestframework django-filter Pillow
+pip install django==4.1.2 djangorestframework Pillow django-filter djangorestframework-simplejwt
+
+pip install django-cors-headers
 
 echo Make migrations
-cd ./PB
 python manage.py makemigrations
 python manage.py migrate --run-syncdb
 

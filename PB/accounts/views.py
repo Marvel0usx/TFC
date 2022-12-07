@@ -19,6 +19,13 @@ class UserAccountUpdateView(generics.UpdateAPIView):
     queryset = UserAccount.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = 'username'
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
 
 
 # logout the user and abandon the token
@@ -35,3 +42,4 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+

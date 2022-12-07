@@ -9,10 +9,9 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from studios.serializers.fitnessClass import FitnessClassSerializer
 from studios.filters import StudioFilter
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from operator import itemgetter
 from studios.pagination import StudioPaginator
+from rest_framework.permissions import AllowAny
 
 # TODO: implement directions and such
 class ViewStudio(generics.RetrieveAPIView):
@@ -20,6 +19,7 @@ class ViewStudio(generics.RetrieveAPIView):
     path: studios/[studio_id]/view
     Takes a GET request from anyone to generate an information page.
     """
+    permission_classes = (AllowAny,)
     serializer_class = StudioSerializer
 
     def get_object(self):
@@ -40,41 +40,6 @@ class ViewStudio(generics.RetrieveAPIView):
             response.data['message'] = 'To get directions, append /mylocation=[longitude],[latitude] to the URL.'
             return response
         
-        
-
-class CreateStudio(generics.CreateAPIView):
-    """
-    path: studios/create
-    Takes a POST request from an admin to create a new studio.
-    """
-    serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
-    """
-    path: studios/[studio_id]/edit
-    Takes a PATCH/PUT request from an admin to update studio information.
-    """
-    serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    def get_object(self):
-        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
-
-
-
-class CreateAmenity(generics.CreateAPIView):
-    """
-    path: studios/[studio_id]/amenities/create
-    Takes a POST request from an admin to create a new amenity in 
-    [studio_id] studio.
-    """
-    serializer_class = AmenitySerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
 
 
@@ -85,40 +50,13 @@ class AmenitiesList(generics.ListAPIView):
     Go to studios/amenities/edit/[amenity_id] to edit the quantity of a 
     specific amenity.
     """
+    permission_classes = (AllowAny,)
     serializer_class = AmenitySerializer
     pagination_class = StudioPaginator
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return get_list_or_404(Amenity, studio=Studio.objects.get(id=self.kwargs['studio_id']))
 
-
-class UpdateAmenity(generics.UpdateAPIView):
-    """
-    path: studios/amenities/edit/[amenity_id]
-    Takes a PATCH/PUT request from an admin to update amenity quantity.
-    """
-    serializer_class = AmenityUpdateSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    def get_object(self):
-        return get_object_or_404(Amenity, id=self.kwargs['amenity_id'])
-
-
-
-class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
-    """
-    path: studios/create
-    Takes a DELETE request from an admin to delete a studio.
-    """
-    serializer_class = StudioSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    def get_object(self):
-        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
-    
 
 
 class SearchStudio(generics.ListAPIView):
@@ -132,6 +70,7 @@ class SearchStudio(generics.ListAPIView):
     
     Example: search/?name=church&amenity=cross
     """
+    permission_classes = (AllowAny,)
     serializer_class = StudioSerializer
     pagination_class = StudioPaginator
     queryset = Studio.objects.all()
@@ -146,6 +85,7 @@ class StudioSchedule(generics.ListAPIView):
     Takes a GET request from anyone to create a schedule of upcoming
     classes for that studio.
     """
+    permission_classes = (AllowAny,)
     serializer_class = FitnessClassSerializer
     pagination_class = StudioPaginator
     
@@ -164,6 +104,7 @@ class ListClosestStudios(generics.ListAPIView):
     Takes a POST request from any user to generate studio list sorted by 
     closest to furthest from provided latitude (x) and longitude (y).
     """
+    permission_classes = (AllowAny,)
     serializer_class = StudioSerializer
     pagination_class = StudioPaginator
     
@@ -182,3 +123,63 @@ class ListClosestStudios(generics.ListAPIView):
         
         serializer = self.serializer_class(studiosSorted, many=True)
         return serializer.data
+    
+    
+
+          
+"""
+useless admin api
+class CreateStudio(generics.CreateAPIView):
+    
+    path: studios/create
+    Takes a POST request from an admin to create a new studio.
+    
+    serializer_class = StudioSerializer
+
+
+class UpdateStudio(generics.UpdateAPIView, generics.RetrieveAPIView):
+    
+    path: studios/[studio_id]/edit
+    Takes a PATCH/PUT request from an admin to update studio information.
+
+    serializer_class = StudioSerializer
+    
+    def get_object(self):
+        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
+
+
+
+class CreateAmenity(generics.CreateAPIView):
+    
+    path: studios/[studio_id]/amenities/create
+    Takes a POST request from an admin to create a new amenity in 
+    [studio_id] studio.
+    
+    serializer_class = AmenitySerializer
+"""  
+    
+    
+    
+    
+"""
+class UpdateAmenity(generics.UpdateAPIView):
+    
+    path: studios/amenities/edit/[amenity_id]
+    Takes a PATCH/PUT request from an admin to update amenity quantity.
+    
+    serializer_class = AmenityUpdateSerializer
+    def get_object(self):
+        return get_object_or_404(Amenity, id=self.kwargs['amenity_id'])
+
+
+
+class DeleteStudio(generics.DestroyAPIView, generics.RetrieveAPIView):
+    
+    path: studios/create
+    Takes a DELETE request from an admin to delete a studio.
+    
+    serializer_class = StudioSerializer
+    
+    def get_object(self):
+        return get_object_or_404(Studio, id=self.kwargs['studio_id'])
+    """

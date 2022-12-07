@@ -1,0 +1,1004 @@
+{
+	"info": {
+		"_postman_id": "718670fa-7cc6-417d-924a-6e12ac5a82a4",
+		"name": "csc309.teach.cs.toronto.edu",
+		"description": "HAR To Postman Generated Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24511573"
+	},
+	"item": [
+		{
+			"name": "PB",
+			"item": [
+				{
+					"name": "Payment requests",
+					"item": [
+						{
+							"name": "Add credit card info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"data\": {\r\n        \"card_number\": \"1234123412341234\",\r\n        \"card_expiration_date\": \"2023-05-13\",\r\n        \"card_holder_firstname\": \"Harry\",\r\n        \"card_holder_lastname\": \"Wang\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "127.0.0.1:8000/payment/card/add/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"card",
+										"add",
+										""
+									],
+									"query": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update credit card info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"data\": {\r\n        \"card_number\": \"4321432143214321\",\r\n        \"card_expiration_date\": \"2025-11-21\",\r\n        \"card_holder_firstname\": \"Hello\",\r\n        \"card_holder_lastname\": \"World\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "127.0.0.1:8000/payment/card/edit/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"card",
+										"edit",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View credit card info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/card/view/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"card",
+										"view",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "See all subscription plans",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/subscription/plans/all/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"subscription",
+										"plans",
+										"all",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Subscribe to a plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"data\": {\r\n        \"subscription_plan_id\": \"1\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "127.0.0.1:8000/payment/subscription/subscribe/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"subscription",
+										"subscribe",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update subscription",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"data\": {\r\n        \"subscription_plan_id\": \"3\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "127.0.0.1:8000/payment/subscription/edit/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"subscription",
+										"edit",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View all past payments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/history/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"history",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View upcoming payment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/upcoming/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"upcoming",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View current subscription",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/subscription/view/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"subscription",
+										"view",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel subscription",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:8000/payment/subscription/cancel/",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"payment",
+										"subscription",
+										"cancel",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Studio requests",
+					"item": [
+						{
+							"name": "Get a list of studios sorted by closest to provided location",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/list/mylocation=0,0",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"list",
+										"mylocation=0,0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Look up a studio by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/1/view/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"1",
+										"view",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Look up a studio by ID and get a link to directions on how to reach it",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/1/view/mylocation=0,0",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"1",
+										"view",
+										"mylocation=0,0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search for a studio by name/coach/amenity/class",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/search?name=church&coach=",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"search"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "church"
+										},
+										{
+											"key": "coach",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a schedule of upcoming classes of a studio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/1/schedule",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"1",
+										"schedule"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List all the classes of a studio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/1/class/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"1",
+										"class",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Look up a class by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/1/view",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"1",
+										"view"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Look up a class by name, coach, date, and/or time_range",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/search?name=bible&coach=jesus&date=2022-11-13&time_range=9:00-10:00",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"search"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "bible"
+										},
+										{
+											"key": "coach",
+											"value": "jesus"
+										},
+										{
+											"key": "date",
+											"value": "2022-11-13"
+										},
+										{
+											"key": "time_range",
+											"value": "9:00-10:00"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enroll in a single class",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/1/enroll_one",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"1",
+										"enroll_one"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Drop a single class",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/1/drop_one",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"1",
+										"drop_one"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enroll in recurring classes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/1/enroll_all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"1",
+										"enroll_all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Drop recurring classes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/1/drop_all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"1",
+										"drop_all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get schedule of user's upcoming classes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/schedule",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"schedule"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user's class history",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/studios/class/history",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"studios",
+										"class",
+										"history"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Only contains API for user actions. There's also an API for admin actions but it was said on Piazza that admin panel is good enough so API is not provided. See docs.pdf for details on admin API."
+				},
+				{
+					"name": "Account requests",
+					"item": [
+						{
+							"name": "Create Account",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "testuser1",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "asd@asd.asd",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "bb",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "aa",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/accounts/update_profile/testuser1/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"accounts",
+										"update_profile",
+										"testuser1",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login(get auth token)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "testuser1",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/accounts/register/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"accounts",
+										"register",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile of user(Patch for partial update)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "assd@asd.asds",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "bbb",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "aa",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "phone_number",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/accounts/update_profile/testuser1/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"accounts",
+										"update_profile",
+										"testuser1",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile of user(PUT for full update)",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "asd@asd.asdss",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "bb",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "aaaa",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "12344",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/accounts/update_profile/testuser1/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"accounts",
+										"update_profile",
+										"testuser1",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL1",
+			"value": "https://csc309.teach.cs.toronto.edu",
+			"type": "any"
+		}
+	]
+}
