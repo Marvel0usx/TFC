@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
 =======
+=======
+>>>>>>> c9c0b7f (rebase from main)
 import React, { useState, useEffect, useContext } from 'react'
 >>>>>>> a110f15 (updated authorization placeholder code)
 import { useParams } from 'react-router-dom';
@@ -188,5 +191,9 @@ const ClassView = () => {
 
 
 
+<<<<<<< HEAD
 >>>>>>> refs/rewritten/onto
+=======
+>>>>>>> 9ac344e (rebase from main)
+>>>>>>> c9c0b7f (rebase from main)
 export default ClassView
