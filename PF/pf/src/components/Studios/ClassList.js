@@ -8,6 +8,7 @@ const ClassList = () => {
     const [query, setQuery] = useState({name: "", coach: "", date: "", time_range: ""})
     const [fitnessClasses, setFitnessClasses] = useState([])
     const [search, setSearch] = useState(0)
+    const [timeRange, setTimeRange] = useState({start: "", end:""})
 
     useEffect( () => {
             if (search > 0) { 
@@ -18,7 +19,11 @@ const ClassList = () => {
             console.log(query)
     }, [search])
 
-    const go = () => setSearch(search + 1)
+    const go = () => {
+        setSearch(search + 1)
+        var range = timeRange.start + "-" + timeRange.end
+        setQuery({...query, time_range: range})
+    }
 
     return (<>
         <h2>Search for classes</h2>
@@ -33,7 +38,12 @@ const ClassList = () => {
             <input type="date" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
         </div>
         <div>
-            <Input title="Time Range" value={query.class} update={(value)=>setQuery({...query, class: value})} />
+            <span>Start Time </span>
+            <input type="time" onChange={(event) => setTimeRange({...timeRange, start: event.target.value})}></input>
+        </div>
+        <div>
+            <span>End Time </span>
+            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
         </div>
         <div>
             <Button label='Go' onClick={go}/>
