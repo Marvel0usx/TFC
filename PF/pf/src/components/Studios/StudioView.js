@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { LocationContext } from '../../contexts/LocationContext';
+import Button from '../Button';
 import Input from "../Input/Input"
 
 const StudioView = () => {
@@ -64,17 +65,21 @@ const StudioView = () => {
 const Directions = ({studio}) => {
 
     const { location, setLocation } = useContext(LocationContext)
-
+    const [ longitude, setLongitude ] = useState("")
+    const [ latitude, setLatitude ] = useState("")
 
     if (!location.x || !location.y) {
         return <div>
             <div>Directions</div>
             <h4>Enter your location to get directions</h4>
             <div>
-                <Input title="Longitude" value={location.x} update={(value)=>setLocation({...location, x: value})} />
+                <Input title="Longitude" value={longitude} update={(value)=>setLongitude(value)} />
             </div>
             <div>
-                <Input title="Latitude" value={location.y} update={(value)=>setLocation({...location, y: value})} />
+                <Input title="Latitude" value={latitude} update={(value)=>setLatitude(value)} />
+            </div>
+            <div>
+                <Button label="Get directions" onClick={() => setLocation({x: longitude, y:latitude})}/>
             </div>
         </div>
     }
@@ -84,10 +89,13 @@ const Directions = ({studio}) => {
             <a target="_blank" rel="noreferrer" className="directions" href={studio['link to directions']}>Directions</a>
         </div><h4>Enter your location to get directions</h4>
         <div>
-            <Input title="Longitude" value={location.x} update={(value)=>setLocation({...location, x: value})} />
+            <Input title="Longitude" value={longitude} update={(value)=>setLongitude(value)} />
         </div>
         <div>
-            <Input title="Latitude" value={location.y} update={(value)=>setLocation({...location, y: value})} />
+            <Input title="Latitude" value={latitude} update={(value)=>setLatitude(value)} />
+        </div>
+        <div>
+            <Button label="Get directions" onClick={() => setLocation({x: longitude, y:latitude})}/>
         </div>
     </div>
     }
