@@ -8,7 +8,6 @@ function subscribe(subscription_plan_id) {
 }
 
 
-
 function SubscriptionPlansList() {
     const [subscriptionPlans, setSubscriptionPlans] = useState([]);
 
@@ -46,11 +45,5 @@ function SubscriptionPlansList() {
         </>
     );
 }
-
-
-function SubscriptionHistory() {
-
-}
-
 
 export default SubscriptionPlansList;
