@@ -71,7 +71,6 @@ const Directions = ({studio}) => {
 
     if (!location.x || !location.y) {
         return <div>
-            <div>Directions</div>
             <h4>Enter your location to get directions</h4>
             <div>
                 <Input title="Longitude" value={longitude} update={(value)=>setLongitude(value)} />
@@ -86,17 +85,16 @@ const Directions = ({studio}) => {
     }
     else {
         return <div>
-        <div>
-            <a target="_blank" rel="noreferrer" className="directions" href={studio['link to directions']}>Directions</a>
-        </div><h4>Enter your location to get directions</h4>
-        <div>
-            <Input title="Longitude" value={longitude} update={(value)=>setLongitude(value)} />
-        </div>
-        <div>
-            <Input title="Latitude" value={latitude} update={(value)=>setLatitude(value)} />
-        </div>
-        <div>
-            <Button label="Get directions" onClick={() => setLocation({x: longitude, y:latitude})}/>
+            <h4>Enter your location to get directions</h4>
+            <div>
+                <Input title="Longitude" value={longitude} update={(value)=>setLongitude(value)} />
+            </div>
+            <div>
+                <Input title="Latitude" value={latitude} update={(value)=>setLatitude(value)} />
+            </div>
+            <div>
+                <Button label="Get directions" onClick={() => setLocation({x: longitude, y:latitude})}/>
+                <a target="_blank" rel="noreferrer" className="directions" href={studio['link to directions']}>Directions</a>
         </div>
     </div>
     }
