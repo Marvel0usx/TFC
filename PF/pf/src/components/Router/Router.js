@@ -5,6 +5,8 @@ import StudioList from "../Studios/StudioList"
 import StudioView from "../Studios/StudioView";
 import Navbar from "../UI/Navbar";
 
+import SubscriptionPlansList from "../Subscription/SubscriptionPlans";
+
 const Router = () => {
     return (
         <BrowserRouter>
@@ -14,6 +16,7 @@ const Router = () => {
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
                     <Route path="studios/class/" element={<ClassList />} />
+                    <Route path="subscription/plans/all" element={<SubscriptionPlansList />} />
                 </Route>
             </Routes>
         </BrowserRouter>
