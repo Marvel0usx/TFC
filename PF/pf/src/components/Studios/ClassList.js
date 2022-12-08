@@ -19,10 +19,15 @@ const ClassList = () => {
             console.log(query)
     }, [search])
 
+    useEffect(() =>{
+        if (timeRange.start && timeRange.end) {
+            var range = timeRange.start + "-" + timeRange.end
+            setQuery({...query, time_range: range})
+        }
+    }, [timeRange])
+
     const go = () => {
         setSearch(search + 1)
-        var range = timeRange.start + "-" + timeRange.end
-        setQuery({...query, time_range: range})
     }
 
     return (<>
@@ -38,12 +43,13 @@ const ClassList = () => {
             <input type="date" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
         </div>
         <div>
-            <span>Start Time </span>
+            <span>Time Range </span>
             <input type="time" onChange={(event) => setTimeRange({...timeRange, start: event.target.value})}></input>
+            <span> to </span>
+            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
         </div>
         <div>
-            <span>End Time </span>
-            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
+            
         </div>
         <div>
             <Button label='Go' onClick={go}/>
