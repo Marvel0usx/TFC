@@ -1,6 +1,5 @@
 309project
 .idea/
-db.sqlite3
  __pycache__/
  *.pyc
 PB/accounts/__pycache__/__init__.cpython-311.pyc
