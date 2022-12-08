@@ -14,6 +14,9 @@ const Router = () => {
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
                     <Route path="studios/class/" element={<ClassList />} />
+                    <Route path="schedule"/>
+                    <Route path="history"/>
+                    <Route path="logout"/>
                 </Route>
             </Routes>
         </BrowserRouter>
