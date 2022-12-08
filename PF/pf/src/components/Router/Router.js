@@ -3,6 +3,8 @@ import ClassList from "../Studios/ClassList";
 import ClassView from "../Studios/ClassView";
 import StudioList from "../Studios/StudioList"
 import StudioView from "../Studios/StudioView";
+import History from "../Studios/UserHistory";
+import Schedule from "../Studios/UserSchedule";
 import Navbar from "../UI/Navbar";
 
 const Router = () => {
@@ -14,8 +16,8 @@ const Router = () => {
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
                     <Route path="studios/class/" element={<ClassList />} />
-                    <Route path="schedule"/>
-                    <Route path="history"/>
+                    <Route path="schedule" element={<Schedule/>}/>
+                    <Route path="history" element={<History/>}/>
                     <Route path="logout"/>
                 </Route>
             </Routes>
