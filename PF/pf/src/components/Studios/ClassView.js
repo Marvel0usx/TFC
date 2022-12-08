@@ -20,6 +20,24 @@ const ClassView = () => {
         })
     }, [])
 
+    const enrollOne = () => {
+        fetch(`http://localhost:8000/studios/class/1/enroll_one`, {
+            method: 'get',
+            headers: {
+                "Authorization": "Bearer token here",
+            }
+        })
+    }
+
+    const enrollAll = () => {
+        fetch(`http://localhost:8000/studios/class/1/enroll_all`, {
+            method: 'get',
+            headers: {
+                "Authorization": "Bearer token here",
+            }
+        })
+    }
+
     return (
     <>
     <h1> {fitnessClass.name} </h1>
@@ -28,8 +46,8 @@ const ClassView = () => {
     <div className="keywords"> Keywords: {fitnessClass.keywords} </div>
     <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
     <div className="recurrence"> Reccuring: {recurring}</div>
-    <Button label="Enroll"></Button>
-    <Button label="Enroll All"></Button>
+    <Button label="Enroll" onClick={enrollOne}></Button>
+    <Button label="Enroll All" onClick={enrollAll}></Button>
     </>
     )
 }
