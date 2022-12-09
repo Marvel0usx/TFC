@@ -22,7 +22,6 @@ const StudioList = () => {
             fetch(`http://localhost:8000/studios/search/?name=${query.name}&coach=${query.coach}&amenity=${query.amenity}&class=${query.class}`)
             .then(response=>response.json())
             .then(data => setStudios(data.results))
-            .then(console.log(studios))
         }
     }, [search])
 
