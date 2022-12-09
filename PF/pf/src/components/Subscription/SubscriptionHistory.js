@@ -1,10 +1,12 @@
 import Button from "../Button"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {Link, renderMatches} from 'react-router-dom'
+import { SubscriptionContext } from "../../contexts/SubscriptionContext";
 
 
 function CurrentSubscription() {
-    const [subscription, setSubscription] = useState({});
+    const [subscription, setSubscription] = useState({})
+    const {subCxt} = useContext(SubscriptionContext)
     useEffect(() => {
         fetch(`http://localhost:8000/payment/subscription/view/`,
         {
@@ -28,6 +30,7 @@ function CurrentSubscription() {
             <Link to={"/subscription/plans/all"}> View All Subscription Plans </Link>
         </>
     } else {
+        subCxt.subid = subscription.id
         page = <>
             <h2>Current Subscription</h2>
             {subscription.is_monthly ? <p>You are billed monthly</p> : <p>You are billed yearly</p>}
