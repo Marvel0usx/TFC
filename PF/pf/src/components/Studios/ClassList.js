@@ -1,7 +1,7 @@
 import Button from "../Button"
 import { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
 import Input from "../Input/Input"
+import GetClasses from "./GetClasses"
  
 const ClassList = () => {
     const [query, setQuery] = useState({name: "", coach: "", date: "", time_range: ""})
@@ -18,10 +18,15 @@ const ClassList = () => {
             console.log(query)
     }, [search])
 
+    useEffect(() =>{
+        if (timeRange.start && timeRange.end) {
+            var range = timeRange.start + "-" + timeRange.end
+            setQuery({...query, time_range: range})
+        }
+    }, [timeRange])
+
     const go = () => {
         setSearch(search + 1)
-        var range = timeRange.start + "-" + timeRange.end
-        setQuery({...query, time_range: range})
     }
 
     return (<>
@@ -37,12 +42,13 @@ const ClassList = () => {
             <input type="date" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
         </div>
         <div>
-            <span>Start Time </span>
+            <span>Time Range </span>
             <input type="time" onChange={(event) => setTimeRange({...timeRange, start: event.target.value})}></input>
+            <span> to </span>
+            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
         </div>
         <div>
-            <span>End Time </span>
-            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
+            
         </div>
         <div>
             <Button label='Go' onClick={go}/>
@@ -52,20 +58,5 @@ const ClassList = () => {
         </>)
     }
     
-const GetClasses = ({ fitnessClasses }) => {
-    if (fitnessClasses) {
-        return (<>
-            {fitnessClasses.map(fitnessClass => 
-                <div>
-                    <Link to={`/studios/class/${fitnessClass.id}/view`}> {fitnessClass.name} </Link>
-                    <div className="coach"> Coach: {fitnessClass.coach} </div>
-                    <div className="class-description"> Description: {fitnessClass.description} </div>
-                    <div className="keywords"> Keywords: {fitnessClass.keywords} </div>
-                    <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
-                </div>)}
-        </>)
-    }
-    return <></>
-}
 
 export default ClassList
