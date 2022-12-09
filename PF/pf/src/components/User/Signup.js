@@ -19,9 +19,9 @@ const Signup = () => {
         const [validate, setValidate] = useState(0)
 
     useEffect( () => {
-        POST(`http://localhost:8000/accounts/register`)
+        fetch(`http://localhost:8000/accounts/register`)
             .then(response=>response.json())
-            .then(data => setStudios(data.results))
+            .then(data => setAccounts(data.results))
             .then(console.log(accounts))
     }, [validate])
 
