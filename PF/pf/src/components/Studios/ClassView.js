@@ -14,6 +14,7 @@ const ClassView = () => {
     const { userClasses, setUserClasses } = useContext(UserClassesContext)
     const [enrolled, setEnrolled] = useState(false)
     const { classID } = useParams();
+    const [old, setOld] = useState("")
 
     useEffect(() => {
         fetch(`http://localhost:8000/studios/class/${classID}/view/`)
@@ -29,6 +30,14 @@ const ClassView = () => {
         }
         else {
             setRecurring("YES")
+        }        
+        const start = new Date(fitnessClass.startTime)
+        const now = new Date()
+        if (start < now) {
+            setOld(true)
+        }
+        else {
+            setOld(false)
         }
     }, [fitnessClass])
     
@@ -52,6 +61,7 @@ const ClassView = () => {
         })
         .then(response=>response.json())
         .then(data=>console.log(data))
+
     }
 
     const enrollAll = () => {
@@ -74,6 +84,16 @@ const ClassView = () => {
         updateUserClasses()
     }
 
+    const dropAll = () => {
+        fetch(`http://localhost:8000/studios/class/1/drop_all`, {
+            method: 'get',
+            headers: {
+                "Authorization": `Bearer ${"tokenhere"}`,
+            }
+        })
+        updateUserClasses()
+    }
+
     const updateUserClasses = () => {
         fetch(`http://localhost:8000/studios/class/schedule`, {
             method: 'get',
@@ -84,41 +104,44 @@ const ClassView = () => {
         .then(response=>response.json())
         .then(data => setUserClasses(data.results))
     }
-
-    const dropAll = () => {
-        fetch(`http://localhost:8000/studios/class/1/drop_all`, {
-            method: 'get',
-            headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+    if (old) {
+        return <>
+        <h1> {fitnessClass.name} </h1>
+        <div className="coach"> Coach: {fitnessClass.coach} </div>
+        <div className="class-description"> Description: {fitnessClass.description} </div>
+        <div className="keywords"> Keywords: {fitnessClass.keywords} </div>
+        <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
+        <div className="recurrence"> Reccuring: {recurring}</div>
+        <div>Old Class</div>
+        </>
+    }
+    else {
+        return (
+            <>
+            <h1> {fitnessClass.name} </h1>
+            <div className="coach"> Coach: {fitnessClass.coach} </div>
+            <div className="class-description"> Description: {fitnessClass.description} </div>
+            <div className="keywords"> Keywords: {fitnessClass.keywords} </div>
+            <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
+            <div className="recurrence"> Reccuring: {recurring}</div>
+            {enrolled
+                ? <div>
+                    <Button label="Drop" onClick={dropOne}></Button>
+                    {recurring
+                    ?<Button label="Drop All" onClick={dropAll}></Button>
+                    : <></>}
+                </div>
+                : <div>
+                    <Button label="Enroll" onClick={enrollOne}></Button>
+                    {recurring
+                    ?<Button label="Enroll All" onClick={enrollAll}></Button>
+                    : <></>}
+                    
+                </div>
             }
-        })
+            </>
+        )
     }
-
-    return (
-    <>
-    <h1> {fitnessClass.name} </h1>
-    <div className="coach"> Coach: {fitnessClass.coach} </div>
-    <div className="class-description"> Description: {fitnessClass.description} </div>
-    <div className="keywords"> Keywords: {fitnessClass.keywords} </div>
-    <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
-    <div className="recurrence"> Reccuring: {recurring}</div>
-    {enrolled
-        ? <div>
-            <Button label="Drop" onClick={dropOne}></Button>
-            {recurring
-            ?<Button label="Drop All" onClick={dropAll}></Button>
-            : <></>}
-        </div>
-        : <div>
-            <Button label="Enroll" onClick={enrollOne}></Button>
-            {recurring
-            ?<Button label="Enroll All" onClick={enrollAll}></Button>
-            : <></>}
-            
-        </div>
-    }
-    </>
-    )
 }
 
 

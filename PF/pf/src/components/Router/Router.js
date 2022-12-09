@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { Home } from "../Home/Home";
 import ClassList from "../Studios/ClassList";
 import ClassView from "../Studios/ClassView";
 import StudioList from "../Studios/StudioList"
@@ -13,6 +14,7 @@ const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={ <Navbar/> }>
+                    <Route path="home" element={<Home />} />
                     <Route path="studios" element={<StudioList />} />
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
