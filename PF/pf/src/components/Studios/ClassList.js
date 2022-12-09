@@ -1,7 +1,6 @@
 <<<<<<< HEAD
 import Button from "../Button"
 import { useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
 import Input from "../Input/Input"
 import GetClasses from "./GetClasses"
  
