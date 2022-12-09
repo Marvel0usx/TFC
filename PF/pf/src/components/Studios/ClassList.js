@@ -15,7 +15,6 @@ const ClassList = () => {
                 .then(response=>response.json())
                 .then(data => setFitnessClasses(data.results))
             }
-            console.log(query)
     }, [search])
 
     useEffect(() =>{
