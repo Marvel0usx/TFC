@@ -1,24 +1,24 @@
 
-import { useState, useEffect } from 'react'
+import { useEffect, useContext } from 'react'
+import { UserClassesContext } from '../../contexts/ClassesContext'
 import GetClasses from "./GetClasses"
  
 const History = () => {
-    const [fitnessClasses, setFitnessClasses] = useState([])
-
+    const { userClasses, setUserClasses } = useContext(UserClassesContext)
     useEffect( () => {
         fetch(`http://localhost:8000/studios/class/history`, {
             method: 'get',
             headers: {
-                "Authorization": "Bearer token here",
+                "Authorization": `Bearer ${"tokenhere"}`,
             }
         })
         .then(response=>response.json())
-        .then(data => setFitnessClasses(data.results))
+        .then(data => setUserClasses(data.results))
     }, [])
 
     return (<>
         <h2>Past Classes</h2>
-        <GetClasses fitnessClasses={fitnessClasses} />
+        <GetClasses fitnessClasses={userClasses} />
         </>)
     }
     
