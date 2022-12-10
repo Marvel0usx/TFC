@@ -36,10 +36,7 @@ const StudioList = () => {
         else {
             fetch(`http://localhost:8000/studios/search/?name=${query.name}&coach=${query.coach}&amenity=${query.amenity}&class=${query.class}&page=${current.query}`)
             .then(response=>response.json())
-            .then(data => {
-                setStudios(data.results)
-                setPage({...page, query: {next: data.next, prev: data.prev}})
-            })
+            .then(data => setStudios(data.results))
         }
     }, [search, current.location, current.query])
 

@@ -26,19 +26,19 @@ const Login = () => {
             };
             fetch(`http://localhost:8000/api/token`, requestOptions)
                 .then(response=> {
-                    if (response.status === 200) throw new Error(response.status)
-                    else return response.json();
+                    if (response.status >= 400) throw new Error(response.status)
+                    else return response.data.token;
                     })                    
                 .then(data => {
                     console.log(data)
-                    var msg = JSON.stringify(data, null, 6);
                     // console.log(msg);
-                    alert('Login failed' + msg)                  
+                    localStorage.setItem("token", JSON.stringify(data.token));              
+                    
+                    navigate('/home')                     
                     })
                 .catch((error) => {
                     console.log(error)
-                    alert('Login Successful')
-                    navigate('/home')            
+                    alert('Login failed')         
                 })
         }
     }, [validate])
