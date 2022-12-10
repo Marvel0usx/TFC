@@ -18,10 +18,9 @@ const ClassView = () => {
         .then(response=>response.json())
         .then(data => {
             setFitnessClass(data)
-            for (const fclass in data) {
-                if (classID === fclass.id) {
+            for (let i = 0; i < userClasses.length; i++) {
+                if (classID === userClasses[i].id) {
                     setEnrolled(true)
-                    console.log("worked")
                 }
             }
         })
@@ -110,7 +109,6 @@ const ClassView = () => {
             }
         })
         updateUserClasses()
-        setEnrolled(false)
     }
 
     const dropAll = () => {
@@ -130,11 +128,10 @@ const ClassView = () => {
             }
         })
         updateUserClasses()
-        setEnrolled(false)
     }
 
     const updateUserClasses = () => {
-        fetch(`http://localhost:8000/studios/${fitnessClass.studioID}/schedule/`, {
+        fetch(`http://localhost:8000/studios/my_schedule/`, {
             method: 'get',
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -142,10 +139,13 @@ const ClassView = () => {
         })
         .then(response=>response.json())
         .then(data => {
+            setEnrolled(false)
             setUserClasses(data.results)
-            for (const fclass in data.results) {
-                if (fclass.id === classID) {
+            console.log(data.results)
+            for (let i = 0; i < data.results.length; i++) {
+                if (data.results[i].id === parseInt(classID)) {
                     setEnrolled(true)
+                    console.log("here")
                 }
             }
         })
@@ -177,6 +177,7 @@ const ClassView = () => {
     else {
         return (
             <>
+            {console.log(enrolled)}
             <h1> {fitnessClass.name} </h1>
             <div className="coach"> Coach: {fitnessClass.coach} </div>
             <div className="class-description"> Description: {fitnessClass.description} </div>
