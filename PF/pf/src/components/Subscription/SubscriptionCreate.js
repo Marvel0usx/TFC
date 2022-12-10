@@ -53,6 +53,8 @@ function CreateSubscription() {
         page = <>
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
+            <Link to={"/payment/cardinfo/update"}><button>Link New Card</button></Link>
+            <br></br>
             <Link to={"/"}><button>Go to Home</button></Link>
         </>
     } else {

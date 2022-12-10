@@ -35,35 +35,35 @@ class CardInfoView(APIView):
 
     def post(self, request, *args, **kwargs):
         # Disallow more than one card.
-        if CardInfo.objects.filter(user=request.user.id).exists():
-            return EMPTY_RESPONSE
-
         data = request.data.get("data")
-        # Create an instance of cardinfo from above information
-        serializer = CardInfoSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            cardinfo_saved = serializer.save(user=request.user)
-        return Response({"success": "Card saved."})
-    
-    def put(self, request, *args, **kwargs):
-        card_record = CardInfo.objects.filter(user=request.user.id)
-        if not card_record.exists():
-            return EMPTY_RESPONSE
-        data = request.data.get("data")
-        if data is None:
-            return EMPTY_RESPONSE
-        serializer = CardInfoSerializer(instance=card_record.first(), data=data, partial=False)
-        if serializer.is_valid(raise_exception=True):
-            card_record = serializer.save()
-        
-        # change upcoming payment
-        pays = Payment.objects.filter(user=request.user.id).filter(is_paid=False)
-        if pays.exists():
-            pays.update(card_number=data.card_number, 
-                        card_expiration_date=data.card_expiration_date, 
-                        card_holder_firstname=data.card_holder_firstname, 
-                        card_holder_lastname=data.card_holder_lastname)
-        return Response({"success": "Card updated successfully"})
+        if not data:
+            return Response(status=400)
+        if not CardInfo.objects.filter(user=request.user.id).exists():
+            # Create an instance of cardinfo from above information
+            serializer = CardInfoSerializer(data=data)
+            if serializer.is_valid(raise_exception=True):
+                cardinfo_saved = serializer.save(user=request.user)
+            return Response({"success": "Card saved."})
+        else:
+            card_record = CardInfo.objects.filter(user=request.user.id)
+            if not card_record.exists():
+                return EMPTY_RESPONSE
+            data = request.data.get("data")
+            if data is None:
+                return EMPTY_RESPONSE
+            serializer = CardInfoSerializer(instance=card_record.first(), data=data, partial=False)
+            if serializer.is_valid(raise_exception=True):
+                card_record = serializer.save()
+            
+            # change upcoming payment
+            pays = Payment.objects.filter(user=request.user.id).filter(is_paid=False)
+            card = CardInfo.objects.filter(user=request.user.id)[0]
+            if pays.exists():
+                pays.update(card_number=card.card_number, 
+                            card_expiration_date=card.card_expiration_date, 
+                            card_holder_firstname=card.card_holder_firstname, 
+                            card_holder_lastname=card.card_holder_lastname)
+            return Response({"success": "Card updated successfully"})
 
 
 class PaymentHistoryView(APIView):

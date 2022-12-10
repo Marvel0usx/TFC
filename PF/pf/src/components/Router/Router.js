@@ -16,7 +16,6 @@ import CreateSubscription from "../Subscription/SubscriptionCreate";
 import UpdateSubscription from "../Subscription/SubscriptionUpdate";
 import PaymentHistory from "../Payment/PaymentHistory";
 import ViewCardInfo from "../Payment/CardInfoView";
-import CreateCardInfo from "../Payment/CardInfoCreate";
 import UpdateCardInfo from "../Payment/CardInfoUpdate";
 
 const Router = () => {
@@ -37,8 +36,7 @@ const Router = () => {
                     <Route path="subscription/plans/cancelled" element={<CancelledSubscription />} />
                     <Route path="payment/history" element={<PaymentHistory />} />
                     <Route path="payment/cardinfo/view" element={<ViewCardInfo />} />
-                    {/* <Route path="payment/cardinfo/create" element={<CreateCardInfo />} />
-                    <Route path="payment/cardinfo/update" element={<UpdateCardInfo />} /> */}
+                    <Route path="payment/cardinfo/update" element={<UpdateCardInfo />} />
                     <Route path="schedule" element={<Schedule/>}/>
                     <Route path="history" element={<History/>}/>
                     <Route path="logout"/>
