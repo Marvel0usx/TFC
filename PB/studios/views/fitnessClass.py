@@ -177,6 +177,7 @@ class SearchClass(generics.ListAPIView):
     pagination_class = StudioPaginator
     filterset_class = ClassFilter
     filter_backends = (filters.DjangoFilterBackend,)
+    permission_classes = (AllowAny,)
     
     
     

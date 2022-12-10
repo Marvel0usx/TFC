@@ -38,7 +38,7 @@ const Login = () => {
                 .catch((error) => {
                     console.log(error)
                     alert('Login Successful')
-                    this.props.history.push('/api/token')               
+                    navigate('/home')            
                 })
         }
     }, [validate])

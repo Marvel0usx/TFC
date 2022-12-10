@@ -32,7 +32,6 @@ const Signup = () => {
             tempForm.append("first_name", query.first_name);
             tempForm.append("last_name", query.last_name);
             tempForm.append("phone_number", query.phone_number);
-<<<<<<< HEAD
 
 
             const requestOptions = {
@@ -59,6 +58,7 @@ const Signup = () => {
         }
     }, [validate])
 
+    const register = () => setValidate(validate + 1)
 
     return (<>
         <h2>Sign Up</h2>
@@ -79,11 +79,7 @@ const Signup = () => {
         </div>
         <div>
             <Input title="Last Name" value={query.last_name} update={(value)=>setQuery({...query, last_name: value})} />
-<<<<<<< HEAD
         </div>       
-=======
-        </div> */}       
->>>>>>> bfff3e5 (signup)
         <div>
             <label for="myImage">Avatar</label>
             {selectedImageURL && (
@@ -100,16 +96,9 @@ const Signup = () => {
                 type="file"
                 name="myImage"
                 onChange={(event) => {
-<<<<<<< HEAD
                 if (event.target.files[0]){
                     setSelectedImage(event.target.files[0]);
                     var imageurl = URL.createObjectURL(event.target.files[0])
-=======
-                console.log(event.target.files[0]);
-                if (event.target.files[0]){
-                    var imageurl = URL.createObjectURL(event.target.files[0])
-                    setQuery({...query, avatar: imageurl})
->>>>>>> bfff3e5 (signup)
                 }
                 setSelectedImageURL(imageurl);
                 }}

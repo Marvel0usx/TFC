@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Outlet, Link } from "react-router-dom"
 
 
@@ -18,27 +17,4 @@ const Navbar = () => {
     </>)
 }
 
-=======
-import { Outlet, Link } from "react-router-dom"
-
-
-const Navbar = () => {
-    return (<>
-    <nav>
-        <div><Link to="/studios">Studios</Link></div>
-        <div><Link to="/studios/class">Classes</Link></div>
-<<<<<<< HEAD
-        <div><Link to="/accounts/register">Accounts</Link></div>
-=======
->>>>>>> c9c0b7f (rebase from main)
-    </nav>
-    <Outlet/ >
-    </>)
-}
-
-<<<<<<< HEAD
->>>>>>> refs/rewritten/onto
-=======
->>>>>>> 9ac344e (rebase from main)
->>>>>>> c9c0b7f (rebase from main)
 export default Navbar

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import { Home } from "../Home/Home";
 import ClassList from "../Studios/ClassList";
@@ -29,32 +28,3 @@ const Router = () => {
 }
 
 export default Router
-=======
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import ClassList from "../Studios/ClassList";
-import ClassView from "../Studios/ClassView";
-import StudioList from "../Studios/StudioList"
-import StudioView from "../Studios/StudioView";
-import Navbar from "../UI/Navbar";
-
-const Router = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={ <Navbar/> }>
-                    <Route path="studios" element={<StudioList />} />
-                    <Route path="studios/:studioID" element={<StudioView />} />
-                    <Route path="studios/class/:classID/view" element={<ClassView />} />
-                    <Route path="studios/class/" element={<ClassList />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    )
-}
-
-export default Router
-<<<<<<< HEAD
->>>>>>> refs/rewritten/onto
-=======
->>>>>>> 9ac344e (rebase from main)
->>>>>>> c9c0b7f (rebase from main)
