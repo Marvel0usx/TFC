@@ -7,3 +7,7 @@
 cd ./PB
 python manage.py runserver
 
+cd ../PF/pf
+npm start
+
+
