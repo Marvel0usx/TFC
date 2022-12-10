@@ -1,11 +1,42 @@
 import { useContext } from "react"
 import { Outlet, Link } from "react-router-dom"
 import { TokenContext } from "../../contexts/TokenContext"
+import { useEffect } from "react"
 
 const Navbar = () => {
-    const { token } = useContext(TokenContext)
+    const { token, setToken } = useContext(TokenContext)
     
-    if (!token) {
+    useEffect(() => {
+        if (window.localStorage.getItem('token') === "null") {
+            setToken(JSON.parse(window.localStorage.getItem('token')))
+        }
+        else {
+            setToken(window.localStorage.getItem('token'))
+        }
+    }, [])
+    
+    useEffect(() => { 
+        window.localStorage.setItem('token', token)
+    }, [token])
+
+    if (token) {
+        return (<>
+        <nav>
+            <Link to="/home"> Home</Link> |
+            <Link to="/account"> My Account</Link> |
+            <Link to="/studios"> Studios</Link> |
+            <Link to="/studios/class"> Classes</Link> |
+            <Link to="/schedule"> Schedule</Link> |
+            <Link to="/history"> History</Link> |
+            <Link to="/subscription/plans/current">My Subscription</Link> |
+            <Link to="/payment/history">My Payment</Link> |
+            <Link to="/payment/cardinfo/view">Credit Card</Link> |
+            <Link to="/logout"> Log out</Link>
+        </nav>
+        <Outlet/ >
+        </>)
+    }
+    else {
     return (<>
         <nav>
             <Link to="/home"> Home</Link> |
@@ -18,21 +49,6 @@ const Navbar = () => {
         <Outlet/ >
         </>)
     }
-    return (<>
-    <nav>
-        <Link to="/home"> Home</Link> |
-        <Link to="/account"> My Account</Link> |
-        <Link to="/studios"> Studios</Link> |
-        <Link to="/studios/class"> Classes</Link> |
-        <Link to="/schedule"> Schedule</Link> |
-        <Link to="/history"> History</Link> |
-        <Link to="/subscription/plans/current">My Subscription</Link> |
-        <Link to="/payment/history">My Payment</Link> |
-        <Link to="/payment/cardinfo/view">Credit Card</Link> |
-        <Link to="/logout"> Log out</Link>
-    </nav>
-    <Outlet/ >
-    </>)
 }
 
 export default Navbar
