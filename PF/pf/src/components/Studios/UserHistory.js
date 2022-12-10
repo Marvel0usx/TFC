@@ -3,11 +3,13 @@ import { useEffect, useContext, useState } from 'react'
 import { UserClassesContext } from '../../contexts/ClassesContext'
 import GetClasses from "./GetClasses"
 import Button from '../Button'
+import { TokenContext } from '../../contexts/TokenContext'
  
 const History = () => {
     const { userClasses, setUserClasses } = useContext(UserClassesContext)
     const [page, setPage] = useState({next: null, prev: null})
     const [current, setCurrent] = useState(1)
+    const { token, setToken } = useContext(TokenContext)
 
     useEffect( () => {
         
@@ -15,20 +17,20 @@ const History = () => {
             fetch(`http://localhost:8000/studios/class/history/`, {
                 method: 'get',
                 headers: {
-                    "Authorization": `Bearer ${"tokenhere"}`,
+                    "Authorization": `Bearer ${token}`,
                 }
             })
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.prev}})
+                setPage({...page, next: data.next, prev: data.prev})
             })
         }
         else {
             fetch(`http://localhost:8000/studios/class/history/?page=${current}`, {
                 method: 'get',
                 headers: {
-                    "Authorization": `Bearer ${"tokenhere"}`,
+                    "Authorization": `Bearer ${token}`,
                 }
             })
             .then(response=>response.json())

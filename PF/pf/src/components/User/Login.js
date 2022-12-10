@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Button from '../Button';
 import Input from "../Input/Input"
-
+import { TokenContext } from '../../contexts/TokenContext';
 
 const Login = () => {
     const [query, setQuery] = useState({
         username: "",
         password: "",})
     const [validate, setValidate] = useState(0)
+    const { token, setToken } = useContext(TokenContext)
 
 
 
@@ -32,8 +33,8 @@ const Login = () => {
                 .then(data => {
                     console.log(data)
                     // console.log(msg);
-                    localStorage.setItem("token", JSON.stringify(data.token));              
-                    
+                    //localStorage.setItem("token", JSON.stringify(data.token));              
+                    setToken(JSON.stringify(data.token))
                     navigate('/home')                     
                     })
                 .catch((error) => {

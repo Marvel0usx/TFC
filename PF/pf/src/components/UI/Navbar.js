@@ -1,7 +1,22 @@
+import { useContext } from "react"
 import { Outlet, Link } from "react-router-dom"
-
+import { TokenContext } from "../../contexts/TokenContext"
 
 const Navbar = () => {
+    const { token } = useContext(TokenContext)
+    
+    if (!token) {
+    return (<>
+        <nav>
+            <Link to="/home"> Home</Link> |
+            <Link to="/register"> Register</Link> |
+            <Link to="/studios"> Studios</Link> |
+            <Link to="/studios/class"> Classes</Link> |
+            <Link to="/login"> Log in</Link>
+        </nav>
+        <Outlet/ >
+        </>)
+    }
     return (<>
     <nav>
         <Link to="/home"> Home</Link> |

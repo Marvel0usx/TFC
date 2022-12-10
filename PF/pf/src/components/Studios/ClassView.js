@@ -53,7 +53,7 @@ const ClassView = () => {
         fetch(`http://localhost:8000/studios/class/1/enroll_one`, {
             method: 'get',
             headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+                "Authorization": `Bearer ${token}`,
             }
         })
         .then(response=>response.json())
@@ -65,7 +65,7 @@ const ClassView = () => {
         fetch(`http://localhost:8000/studios/class/1/enroll_all`, {
             method: 'get',
             headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+                "Authorization": `Bearer ${token}`,
             }
         })
         updateUserClasses()
@@ -75,7 +75,7 @@ const ClassView = () => {
         fetch(`http://localhost:8000/studios/class/1/drop_one`, {
             method: 'get',
             headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+                "Authorization": `Bearer ${token}`,
             }
         })
         updateUserClasses()
@@ -85,7 +85,7 @@ const ClassView = () => {
         fetch(`http://localhost:8000/studios/class/1/drop_all`, {
             method: 'get',
             headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+                "Authorization": `Bearer ${token}`,
             }
         })
         updateUserClasses()
@@ -95,7 +95,7 @@ const ClassView = () => {
         fetch(`http://localhost:8000/studios/class/schedule/`, {
             method: 'get',
             headers: {
-                "Authorization": `Bearer ${"tokenhere"}`,
+                "Authorization": `Bearer ${token}`,
             }
         })
         .then(response=>response.json())

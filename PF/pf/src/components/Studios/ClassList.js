@@ -16,8 +16,7 @@ const ClassList = () => {
                 fetch(`http://localhost:8000/studios/class/search/?name=${query.name}&coach=${query.coach}&date=${query.date}&time_range=${query.time_range}&page=${current}`)
                 .then(response=>response.json())
                 .then(data => {
-                    console.log(data)
-                    setPage({next: data.next, prev:data.prev})
+                    setPage({next: data.next, prev: data.prev})
                     setFitnessClasses(data.results)
                 })
             }
@@ -59,6 +58,7 @@ const ClassList = () => {
             <Button label='Go' onClick={go}/>
         </div>
         <GetClasses fitnessClasses={fitnessClasses} />
+        {console.log(page.prev)}
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
         </>)
