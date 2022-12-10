@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import {Link} from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
-
-
+import { TokenContext } from '../../contexts/TokenContext';
+    
 function CancelledSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
-
+    const { token, setToken } = useContext(TokenContext)
+    
     useEffect(() => {
-        if (subCxt.subid !== undefined) {
+        if (subCxt.subid !== undefined || token !== null) {
             fetch(`http://localhost:8000/payment/subscription/cancel/`,
             {
                 method: "DELETE", 
@@ -33,6 +33,12 @@ function CancelledSubscription() {
         }
     )
     let page = null
+    if (token === null) {
+        page = <>
+            <h2>Please Login</h2>
+            <Link to={"/login"}>Login</Link>
+        </>
+    } else
     if (subCxt.subid === undefined) {
         page = <>
             <h2>You are not subscribed yet!</h2>

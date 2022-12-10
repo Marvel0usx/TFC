@@ -2,17 +2,19 @@ import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
 import { useParams } from 'react-router-dom'
+import { TokenContext } from '../../contexts/TokenContext';
+
 
 function UpdateSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
     const [data, setData] = useState({})
     const { subsID } = useParams()
-    
+    const { token, setToken } = useContext(TokenContext)
+ 
     let page = null;
 
     useEffect(() => {
-        if (subCxt.subid !== undefined && subCxt.subid !== subsID) {
+        if (subCxt.subid !== undefined && subCxt.subid !== subsID && token !== null) {
             fetch(`http://localhost:8000/payment/subscription/edit/`,
                 {
                     method: "PUT", 
@@ -40,7 +42,13 @@ function UpdateSubscription() {
                 })
         }}
     )
-    
+
+    if (token === null) {
+        page = <>
+            <h2>Please Login</h2>
+            <Link to={"/login"}>Login</Link>
+        </>
+    } else
     if (data.success === undefined) {
         page = <>
             <h2>404 Not Found</h2>

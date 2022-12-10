@@ -2,34 +2,44 @@ import Button from "../Button"
 import { useState, useEffect, useContext } from 'react'
 import {Link, renderMatches} from 'react-router-dom'
 import { SubscriptionContext } from "../../contexts/SubscriptionContext";
-
+import { TokenContext } from '../../contexts/TokenContext';
 
 function CurrentSubscription() {
     const [subscription, setSubscription] = useState({})
     const {subCxt} = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
+    const { token, setToken } = useContext(TokenContext)
 
     const fetchCurrentSubscription = () => {
-        fetch(`http://localhost:8000/payment/subscription/view/`,
-        {
-            method: "GET", 
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${token}`,
-            }
-        })
+        if (token !== null) {
+            fetch(`http://localhost:8000/payment/subscription/view/`,
+            {
+                method: "GET", 
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`,
+                }
+            })
             .then(response => response.json())
             .then(data => setSubscription(data.data))
-            .then(console.log(subscription));
+            .then(console.log(subscription));            
+        }
     }
     
     useEffect(() => {
-            fetchCurrentSubscription()
+            if (token !== null) {
+                fetchCurrentSubscription()                
+            }
         }, []
     );
     
     let page;
+    if (token === null) {
+        page = <>
+            <h2>Please Login</h2>
+            <Link to={"/login"}>Login</Link>
+        </>
+    } else
     if (subscription.id === undefined) {
         subCxt.subid = undefined
         page = <>
