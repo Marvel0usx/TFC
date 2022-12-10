@@ -30,15 +30,15 @@ const Navbar = () => {
                 <li><Link to="/studios"> Studios</Link></li>
                 <li><Link to="/studios/class"> Classes</Link></li>
                 <li><Link to="/schedule"> Schedule</Link></li>
-                <li class="divider"></li>
+                <li className={"divider"}></li>
                 <li><Link to="/history"> History</Link></li>
             </ul>       
             <nav>
                 <div className={"nav-wrapper"}>
                     <ul className={"left hide-on-med-and-down"}>
                         <li><Link to="/home"> Home</Link></li>
-                        <li><a className={"dropdown-trigger"} href="#!" dataTarget={"dropdown1"}>Account & Credit Card<i  className={"material-icons right"}>arrow_drop_down</i></a></li>
-                        <li><a className={"dropdown-trigger"} href="#!" dataTarget={"dropdown2"}>Studios & Classes<i className={"material-icons right"}>arrow_drop_down</i></a></li>
+                        <li><a className={"dropdown-trigger"} href="#!" datatarget="dropdown1">Account & Credit Card<i  className={"material-icons right"}>arrow_drop_down</i></a></li>
+                        <li><a className={"dropdown-trigger"} href="#!" datatarget="dropdown2">Studios & Classes<i className={"material-icons right"}>arrow_drop_down</i></a></li>
                         <li><Link to="/subscription/plans/current">My Subscription</Link></li>
                         <li><Link to="/payment/history">My Payment</Link></li>
                         <li><Link to="/logout"> Log out</Link></li>
