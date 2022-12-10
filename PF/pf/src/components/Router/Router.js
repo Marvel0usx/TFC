@@ -3,7 +3,6 @@ import ClassList from "../Studios/ClassList";
 import ClassView from "../Studios/ClassView";
 import StudioList from "../Studios/StudioList"
 import StudioView from "../Studios/StudioView";
-import Signup from "../User/Signup";
 import Navbar from "../UI/Navbar";
 
 const Router = () => {
@@ -15,7 +14,6 @@ const Router = () => {
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
                     <Route path="studios/class/" element={<ClassList />} />
-                    <Route path="accounts/register/" element={<Signup />} />
                 </Route>
             </Routes>
         </BrowserRouter>
