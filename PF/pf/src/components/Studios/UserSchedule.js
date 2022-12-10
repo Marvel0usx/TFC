@@ -13,7 +13,7 @@ const Schedule = () => {
 
     useEffect( () => {
         if (current === 1) {
-            fetch(`http://localhost:8000/studios/class/schedule/`, {
+            fetch(`http://localhost:8000/studios/my_schedule/`, {
                 method: 'get',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -26,7 +26,7 @@ const Schedule = () => {
             })
         }
         else {
-            fetch(`http://localhost:8000/studios/class/schedule/?page=${current}`, {
+            fetch(`http://localhost:8000/studios/my_schedule/?page=${current}`, {
                 method: 'get',
                 headers: {
                     "Authorization": `Bearer ${token}`,

@@ -14,7 +14,7 @@ const History = () => {
     useEffect( () => {
         
         if (current === 1) {
-            fetch(`http://localhost:8000/studios/class/history/`, {
+            fetch(`http://localhost:8000/studios/my_history/`, {
                 method: 'get',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -27,7 +27,7 @@ const History = () => {
             })
         }
         else {
-            fetch(`http://localhost:8000/studios/class/history/?page=${current}`, {
+            fetch(`http://localhost:8000/studios/my_history/?page=${current}`, {
                 method: 'get',
                 headers: {
                     "Authorization": `Bearer ${token}`,

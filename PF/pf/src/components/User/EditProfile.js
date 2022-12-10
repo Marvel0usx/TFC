@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useNavigate, useParams} from 'react-router-dom';
 import Button from '../Button';
 import Input from "../Input/Input"
+import { TokenContext } from '../../contexts/TokenContext';
 
 
 const EditProfile = () => {
     const [selectedImageURL, setSelectedImageURL] = useState(null);
     const [selectedImage, setSelectedImage] = useState();
     const { username } = useParams();
+    const { navigate } = useNavigate()
+    const {token, setToken} = useContext(TokenContext)
     const [query, setQuery] = useState({
         password: "",
         password2: "",
@@ -15,10 +19,7 @@ const EditProfile = () => {
         last_name: "",
         phone_number: ""})
     const [validate, setValidate] = useState(0)
-    const token = localStorage.getItem(token)
     
-
-
 
 
     useEffect( () => {

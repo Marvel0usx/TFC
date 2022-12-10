@@ -10,13 +10,13 @@ urlpatterns = [
     path('search/', studio.SearchStudio.as_view()),                                         # users
     path('list/mylocation=<str:x>,<str:y>', studio.ListClosestStudios.as_view()),           # users        
     path('<str:studio_id>/schedule/', studio.StudioSchedule.as_view()),                     # users                
-    path('<str:studio_id>/class/list', fitnessClass.ListClasses.as_view()),                 # users
+    path('<str:studio_id>/class/list/', fitnessClass.ListClasses.as_view()),                 # users
     path('class/<str:class_id>/view/', fitnessClass.ViewClass.as_view()),                   # users                              
     path('class/search/', fitnessClass.SearchClass.as_view()),                              # users
     path('class/<str:class_id>/enroll_<str:mode>', fitnessClass.EnrollClass.as_view()),     # users
     path('class/<str:class_id>/drop_<str:mode>', fitnessClass.DropClass.as_view()),         # users
-    path('class/schedule', fitnessClass.ViewSchedule.as_view()),     # users
-    path('class/history', fitnessClass.ViewHistory.as_view()),         # users     
+    path('my_schedule/', fitnessClass.ViewSchedule.as_view()),     # users
+    path('my_history/', fitnessClass.ViewHistory.as_view()),         # users     
     path('<str:studio_id>/amenities/list/', studio.AmenitiesList.as_view()),                # for frontend                      
 ]
 
