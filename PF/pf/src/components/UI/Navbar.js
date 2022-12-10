@@ -5,6 +5,15 @@ import M from 'materialize-css'
 import { useEffect } from "react"
 
 const Navbar = () => {
+    useEffect(() => {
+        let elems = document.querySelectorAll('.dropdown-trigger');
+        if (elems.length !== 0) {
+            console.log(elems);
+            // M.Dropdown.init(elems, {inDuration: 300, outDuration: 225});           
+        }
+
+    })
+
     const { token, setToken } = useContext(TokenContext)
     
     useEffect(() => {
