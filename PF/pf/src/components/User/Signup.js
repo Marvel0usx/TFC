@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 =======
@@ -9,10 +10,15 @@ import React, { useState, useEffect, useContext } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 >>>>>>> ccef999 (user comp)
+=======
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+>>>>>>> parent of 1a2c9f2... signup
 import Button from '../Button';
 import Input from "../Input/Input"
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 const Signup = () => {
@@ -28,6 +34,11 @@ const Signup = () => {
     const [selectedImageURL, setSelectedImageURL] = useState(null);
     const [selectedImage, setSelectedImage] = useState();
 >>>>>>> ccef999 (user comp)
+=======
+const Signup = () => {
+    const [selectedImageURL, setSelectedImageURL] = useState(null);
+    const [selectedImage, setSelectedImage] = useState();
+>>>>>>> parent of 1a2c9f2... signup
     const [query, setQuery] = useState({
         username: "",
         password: "",
@@ -35,11 +46,15 @@ const Signup = () => {
         email: "",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 1a2c9f2... signup
         first_name: "",
         last_name: "",
         phone_number: ""})
     const navigate = useNavigate();
     const [validate, setValidate] = useState(0)
+<<<<<<< HEAD
 =======
         // first_name: "",
         // last_name: "",
@@ -54,6 +69,8 @@ const Signup = () => {
     const navigate = useNavigate();
     const [validate, setValidate] = useState(0)
 >>>>>>> ccef999 (user comp)
+=======
+>>>>>>> parent of 1a2c9f2... signup
 
 
 
@@ -61,8 +78,11 @@ const Signup = () => {
     useEffect( () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ccef999 (user comp)
+=======
+>>>>>>> parent of 1a2c9f2... signup
         if (validate > 0){
             let tempForm = new FormData();
             tempForm.append("avatar", selectedImage);
@@ -99,6 +119,7 @@ const Signup = () => {
                 })
         }
     }, [validate])
+<<<<<<< HEAD
 =======
         setValidate(false)
         console.log(query)
@@ -150,6 +171,8 @@ const Signup = () => {
                 })
         }
     }, [validate])
+=======
+>>>>>>> parent of 1a2c9f2... signup
 
     const register = () => setValidate(validate + 1)
 
@@ -174,6 +197,7 @@ const Signup = () => {
             <Input title="Last Name" value={query.last_name} update={(value)=>setQuery({...query, last_name: value})} />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         </div>       
 =======
         </div> */}       
@@ -181,6 +205,9 @@ const Signup = () => {
 =======
         </div>       
 >>>>>>> ccef999 (user comp)
+=======
+        </div>       
+>>>>>>> parent of 1a2c9f2... signup
         <div>
             <label for="myImage">Avatar</label>
             {selectedImageURL && (
@@ -199,6 +226,7 @@ const Signup = () => {
                 onChange={(event) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (event.target.files[0]){
                     setSelectedImage(event.target.files[0]);
                     var imageurl = URL.createObjectURL(event.target.files[0])
@@ -214,6 +242,11 @@ const Signup = () => {
 >>>>>>> bfff3e5 (signup)
 =======
 >>>>>>> ccef999 (user comp)
+=======
+                if (event.target.files[0]){
+                    setSelectedImage(event.target.files[0]);
+                    var imageurl = URL.createObjectURL(event.target.files[0])
+>>>>>>> parent of 1a2c9f2... signup
                 }
                 setSelectedImageURL(imageurl);
                 }}
