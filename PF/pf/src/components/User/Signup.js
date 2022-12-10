@@ -1,31 +1,49 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, Link } from 'react-router-dom';
-import { LocationContext } from '../../contexts/LocationContext';
 import Button from '../Button';
 import Input from "../Input/Input"
 
+
+
 const Signup = () => {
-    const URL = ''
+    const [selectedImageURL, setSelectedImageURL] = useState(null);
     const [query, setQuery] = useState({
         username: "",
         password: "",
         password2: "",
         email: "",
-        first_name: "",
-        last_name: "",
+        // first_name: "",
+        // last_name: "",
         avatar: "",
         phone_number: ""})
-        const [accounts, setAccounts] = useState([])
-        const [validate, setValidate] = useState(0)
+    const [validate, setValidate] = useState(false)
+
+
+
 
     useEffect( () => {
-        fetch(`http://localhost:8000/accounts/register`)
+        setValidate(false)
+        console.log(query)
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            content: JSON.stringify({ query })
+        };
+        fetch(`http://localhost:8000/accounts/register/`, requestOptions)
             .then(response=>response.json())
-            .then(data => setAccounts(data.results))
-            .then(console.log(accounts))
-    }, [validate])
+            .then(response => {
+                if(response.status === 200){
+                    alert('Signup Successful')
+                    console.log('Success:', response);
+                    this.props.history.push('/login')
+                }
+                else{
+                    var msg = JSON.stringify(response, null, 6);
+                    console.log(msg);
+                    alert('Signup failed' + msg)
+                }
+            })
+    }, [])
 
-    const register = () => setValidate(validate + 1)
 
     return (<>
         <h2>Sign Up</h2>
@@ -41,20 +59,42 @@ const Signup = () => {
         <div>
             <Input title="Email" value={query.email} update={(value)=>setQuery({...query, email: value})} />
         </div>
-        <div>
+        {/* <div>
             <Input title="First Name" value={query.first_name} update={(value)=>setQuery({...query, first_name: value})} />
         </div>
         <div>
             <Input title="Last Name" value={query.last_name} update={(value)=>setQuery({...query, last_name: value})} />
-        </div>
+        </div> */}       
         <div>
-            <Input title="Avatar" type="file" value={query.avatar} update={(value)=>setQuery({...query, last_name: value})} />
+            <label for="myImage">Avatar</label>
+            {selectedImageURL && (
+                <div>
+                <img alt="not fount" width={"150px"} src={selectedImageURL} />
+                <br />
+                <button onClick={()=>setSelectedImageURL(null)}>Remove</button>
+                </div>
+            )}
+            <br />
+            
+            <br /> 
+            <input
+                type="file"
+                name="myImage"
+                onChange={(event) => {
+                console.log(event.target.files[0]);
+                if (event.target.files[0]){
+                    var imageurl = URL.createObjectURL(event.target.files[0])
+                    setQuery({...query, avatar: imageurl})
+                }
+                setSelectedImageURL(imageurl);
+                }}
+            />
         </div>
         <div>
             <Input title="Phone Number" value={query.phone_number} update={(value)=>setQuery({...query, phone_number: value})} />
         </div>
         <div>
-            <Button label='Register' onClick={register}/>
+            <Button label='Register' onClick={setValidate(true)}/>
         </div>
 
         </>)
