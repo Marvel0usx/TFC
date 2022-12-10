@@ -61,7 +61,7 @@ const StudioView = () => {
     }, [studio])
 
     return (
-    <>
+    <div className='container'>
     <h1> {studio.name} </h1>
         <div className="address"> Address: {studio.address} </div>
         <div className="postal-code"> Postal Code: {studio.postalCode} </div>
@@ -74,7 +74,7 @@ const StudioView = () => {
         <ClassList classes={classes}/>
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
-    </>
+    </div>
     )
 }
 
@@ -146,8 +146,8 @@ const ClassList = ( { classes }) => {
     }
     return <div>
         <h2>Upcoming Classes</h2>
-        <div className='grid-container'>{classes.map(fitnessClass => 
-            <div>
+        <div className='row'>{classes.map(fitnessClass => 
+            <div className='col s4'>
                 <Link to={`/studios/class/${fitnessClass.id}/view`}> {fitnessClass.name} </Link>
                 <div className="coach"> Coach: {fitnessClass.coach} </div>
                 <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>

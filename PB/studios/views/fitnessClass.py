@@ -47,6 +47,7 @@ class EnrollClass(views.APIView):
     Enroll in one or all recurring instances of a class
     enroll_one or enroll_all
     """
+    permission_classes = [IsAuthenticated]
     def get(self, request, mode, class_id):
         try:
             searchClass = FitnessClass.objects.get(id=class_id)
@@ -77,7 +78,7 @@ class EnrollClass(views.APIView):
             for recurringClass in recurringClasses:
                 if recurringClass.enrolled < recurringClass.capacity:
                     try:
-                        user.fitness_class.get(id=class_id)
+                        user.fitness_class.get(id=recurringClass.id)
                     except FitnessClass.DoesNotExist:
                         user.fitness_class.add(recurringClass)
                         user.save
@@ -96,6 +97,7 @@ class DropClass(views.APIView):
     Drop one or all recurring instances of a class
     drop_one or drop_all
     """
+    permission_classes = [IsAuthenticated]
     def get(self, request, class_id, mode):
         user = self.request.user
         

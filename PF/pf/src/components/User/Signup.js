@@ -61,7 +61,7 @@ const Signup = () => {
 
     const register = () => setValidate(validate + 1)
 
-    return (<>
+    return (<div className='container horizontal-center'>
         <h2>Sign Up</h2>
         <div>
             <Input title="Username" value={query.username} update={(value)=>setQuery({...query, username: value})} />
@@ -112,7 +112,7 @@ const Signup = () => {
             <Button label='Register' onClick={register}/>
         </div>
 
-        </>)
+        </div>)
 
 }
 

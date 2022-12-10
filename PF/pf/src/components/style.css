@@ -16,3 +16,13 @@
     width: 100%;
     height: auto;
 }
+
+.col {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.horizontal-center{
+    display: grid;
+    justify-content: center;
+}

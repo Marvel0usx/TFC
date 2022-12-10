@@ -60,7 +60,7 @@ const EditProfile = () => {
 
     const editprofile = () => setValidate(validate + 1)
 
-    return (<>
+    return (<div className='container horizontal-center'>
         <h2>Edit Profile</h2>
         <div>
             <Input title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
@@ -108,7 +108,7 @@ const EditProfile = () => {
             <Button label='Edit Profile' onClick={editprofile}/>
         </div>
 
-        </>)
+        </div>)
 
 }
 
