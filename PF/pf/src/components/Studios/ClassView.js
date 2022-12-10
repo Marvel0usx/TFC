@@ -12,6 +12,7 @@ const ClassView = () => {
     const { classID } = useParams();
     const [old, setOld] = useState("")
     const { token } = useContext(TokenContext)
+    const [updateUserClass, setUpdateUserClass] = useState(0)
 
     useEffect(() => {
         fetch(`http://localhost:8000/studios/class/${classID}/view/`)
@@ -24,7 +25,7 @@ const ClassView = () => {
                 }
             }
         })
-    }, [])
+    }, [enrolled])
 
     useEffect(() => {
         if (!fitnessClass.baseClass) {
@@ -44,13 +45,6 @@ const ClassView = () => {
     }, [fitnessClass])
     
 
-    useEffect(() => {
-        for (const userClass in userClasses) {
-            if (userClass.id === classID) {
-                setEnrolled(true)
-            }
-        }
-    }, [userClasses])
 
 
 
@@ -69,8 +63,8 @@ const ClassView = () => {
             else {
                 alert(data.ERROR)
             }
+            setUpdateUserClass(updateUserClass + 1)
         })
-        updateUserClasses()
     }
 
     const enrollAll = () => {
@@ -88,8 +82,8 @@ const ClassView = () => {
             else {
                 alert(data.ERROR)
             }
+            setUpdateUserClass(updateUserClass + 1)
         })
-        updateUserClasses()
     }
 
     const dropOne = () => {
@@ -107,12 +101,12 @@ const ClassView = () => {
             else {
                 alert(data.ERROR)
             }
+            setUpdateUserClass(updateUserClass + 1)
         })
-        updateUserClasses()
     }
 
     const dropAll = () => {
-        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}}/drop_all`, {
+        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}/drop_all`, {
             method: 'get',
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -126,11 +120,11 @@ const ClassView = () => {
             else {
                 alert(data.ERROR)
             }
+            setUpdateUserClass(updateUserClass + 1)
         })
-        updateUserClasses()
     }
 
-    const updateUserClasses = () => {
+    useEffect(() => {
         fetch(`http://localhost:8000/studios/my_schedule/`, {
             method: 'get',
             headers: {
@@ -139,20 +133,19 @@ const ClassView = () => {
         })
         .then(response=>response.json())
         .then(data => {
+            console.log(data)
             setEnrolled(false)
             setUserClasses(data.results)
-            console.log(data.results)
             for (let i = 0; i < data.results.length; i++) {
                 if (data.results[i].id === parseInt(classID)) {
                     setEnrolled(true)
-                    console.log("here")
                 }
             }
         })
-    }
+    }, [updateUserClass])
 
     if (old) {
-        return <>
+        return <div className='container'>
         <h1> {fitnessClass.name} </h1>
         <div className="coach"> Coach: {fitnessClass.coach} </div>
         <div className="class-description"> Description: {fitnessClass.description} </div>
@@ -160,10 +153,10 @@ const ClassView = () => {
         <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
         <div className="recurrence"> Reccuring: {recurring}</div>
         <div>Old Class</div>
-        </>
+        </div>
     }
     else if (!token) {
-        return <>
+        return <div className='container'>
         <h1> {fitnessClass.name} </h1>
         <div className="coach"> Coach: {fitnessClass.coach} </div>
         <div className="class-description"> Description: {fitnessClass.description} </div>
@@ -171,13 +164,12 @@ const ClassView = () => {
         <div className="class-time"> Time: {fitnessClass.startTime} to {fitnessClass.endTime} </div>
         <div className="recurrence"> Reccuring: {recurring}</div>
         <span>Log in to enroll in classes</span>
-        </>
+        </div>
 
     }
     else {
         return (
-            <>
-            {console.log(enrolled)}
+            <div className='container horizontal-center'>
             <h1> {fitnessClass.name} </h1>
             <div className="coach"> Coach: {fitnessClass.coach} </div>
             <div className="class-description"> Description: {fitnessClass.description} </div>
@@ -199,7 +191,7 @@ const ClassView = () => {
                     
                 </div>
             }
-            </>
+            </div>
         )
     }
 }

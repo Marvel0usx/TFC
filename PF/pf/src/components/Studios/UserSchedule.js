@@ -22,7 +22,7 @@ const Schedule = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.previous}})
+                setPage({next: data.next, prev: data.previous})
             })
         }
         else {
@@ -35,19 +35,21 @@ const Schedule = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.previous}})
+                setPage({next: data.next, prev: data.previous})
             })
         }
     }, [current])
 
-    return (<>
+    return (<div className='container'>{console.log(current)}
+            <div className='row horizontal-center'>
         <h2>Upcoming Classes</h2>
-        <div className='grid-container'>
+        </div>
+        <div className='row'>
             <GetClasses fitnessClasses={userClasses} />
         </div>
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
-        </>)
+        </div>)
     }
     
 

@@ -51,7 +51,8 @@ const StudioList = () => {
 
     if (mode === 0) {
 
-        return (<><div className="container">
+        return (<>
+        <div className="container">
             <Button label="Search for a studio" onClick={searchSpecific}></Button>
             <Button label="Filter by closest" onClick={searchClosest}></Button>
             
@@ -64,18 +65,21 @@ const StudioList = () => {
             <div>
                 <Button label='Go' onClick={go}/>
             </div>
-            </div>
             <div>
-            {studios.map(studio => 
             <div className="row">
-                <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
-                <div className="address"> Address: {studio.address} </div>
-                <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
-                <img className="studio-photo" alt={"image of " + studio.name}/>
-            </div>)
+            {studios.map(studio => 
+                <div className="col s4">
+                    <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
+                    <div className="address"> Address: {studio.address} </div>
+                    <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
+                    <img className="studio-photo" alt={"image of " + studio.name}/>
+                </div>
+            )
             }
+            </div>
         {page.location.prev ? <Button label="prev" onClick={() => setCurrent({...current, location: current.location - 1})} /> : <></>}
         {page.location.next ? <Button label="next" onClick={() => setCurrent({...current, location: current.location + 1})} /> : <></>}
+        </div>
         </div>
             </>)
 

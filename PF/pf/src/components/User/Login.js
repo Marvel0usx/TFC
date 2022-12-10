@@ -74,7 +74,7 @@ const Login = () => {
 
     const login = () => setValidate(validate + 1)
 
-    return (<>
+    return (<div className='container horizontal-center'>
         <h2>Login</h2>
         <div>
             <Input title="Username" value={query.username} update={(value)=>setQuery({...query, username: value})} />
@@ -86,7 +86,7 @@ const Login = () => {
             <Button label='login' onClick={login}/>
         </div>
 
-        </>)
+        </div>)
 
 }
 

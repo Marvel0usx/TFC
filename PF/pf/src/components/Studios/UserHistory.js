@@ -1,15 +1,14 @@
 
 import { useEffect, useContext, useState } from 'react'
-import { UserClassesContext } from '../../contexts/ClassesContext'
 import GetClasses from "./GetClasses"
 import Button from '../Button'
 import { TokenContext } from '../../contexts/TokenContext'
  
 const History = () => {
-    const { userClasses, setUserClasses } = useContext(UserClassesContext)
+    const [ oldClasses, setOldClasses ] = useState(null)
     const [page, setPage] = useState({next: null, prev: null})
     const [current, setCurrent] = useState(1)
-    const { token, setToken } = useContext(TokenContext)
+    const { token } = useContext(TokenContext)
 
     useEffect( () => {
         
@@ -22,8 +21,8 @@ const History = () => {
             })
             .then(response=>response.json())
             .then(data => {
-                setUserClasses(data.results)
-                setPage({...page, next: data.next, prev: data.previous})
+                setOldClasses(data.results)
+                setPage({next: data.next, prev: data.previous})
             })
         }
         else {
@@ -35,20 +34,26 @@ const History = () => {
             })
             .then(response=>response.json())
             .then(data => {
-                setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.previous}})
+                setOldClasses(data.results)
+                setPage({next: data.next, prev: data.previous})
             })
         }
     }, [])
 
-    return (<>
-        <h2>Past Classes</h2>
-        <div className='grid-container'>
-            <GetClasses fitnessClasses={userClasses} />
+    return (<div className='container'>
+        <div className='row horizontal-center'>
+            <h2>Past Classes</h2>
         </div>
+        {
+            oldClasses
+                ?<div className='row'>
+                    <GetClasses fitnessClasses={oldClasses} />
+                </div>
+                :<></>
+        }
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
-        </>)
+        </div>)
     }
     
 
