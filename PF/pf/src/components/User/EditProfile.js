@@ -3,6 +3,7 @@ import { useNavigate, useParams} from 'react-router-dom';
 import Button from '../Button';
 import Input from "../Input/Input"
 import { TokenContext } from '../../contexts/TokenContext';
+import PasswordInput from '../Input/PasswordInput';
 
 
 const EditProfile = () => {
@@ -63,10 +64,10 @@ const EditProfile = () => {
     return (<div className='container horizontal-center'>
         <h2>Edit Profile</h2>
         <div>
-            <Input title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
+            <PasswordInput title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
         </div>
         <div>
-            <Input title="Confirm Password" value={query.password2} update={(value)=>setQuery({...query, password2: value})} />
+            <PasswordInput title="Confirm Password" value={query.password2} update={(value)=>setQuery({...query, password2: value})} />
         </div>
         <div>
             <Input title="Email" value={query.email} update={(value)=>setQuery({...query, email: value})} />
