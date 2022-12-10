@@ -15,6 +15,8 @@ const EditProfile = () => {
         last_name: "",
         phone_number: ""})
     const [validate, setValidate] = useState(0)
+    const token = localStorage.getItem(token)
+    
 
 
 
@@ -33,12 +35,12 @@ const EditProfile = () => {
 
             const requestOptions = {
                 method: 'PATCH',
-                headers: { },
+                headers: { 'Authorization': `Bearer ${token}` },
                 body: tempForm
             };
             fetch(`http://localhost:8000/accounts/update_profile/${username}/`, requestOptions)
                 .then(response=> {
-                    if (response.status === 201) throw new Error(response.status)
+                    if (response.status < 400) throw new Error(response.status)
                     else return response.json();
                     })                    
                 .then(data => {
@@ -50,7 +52,7 @@ const EditProfile = () => {
                 .catch((error) => {
                     console.log(error)
                     alert('Edit Successful')
-                    navigate('/api/token')              
+                    navigate('/home')              
                 })
         }
     }, [validate])
