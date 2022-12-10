@@ -2,8 +2,7 @@ import '../style.css'
 import M from "materialize-css"
 
 export const Home = () => {
-    return<>
-    <div className="container ">
+    return <div className="container ">
         <div className="row " >
             <h1 className="col s12 homepage">Toronto Fitness Club</h1>
         </div>
@@ -17,5 +16,4 @@ export const Home = () => {
             </blockquote>
         <img className="image" src="https://images.adsttc.com/media/images/54b7/4f72/e58e/cea3/b400/0084/large_jpg/portada_003_North_Exterior_Dawn.jpg?1421299558" alt="Studio"></img>
     </div>
-    </>
 }
