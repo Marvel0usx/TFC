@@ -8,8 +8,6 @@ const ClassList = () => {
     const [fitnessClasses, setFitnessClasses] = useState([])
     const [search, setSearch] = useState(0)
     const [timeRange, setTimeRange] = useState({start: "", end:""})
-    const [page, setPage] = useState({next: null, prev: null})
-    const [current, setCurrent] = useState(1)
 
     useEffect( () => {
             if (search > 0) { 
