@@ -20,6 +20,7 @@ import UpdateCardInfo from "../Payment/CardInfoUpdate";
 import Signup from "../User/Signup";
 import Login from "../User/Login";
 import Logout from "../User/Logout";
+import EditProfile from "../User/EditProfile"
 
 const Router = () => {
     return (
@@ -27,6 +28,7 @@ const Router = () => {
             <Routes>
                 <Route path="/" element={ <Navbar/> }>
                     <Route path="home" element={<Home />} />
+                    <Route path="account" element={<EditProfile />} />
                     <Route path="studios" element={<StudioList />} />
                     <Route path="register" element={<Signup />} />
                     <Route path="login" element={<Login />} />
