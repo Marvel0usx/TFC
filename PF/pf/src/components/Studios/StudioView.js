@@ -37,7 +37,7 @@ const StudioView = () => {
             .then(response=>response.json())
             .then(data => {
                 setClasses(data.results)
-                setPage({next: data.next, prev: data.prev})
+                setPage({next: data.next, prev: data.previous})
             })
         }
         else {
@@ -46,7 +46,7 @@ const StudioView = () => {
             .then(data => {
                 console.log(data)
                 setClasses(data.results)
-                setPage({next: data.next, prev: data.prev})
+                setPage({next: data.next, prev: data.previous})
             })
         }
     }, [studio, current])
@@ -146,7 +146,7 @@ const ClassList = ( { classes }) => {
     }
     return <div>
         <h2>Upcoming Classes</h2>
-        <div>{classes.map(fitnessClass => 
+        <div className='grid-container'>{classes.map(fitnessClass => 
             <div>
                 <Link to={`/studios/class/${fitnessClass.id}/view`}> {fitnessClass.name} </Link>
                 <div className="coach"> Coach: {fitnessClass.coach} </div>

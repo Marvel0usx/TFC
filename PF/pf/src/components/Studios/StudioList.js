@@ -20,7 +20,7 @@ const StudioList = () => {
                 .then(response=>response.json())
                 .then(data => {
                     setStudios(data.results)
-                    setPage({...page, location: {next: data.next, prev: data.prev}})
+                    setPage({...page, location: {next: data.next, prev: data.previous}})
                 })
             }
             else {
@@ -28,7 +28,7 @@ const StudioList = () => {
                 .then(response=>response.json())
                 .then(data => {
                     setStudios(data.results)
-                    setPage({...page, location: {next: data.next, prev: data.prev}})
+                    setPage({...page, location: {next: data.next, prev: data.previous}})
                 })
             }
         }
@@ -62,8 +62,9 @@ const StudioList = () => {
             <div>
                 <Button label='Go' onClick={go}/>
             </div>
-            {studios.map(studio => 
             <div>
+            {studios.map(studio => 
+            <div className="grid-container">
                 <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
                 <div className="address"> Address: {studio.address} </div>
                 <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
@@ -72,6 +73,7 @@ const StudioList = () => {
             }
         {page.location.prev ? <Button label="prev" onClick={() => setCurrent({...current, location: current.location - 1})} /> : <></>}
         {page.location.next ? <Button label="next" onClick={() => setCurrent({...current, location: current.location + 1})} /> : <></>}
+        </div>
             </>)
 
     }

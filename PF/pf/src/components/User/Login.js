@@ -3,6 +3,8 @@ import Button from '../Button';
 import Input from "../Input/Input"
 import { TokenContext } from '../../contexts/TokenContext';
 import { SubscriptionContext } from '../../contexts/SubscriptionContext';
+import { useNavigate } from 'react-router-dom';
+import PasswordInput from '../Input/PasswordInput';
 
 const Login = () => {
     const [query, setQuery] = useState({
@@ -32,6 +34,7 @@ const Login = () => {
         .then(data => setSubscription(data.data))
         .then(console.log(subscription));
     }
+    const navigate = useNavigate();
 
     useEffect( () => {
         if (validate > 0){
@@ -45,17 +48,21 @@ const Login = () => {
                 headers: { },
                 body: tempForm
             };
-            fetch(`http://localhost:8000/api/token`, requestOptions)
+            fetch(`http://localhost:8000/accounts/api/token/`, requestOptions)
                 .then(response=> {
                     if (response.status >= 400) throw new Error(response.status)
-                    else return response.data.token;
+                    else {
+                        return response.json();
+                    }
                     })                    
                 .then(data => {
                     console.log(data)
                     // console.log(msg);
                     //localStorage.setItem("token", JSON.stringify(data.token));              
-                    setToken(JSON.stringify(data.token))
-                    checkSubs()
+                    setToken(data.access)
+                    if (token !== null) {
+                        checkSubs()                        
+                    }
                     navigate('/home')                     
                     })
                 .catch((error) => {
@@ -73,7 +80,7 @@ const Login = () => {
             <Input title="Username" value={query.username} update={(value)=>setQuery({...query, username: value})} />
         </div>
         <div>
-            <Input title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
+            <PasswordInput title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
         </div>
         <div>
             <Button label='login' onClick={login}/>
