@@ -37,7 +37,7 @@ function CurrentSubscription() {
     if (token === null) {
         page = <>
             <h2>Please Login</h2>
-            <Link to={"/login"}>Login</Link>
+            <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link>
         </>
     } else
     if (subscription.id === undefined) {
@@ -45,7 +45,7 @@ function CurrentSubscription() {
         page = <>
             <h2>Current Subscription</h2>
             <p>You are not yet subscribed.</p>
-            <Link to={"/subscription/plans/all"}> View All Subscription Plans </Link>
+            <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn'> View All Subscription Plans </Link>
         </>
     } else {
         subCxt.subid = subscription.id
@@ -58,8 +58,8 @@ function CurrentSubscription() {
                 <summary>Plan details for {subscription.name} Plan</summary>
                 <p>{subscription.description}</p>
             </details>
-            <Link to={"/subscription/plans/all"}> Change Subscription </Link>
-            <Link to={"/subscription/plans/cancel"}> Cancel Subscription </Link>
+            <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn' style={{margin:"2em 2em 2em 0"}}> Change Subscription </Link>
+            <Link to={"/subscription/plans/cancel"} className='waves-effect waves-light btn'> Cancel Subscription </Link>
         </>
     }
 
