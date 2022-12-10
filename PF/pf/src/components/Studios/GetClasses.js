@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import m from 'materialize-css'
-import './Studio.css'
+import '../style.css'
 
 const GetClasses = ({ fitnessClasses }) => {
     if (fitnessClasses) {

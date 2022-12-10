@@ -1,0 +1,18 @@
+.homepage {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.image{
+    width: 100%;
+}
+
+.Link {
+    font-size: 2em;
+  }
+
+.studio-photo {
+    width: 100%;
+    height: auto;
+}

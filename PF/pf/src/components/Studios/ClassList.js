@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Input from "../Input/Input"
 import GetClasses from "./GetClasses"
 import M from "materialize-css"
-import './Studio.css'
+import '../style.css'
  
 const ClassList = () => {
     const [query, setQuery] = useState({name: "", coach: "", date: "", time_range: ""})

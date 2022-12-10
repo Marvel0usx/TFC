@@ -1,13 +1,13 @@
-import './Home.css'
+import '../style.css'
 import M from "materialize-css"
 
 export const Home = () => {
     return<>
-    <div className="container">
-        <div className="row" >
-            <h1 className="col s12 align-center">Toronto Fitness Club</h1>
+    <div className="container ">
+        <div className="row " >
+            <h1 className="col s12 homepage">Toronto Fitness Club</h1>
         </div>
-        <div className="row" >
+        <div className="row homepage" >
             <img src="https://www.cs.toronto.edu/~kianoosh/courses/csc309/resources/images/tfc.png" alt="TFC Logo"></img>
         </div>
             

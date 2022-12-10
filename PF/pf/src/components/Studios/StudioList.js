@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import {Link} from 'react-router-dom'
 import Input from "../Input/Input"
 import { LocationContext } from "../../contexts/LocationContext"
-import './Studio.css'
+import M from "materialize-css"
  
 const StudioList = () => {
     const { location, setLocation } = useContext(LocationContext)
@@ -67,7 +67,7 @@ const StudioList = () => {
             </div>
             <div>
             {studios.map(studio => 
-            <div className="container">
+            <div className="row">
                 <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
                 <div className="address"> Address: {studio.address} </div>
                 <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
