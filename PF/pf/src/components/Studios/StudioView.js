@@ -146,7 +146,7 @@ const ClassList = ( { classes }) => {
     }
     return <div>
         <h2>Upcoming Classes</h2>
-        <div>{classes.map(fitnessClass => 
+        <div className='grid-container'>{classes.map(fitnessClass => 
             <div>
                 <Link to={`/studios/class/${fitnessClass.id}/view`}> {fitnessClass.name} </Link>
                 <div className="coach"> Coach: {fitnessClass.coach} </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button';
 import Input from "../Input/Input"
+import PasswordInput from '../Input/PasswordInput';
 
 
 const Signup = () => {
@@ -66,10 +67,10 @@ const Signup = () => {
             <Input title="Username" value={query.username} update={(value)=>setQuery({...query, username: value})} />
         </div>
         <div>
-            <Input title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
+            <PasswordInput title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
         </div>
         <div>
-            <Input title="Confirm Password" value={query.password2} update={(value)=>setQuery({...query, password2: value})} />
+            <PasswordInput title="Confirm Password" value={query.password2} update={(value)=>setQuery({...query, password2: value})} />
         </div>
         <div>
             <Input title="Email" value={query.email} update={(value)=>setQuery({...query, email: value})} />

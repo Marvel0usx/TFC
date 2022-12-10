@@ -43,7 +43,9 @@ const History = () => {
 
     return (<>
         <h2>Past Classes</h2>
-        <GetClasses fitnessClasses={userClasses} />
+        <div className='grid-container'>
+            <GetClasses fitnessClasses={userClasses} />
+        </div>
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
         </>)

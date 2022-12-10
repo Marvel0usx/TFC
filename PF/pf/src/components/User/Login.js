@@ -3,6 +3,7 @@ import Button from '../Button';
 import Input from "../Input/Input"
 import { TokenContext } from '../../contexts/TokenContext';
 import { useNavigate } from 'react-router-dom';
+import PasswordInput from '../Input/PasswordInput';
 
 const Login = () => {
     const [query, setQuery] = useState({
@@ -55,7 +56,7 @@ const Login = () => {
             <Input title="Username" value={query.username} update={(value)=>setQuery({...query, username: value})} />
         </div>
         <div>
-            <Input title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
+            <PasswordInput title="Password" value={query.password} update={(value)=>setQuery({...query, password: value})} />
         </div>
         <div>
             <Button label='login' onClick={login}/>
