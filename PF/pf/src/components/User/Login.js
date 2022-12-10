@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Button from '../Button';
 import Input from "../Input/Input"
 import { TokenContext } from '../../contexts/TokenContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [query, setQuery] = useState({
@@ -9,7 +10,7 @@ const Login = () => {
         password: "",})
     const [validate, setValidate] = useState(0)
     const { token, setToken } = useContext(TokenContext)
-
+    const navigate = useNavigate();
 
 
 
@@ -25,16 +26,18 @@ const Login = () => {
                 headers: { },
                 body: tempForm
             };
-            fetch(`http://localhost:8000/accounts/api/token`, requestOptions)
+            fetch(`http://localhost:8000/accounts/api/token/`, requestOptions)
                 .then(response=> {
                     if (response.status >= 400) throw new Error(response.status)
-                    else return response.data.token;
+                    else {
+                        return response.json();
+                    }
                     })                    
                 .then(data => {
                     console.log(data)
                     // console.log(msg);
                     //localStorage.setItem("token", JSON.stringify(data.token));              
-                    setToken(JSON.stringify(data.token))
+                    setToken(data.access)
                     navigate('/home')                     
                     })
                 .catch((error) => {

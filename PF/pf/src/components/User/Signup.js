@@ -53,7 +53,7 @@ const Signup = () => {
                 .catch((error) => {
                     console.log(error)
                     alert('Signup Successful')
-                    navigate('/accounts/api/token')               
+                    navigate('/login')               
                 })
         }
     }, [validate])
