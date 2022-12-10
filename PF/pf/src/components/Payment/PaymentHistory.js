@@ -60,7 +60,7 @@ function PaymentHistory() {
                     <h3>Upcoming Payment</h3>
                     {futData.id === undefined ? 
                     <>
-                        <p>You have no upcoming payment.</p>
+                        <p><strong>You have no upcoming payment.</strong></p>
                     </>:
                     <><table>
                         <tbody>
@@ -75,6 +75,7 @@ function PaymentHistory() {
                 <div>
                     <h3>Payment History</h3>
                     {
+                        histData ? 
                         histData.map((pay) =>
                                 <div key={pay.id} style={{marginBottom: "1em"}}>
                                     <tbody>
@@ -84,7 +85,10 @@ function PaymentHistory() {
                                         <tr><th>Item/Plan</th><td>{names[pay.subscription_plan_id]}</td></tr>
                                     </tbody>
                                 </div>
-                            )
+                            ):
+                            <>
+                                <p><strong>You have no payment recorded.</strong></p>
+                            </>
                     }
                 </div>        
             </>
