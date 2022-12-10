@@ -6,6 +6,7 @@ import datetime
 
 class FitnessClassSerializer(serializers.ModelSerializer):
     studio = serializers.CharField(source='studio.name', read_only=True)
+    studioID = serializers.IntegerField(source='studio.id', read_only=True)
     RECURRENCE_CHOICES = ['none', 'daily', 'weekly']
     recurrence = serializers.ChoiceField(choices=RECURRENCE_CHOICES, write_only=True)
     endDate = serializers.DateField(write_only=True)
@@ -17,8 +18,9 @@ class FitnessClassSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'coach', 
                   'keywords', 'capacity', 'enrolled', 
                   'startTime', 'endTime', 'studio',
-                  'endDate', 'recurrence', 'baseClass']
-        read_only_fields = ['id']
+                  'endDate', 'recurrence', 'baseClass',
+                  'studioID']
+        read_only_fields = ['id', 'studioID']
         
         
     def create(self, validated_data):

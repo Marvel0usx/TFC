@@ -14,10 +14,10 @@ const Logout = () => {
                 method: 'POST',
                 headers: {  'Authorization': `Bearer ${token}` },
             };
-            fetch(`http://localhost:8000/accounts/logout`, requestOptions)
+            fetch(`http://localhost:8000/accounts/logout/`, requestOptions)
                 .then(response=> {
-                    if (response.status >= 400) throw new Error(response.status)
-                    else return response.json();
+                    if (response.status > 400) throw new Error(response.status)
+                    else return response;
                     })                    
                 .then(data => {
                     console.log(data)
@@ -26,6 +26,7 @@ const Logout = () => {
                     navigate('/home')                     
                     })
                 .catch((error) => {
+                    console.log(token)
                     console.log(error)
                     alert('Logout Unauthorized')         
                 })

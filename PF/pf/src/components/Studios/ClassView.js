@@ -18,8 +18,14 @@ const ClassView = () => {
         .then(response=>response.json())
         .then(data => {
             setFitnessClass(data)
+            for (const fclass in data) {
+                if (classID === fclass.id) {
+                    setEnrolled(true)
+                    console.log("worked")
+                }
+            }
         })
-    }, [enrolled])
+    }, [])
 
     useEffect(() => {
         if (!fitnessClass.baseClass) {
@@ -50,56 +56,99 @@ const ClassView = () => {
 
 
     const enrollOne = () => {
-        fetch(`http://localhost:8000/studios/class/1/enroll_one`, {
+        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}/enroll_one`, {
             method: 'get',
             headers: {
                 "Authorization": `Bearer ${token}`,
             }
         })
         .then(response=>response.json())
-        .then(data=>console.log(data))
-
+        .then(data=>{
+            if (data.Success) {
+                alert(data.Success)
+            }
+            else {
+                alert(data.ERROR)
+            }
+        })
+        updateUserClasses()
     }
 
     const enrollAll = () => {
-        fetch(`http://localhost:8000/studios/class/1/enroll_all`, {
+        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}/enroll_all`, {
             method: 'get',
             headers: {
                 "Authorization": `Bearer ${token}`,
+            }
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            if (data.Success) {
+                alert(data.Success)
+            }
+            else {
+                alert(data.ERROR)
             }
         })
         updateUserClasses()
     }
 
     const dropOne = () => {
-        fetch(`http://localhost:8000/studios/class/1/drop_one`, {
-            method: 'get',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        })
-        updateUserClasses()
-    }
-
-    const dropAll = () => {
-        fetch(`http://localhost:8000/studios/class/1/drop_all`, {
-            method: 'get',
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        })
-        updateUserClasses()
-    }
-
-    const updateUserClasses = () => {
-        fetch(`http://localhost:8000/studios/class/schedule/`, {
+        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}/drop_one`, {
             method: 'get',
             headers: {
                 "Authorization": `Bearer ${token}`,
             }
         })
         .then(response=>response.json())
-        .then(data => setUserClasses(data.results))
+        .then(data=>{
+            if (data.Success) {
+                alert(data.Success)
+            }
+            else {
+                alert(data.ERROR)
+            }
+        })
+        updateUserClasses()
+        setEnrolled(false)
+    }
+
+    const dropAll = () => {
+        fetch(`http://localhost:8000/studios/class/${fitnessClass.id}}/drop_all`, {
+            method: 'get',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            if (data.Success) {
+                alert(data.Success)
+            }
+            else {
+                alert(data.ERROR)
+            }
+        })
+        updateUserClasses()
+        setEnrolled(false)
+    }
+
+    const updateUserClasses = () => {
+        fetch(`http://localhost:8000/studios/${fitnessClass.studioID}/schedule/`, {
+            method: 'get',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+        .then(response=>response.json())
+        .then(data => {
+            setUserClasses(data.results)
+            for (const fclass in data.results) {
+                if (fclass.id === classID) {
+                    setEnrolled(true)
+                }
+            }
+        })
     }
 
     if (old) {
