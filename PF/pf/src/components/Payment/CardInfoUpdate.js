@@ -88,7 +88,7 @@ function UpdateCardInfo() {
           required
         />
         </label><p style={{color:"red", fontSize:"0.8em"}}>{res.card_holder_lastname}</p><br></br>
-        <input type="submit" />
+        <input type="submit" className='waves-effect waves-light btn' />
     </form></div>
     </>
   } else {

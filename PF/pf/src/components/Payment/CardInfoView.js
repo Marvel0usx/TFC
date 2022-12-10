@@ -29,13 +29,13 @@ function ViewCardInfo() {
     if (token === null) {
         page = <> <div className="container">
         <h2>Please Login</h2>
-        <Link to={"/login"}>Login</Link></div>
+        <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link></div>
         </>
     } else if (cardInfo === undefined) {
         page = <> <div className="container">
             <h2>Your Wallet</h2>
             <p><em>Your wallet is empty. Please add a credit card to continue.</em></p>
-            <Link to={`/payment/cardinfo/create`}><button>Add Credit Card</button></Link></div>
+            <Link to={`/payment/cardinfo/create`} className='waves-effect waves-light btn'>Add Credit Card</Link></div>
         </>
     } else {
         page = <> <div className="container">
@@ -52,7 +52,7 @@ function ViewCardInfo() {
                             </tbody>
                         </table>
                         <br></br>
-                        <Link to={`/payment/cardinfo/update`}><button>Update Credit Card</button></Link>
+                        <Link to={`/payment/cardinfo/update`} className='waves-effect waves-light btn'>Update Credit Card</Link>
                     </div>
                 }
             </div></div>
