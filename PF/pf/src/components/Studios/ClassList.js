@@ -8,14 +8,20 @@ const ClassList = () => {
     const [fitnessClasses, setFitnessClasses] = useState([])
     const [search, setSearch] = useState(0)
     const [timeRange, setTimeRange] = useState({start: "", end:""})
+    const [page, setPage] = useState({next: null, prev: null})
+    const [current, setCurrent] = useState(1)
 
     useEffect( () => {
             if (search > 0) { 
-                fetch(`http://localhost:8000/studios/class/search/?name=${query.name}&coach=${query.coach}&date=${query.date}&time_range=${query.time_range}`)
+                fetch(`http://localhost:8000/studios/class/search/?name=${query.name}&coach=${query.coach}&date=${query.date}&time_range=${query.time_range}&page=${current}`)
                 .then(response=>response.json())
-                .then(data => setFitnessClasses(data.results))
+                .then(data => {
+                    console.log(data)
+                    setPage({next: data.next, prev:data.prev})
+                    setFitnessClasses(data.results)
+                })
             }
-    }, [search])
+    }, [search, current])
 
     useEffect(() =>{
         if (timeRange.start && timeRange.end) {
@@ -53,7 +59,8 @@ const ClassList = () => {
             <Button label='Go' onClick={go}/>
         </div>
         <GetClasses fitnessClasses={fitnessClasses} />
-
+        {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
+        {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
         </>)
     }
     

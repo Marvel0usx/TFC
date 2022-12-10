@@ -9,6 +9,8 @@ const StudioView = () => {
     const [classes, setClasses] = useState([])
     const [amenities, setAmenities] = useState([])
     const { location } = useContext(LocationContext)
+    const [page, setPage] = useState({next: null, prev: null})
+    const [current, setCurrent] = useState(1)
 
     const { studioID } = useParams();
 
@@ -30,12 +32,24 @@ const StudioView = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:8000/studios/${studioID}/schedule/`)
-        .then(response=>response.json())
-        .then(data => {
-            setClasses(data.results)
-        })
-    }, [studio])
+        if (current === 1) {
+            fetch(`http://localhost:8000/studios/${studioID}/schedule/`)
+            .then(response=>response.json())
+            .then(data => {
+                setClasses(data.results)
+                setPage({next: data.next, prev: data.prev})
+            })
+        }
+        else {
+            fetch(`http://localhost:8000/studios/${studioID}/schedule/?page=${current}`)
+            .then(response=>response.json())
+            .then(data => {
+                console.log(data)
+                setClasses(data.results)
+                setPage({next: data.next, prev: data.prev})
+            })
+        }
+    }, [studio, current])
 
     useEffect(() => {
         fetch(`http://localhost:8000/studios/${studioID}/amenities/list/`)
@@ -58,6 +72,8 @@ const StudioView = () => {
         </div>
         <AmenitiesList amenities={amenities} />
         <ClassList classes={classes}/>
+        {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
+        {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
     </>
     )
 }
