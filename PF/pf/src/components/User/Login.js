@@ -38,11 +38,7 @@ const Login = () => {
                 .catch((error) => {
                     console.log(error)
                     alert('Login Successful')
-<<<<<<< HEAD
                     navigate('/home')            
-=======
-                    this.props.history.push('/api/token')               
->>>>>>> ccef999 (user comp)
                 })
         }
     }, [validate])
