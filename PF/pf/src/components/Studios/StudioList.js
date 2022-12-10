@@ -9,7 +9,7 @@ const StudioList = () => {
     const [query, setQuery] = useState({name: "", coach: "", amenity: "", class: ""})
     const [studios, setStudios] = useState([])
     const [search, setSearch] = useState(0)
-    const [mode, setMode] = useState(0)
+    const [mode, setMode] = useState(1)
     const [page, setPage] = useState({query: {next: null, prev: null}, location:{next: null, prev: null}} )
     const [current, setCurrent] = useState({location: 1, query: 1})
 
@@ -24,7 +24,7 @@ const StudioList = () => {
                 })
             }
             else {
-                fetch(`http://localhost:8000/studios/list/mylocation=${location.x},${location.y}&page=${current.location}`)
+                fetch(`http://localhost:8000/studios/list/mylocation=${location.x},${location.y}?page=${current.location}`)
                 .then(response=>response.json())
                 .then(data => {
                     setStudios(data.results)
@@ -44,15 +44,18 @@ const StudioList = () => {
     }, [search, current.location, current.query])
 
 
-    const go = () => setSearch(search + 1)
+    const go = () => {
+        setSearch(search + 1)
+    }
+
     const searchClosest = () => setMode(0)
     const searchSpecific = () => setMode(1)
 
     if (mode === 0) {
 
         return (<>
-            <Button label="Filter by closest" onClick={searchClosest}></Button>
             <Button label="Search for a studio" onClick={searchSpecific}></Button>
+            <Button label="Filter by closest" onClick={searchClosest}></Button>
             <div>
                 <Input title="Longitude" value={location.x} update={(value)=>setLocation({...location, x: value})} />
             </div>
@@ -68,7 +71,8 @@ const StudioList = () => {
                 <div className="address"> Address: {studio.address} </div>
                 <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
                 <img className="studio-photo" src={studio.images} alt={"image of " + studio.name}/>
-            </div>)}
+            </div>)
+            }
         {page.location.prev ? <Button label="prev" onClick={() => setCurrent({...current, location: current.location - 1})} /> : <></>}
         {page.location.next ? <Button label="next" onClick={() => setCurrent({...current, location: current.location + 1})} /> : <></>}
             </>)
@@ -77,8 +81,8 @@ const StudioList = () => {
 
     else {
         return (<>
-            <Button label="Filter by closest" onClick={searchClosest}></Button>
             <Button label="Search for a studio" onClick={searchSpecific}></Button>
+            <Button label="Filter by closest" onClick={searchClosest}></Button>
             <div>
                 <Input title="Name" value={query.name} update={(value)=>setQuery({...query, name: value})} />
             </div>
