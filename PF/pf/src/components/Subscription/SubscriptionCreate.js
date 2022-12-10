@@ -30,6 +30,7 @@ function CreateSubscription() {
                         return response.json();
                     } else {
                         console.log('Network response was not ok.');
+                        return response.json();
                     }
                     })
                 .then((data) => {
