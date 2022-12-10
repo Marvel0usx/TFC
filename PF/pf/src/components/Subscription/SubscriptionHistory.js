@@ -7,7 +7,7 @@ import { SubscriptionContext } from "../../contexts/SubscriptionContext";
 function CurrentSubscription() {
     const [subscription, setSubscription] = useState({})
     const {subCxt} = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzE0MjAxLCJpYXQiOjE2NzA2Mjc4MDEsImp0aSI6IjVjNjc4MGZjNjhjNzQ1MzU5NjAzMDRiMjA4NjI5ZGI0IiwidXNlcl9pZCI6M30.c9KUQ8shQq5O_H_402jeSAMDQ4pgmOyFOmPu-T1GNJ8"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
     useEffect(() => {
         fetch(`http://localhost:8000/payment/subscription/view/`,
         {
@@ -23,6 +23,9 @@ function CurrentSubscription() {
             .then(console.log(subscription));
         }, []
     );
+    if (subCxt.subid !== undefined) {
+        return <>test failed</>
+    }
     
     let page;
     if (subscription.id === undefined) {
@@ -39,7 +42,7 @@ function CurrentSubscription() {
             <p><strong>{subscription.price}</strong></p>
             <p>Your membership will automatically renew on {subscription.date} unless changed or cancelled. </p>
             <Link to={"/subscription/plans/all"}> Change Subscription </Link>
-            <Link to={"/subscription/plan/cancel"}> Cancel Subscription </Link>
+            <Link to={"/subscription/plans/cancel"}> Cancel Subscription </Link>
         </>
     }
 

@@ -1,26 +1,28 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
-
+import { useParams } from 'react-router-dom'
 
 function CreateSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzE0MjAxLCJpYXQiOjE2NzA2Mjc4MDEsImp0aSI6IjVjNjc4MGZjNjhjNzQ1MzU5NjAzMDRiMjA4NjI5ZGI0IiwidXNlcl9pZCI6M30.c9KUQ8shQq5O_H_402jeSAMDQ4pgmOyFOmPu-T1GNJ8"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
     const [data, setData] = useState({})
+    const { subsID } = useParams()
     
     let page = null;
 
     useEffect(() => {
-        console.log(subCxt.subid)
         if (subCxt.subid === undefined) {
             fetch(`http://localhost:8000/payment/subscription/subscribe/`,
                 {
                     method: "POST", 
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                        "subscription_plan_id": `${subCxt.intend_subid}`
-                    }
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({'data':{
+                        "subscription_plan_id": `${subsID}`
+                    }})
                 })
                 .then((response) => {
                     if (response.ok) {
@@ -30,29 +32,29 @@ function CreateSubscription() {
                     }
                     })
                 .then((data) => {
-                    console.log(data.data);
+                    console.log(data);
                     setData(data.data);
                 })
                 .catch(function(error) {
                     console.log('There has been a problem with your fetch operation: ' + error.message);
                 })
-            } else {
-                return <>
-                    <h2> You Are Already Subscribed </h2>
-                    <Link to={"subscription/plans/current"}>View Your Subscription Plan</Link>
-                </>
-            }
-        }
+        }}
     )
-
-    if (data.success === undefined) {
+    
+    if (subCxt.subid !== undefined) {
+        console.log(subCxt)
+        page = <>
+                <h2> You Are Already Subscribed </h2>
+                <Link to={"/subscription/plans/current"}>View Your Subscription Plan</Link>
+            </>
+    } else if (data.success === undefined) {
         page = <>
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
             <Link to={"/"}><button>Go to Home</button></Link>
         </>
     } else {
-        subCxt.subid = subCxt.intend_subid
+        subCxt.subid = subsID
         page = <>
             <h2> You Are Subscribed! </h2>
             <p> We are looking forward to seeing you in the studios 😊 </p>

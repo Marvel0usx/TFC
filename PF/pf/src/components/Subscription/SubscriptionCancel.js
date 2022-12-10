@@ -10,7 +10,7 @@ function CancelSubscription() {
     let page;
     if (subCxt.subid === undefined) {
         page = <>
-            <h2>Current Subscription</h2>
+            <h2>Cancel Subscription</h2>
             <p>You are not yet subscribed.</p>
             <Link to={"/subscription/plans/all"}> View All Subscription Plans </Link>
         </>

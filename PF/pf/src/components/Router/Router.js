@@ -26,7 +26,7 @@ const Router = () => {
                     <Route path="studios/class/" element={<ClassList />} />
                     <Route path="subscription/plans/all" element={<SubscriptionPlansList />} />
                     <Route path="subscription/plans/current" element={<CurrentSubscription />} />
-                    <Route path="subscription/plans/create" element={<CreateSubscription />} />
+                    <Route path="subscription/plans/create/:subsID" element={<CreateSubscription />} />
                     <Route path="subscription/plans/cancel" element={<CancelSubscription />} />
                     <Route path="subscription/plans/cancelled" element={<CancelledSubscription />} />
                     <Route path="schedule" element={<Schedule/>}/>

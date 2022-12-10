@@ -1,5 +1,5 @@
 import Button from "../Button"
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, createElement } from 'react'
 import {Link} from 'react-router-dom'
 import CreateSubscription from "./SubscriptionCreate";
 import { SubscriptionContext } from "../../contexts/SubscriptionContext";
@@ -15,7 +15,6 @@ function SubscriptionPlansList() {
         })
             .then(response => response.json())
             .then(data => setSubscriptionPlans(data.data))
-            .then(console.log(subscriptionPlans));
         }, []
     );
 
@@ -29,11 +28,8 @@ function SubscriptionPlansList() {
                             <div className="subscription_plans_title"> {plan.name} </div>
                             <details className="subscription_plans_description"> {plan.description} </details>
                             <div className="subscription_plans_price"> ${plan.price} </div>
-                            <div className="subscription_plans_duration"> Monthly Plan: element.is_monthly </div>
-                            <Button label="Subscribe!" onClick={(plan) => {
-                                    subCxt.intend_subid = plan.id
-                                    CreateSubscription()
-                                }} />
+                            <div className="subscription_plans_duration"> {plan.is_monthly ? "Paid Monthly": "Paid Yearly"} </div>
+                            <Link to={`/subscription/plans/create/${plan.id}`}>Subscribe</Link>
                         </div>
                     )
                 }
