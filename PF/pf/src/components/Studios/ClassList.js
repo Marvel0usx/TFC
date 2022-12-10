@@ -16,7 +16,7 @@ const ClassList = () => {
                 fetch(`http://localhost:8000/studios/class/search/?name=${query.name}&coach=${query.coach}&date=${query.date}&time_range=${query.time_range}&page=${current}`)
                 .then(response=>response.json())
                 .then(data => {
-                    setPage({next: data.next, prev: data.prev})
+                    setPage({next: data.next, prev: data.previous})
                     setFitnessClasses(data.results)
                 })
             }

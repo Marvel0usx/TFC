@@ -20,7 +20,7 @@ const StudioList = () => {
                 .then(response=>response.json())
                 .then(data => {
                     setStudios(data.results)
-                    setPage({...page, location: {next: data.next, prev: data.prev}})
+                    setPage({...page, location: {next: data.next, prev: data.previous}})
                 })
             }
             else {
@@ -28,7 +28,7 @@ const StudioList = () => {
                 .then(response=>response.json())
                 .then(data => {
                     setStudios(data.results)
-                    setPage({...page, location: {next: data.next, prev: data.prev}})
+                    setPage({...page, location: {next: data.next, prev: data.previous}})
                 })
             }
         }

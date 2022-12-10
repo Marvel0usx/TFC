@@ -23,7 +23,7 @@ const History = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, next: data.next, prev: data.prev})
+                setPage({...page, next: data.next, prev: data.previous})
             })
         }
         else {
@@ -36,7 +36,7 @@ const History = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.prev}})
+                setPage({...page, location: {next: data.next, prev: data.previous}})
             })
         }
     }, [])

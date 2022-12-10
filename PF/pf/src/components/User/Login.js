@@ -25,7 +25,7 @@ const Login = () => {
                 headers: { },
                 body: tempForm
             };
-            fetch(`http://localhost:8000/api/token`, requestOptions)
+            fetch(`http://localhost:8000/accounts/api/token`, requestOptions)
                 .then(response=> {
                     if (response.status >= 400) throw new Error(response.status)
                     else return response.data.token;

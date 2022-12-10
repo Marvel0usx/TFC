@@ -17,6 +17,7 @@ import UpdateSubscription from "../Subscription/SubscriptionUpdate";
 import PaymentHistory from "../Payment/PaymentHistory";
 import ViewCardInfo from "../Payment/CardInfoView";
 import UpdateCardInfo from "../Payment/CardInfoUpdate";
+import Signup from "../User/Signup";
 
 const Router = () => {
     return (
@@ -25,6 +26,7 @@ const Router = () => {
                 <Route path="/" element={ <Navbar/> }>
                     <Route path="home" element={<Home />} />
                     <Route path="studios" element={<StudioList />} />
+                    <Route path="register" element={<Signup />} />
                     <Route path="studios/:studioID" element={<StudioView />} />
                     <Route path="studios/class/:classID/view" element={<ClassView />} />
                     <Route path="studios/class/" element={<ClassList />} />

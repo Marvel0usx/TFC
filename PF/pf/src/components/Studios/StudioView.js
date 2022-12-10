@@ -37,7 +37,7 @@ const StudioView = () => {
             .then(response=>response.json())
             .then(data => {
                 setClasses(data.results)
-                setPage({next: data.next, prev: data.prev})
+                setPage({next: data.next, prev: data.previous})
             })
         }
         else {
@@ -46,7 +46,7 @@ const StudioView = () => {
             .then(data => {
                 console.log(data)
                 setClasses(data.results)
-                setPage({next: data.next, prev: data.prev})
+                setPage({next: data.next, prev: data.previous})
             })
         }
     }, [studio, current])

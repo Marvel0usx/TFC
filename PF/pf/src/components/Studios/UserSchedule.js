@@ -22,7 +22,7 @@ const Schedule = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.prev}})
+                setPage({...page, location: {next: data.next, prev: data.previous}})
             })
         }
         else {
@@ -35,7 +35,7 @@ const Schedule = () => {
             .then(response=>response.json())
             .then(data => {
                 setUserClasses(data.results)
-                setPage({...page, location: {next: data.next, prev: data.prev}})
+                setPage({...page, location: {next: data.next, prev: data.previous}})
             })
         }
     }, [current])
