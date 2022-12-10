@@ -31,6 +31,7 @@ function CurrentSubscription() {
     
     let page;
     if (subscription.id === undefined) {
+        subCxt.subid = undefined
         page = <>
             <h2>Current Subscription</h2>
             <p>You are not yet subscribed.</p>

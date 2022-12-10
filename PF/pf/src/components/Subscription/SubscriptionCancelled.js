@@ -17,8 +17,18 @@ function CancelledSubscription() {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    subCxt.subid = undefined;
+                    return response.json()
+                } else {
+                    return <>404</>
+                }
+                })
             .then(data => console.log(data))
+            .catch((reason) => {
+                console.log(`error at cancallation: ${reason}`)
+            })
             }            
         }
     )

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
 import { useParams } from 'react-router-dom'
 
-function CreateSubscription() {
+function UpdateSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0MzYwLCJpYXQiOjE2NzA2Mzc5NjAsImp0aSI6Ijk4NzBmOGZlYWUyNDRmMDI5YjQ4MjRkZWEzZmFkOWNjIiwidXNlcl9pZCI6M30.TiV7L1SFE3rvrVRCS-Llj0HL5FctB2NEP2gq1R104pE"
     const [data, setData] = useState({})
@@ -12,10 +12,10 @@ function CreateSubscription() {
     let page = null;
 
     useEffect(() => {
-        if (subCxt.subid === undefined) {
-            fetch(`http://localhost:8000/payment/subscription/subscribe/`,
+        if (subCxt.subid !== undefined && subCxt.subid !== subsID) {
+            fetch(`http://localhost:8000/payment/subscription/edit/`,
                 {
-                    method: "POST", 
+                    method: "PUT", 
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -41,15 +41,7 @@ function CreateSubscription() {
         }}
     )
     
-    
-    if (subCxt.subid !== undefined) {
-        console.log(subCxt)
-        page = <>
-                <h2> You Are Already Subscribed </h2>
-                <Link to={"/subscription/plans/all"}>Change Your Subscription Plan</Link>
-                <Link to={"/subscription/plans/current"}>View Your Subscription Plan</Link>
-            </>
-    } else if (data.success === undefined) {
+    if (data.success === undefined) {
         page = <>
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
@@ -58,10 +50,11 @@ function CreateSubscription() {
     } else {
         subCxt.subid = subsID
         page = <>
-            <h2> You Are Subscribed! </h2>
-            <p> We are looking forward to seeing you in the studios 😊 </p>
+            <h2> You Are Updated! </h2>
+            <p> {data.success} </p>
+            <p> Life is always about changes! Have fun working out 🙌 </p>
             <div>
-                <h3>Subscription Details</h3>
+                <h3>New Subscription Details</h3>
                 <ul>
                     <li>Subscription plan: {data.name}</li>
                     <li>Payment has been successfully made to your credit card <em>{data.card_number}</em></li>
@@ -74,4 +67,4 @@ function CreateSubscription() {
     return (page)
 }
 
-export default CreateSubscription;
+export default UpdateSubscription;

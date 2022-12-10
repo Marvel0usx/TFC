@@ -55,6 +55,14 @@ class CardInfoView(APIView):
         serializer = CardInfoSerializer(instance=card_record.first(), data=data, partial=False)
         if serializer.is_valid(raise_exception=True):
             card_record = serializer.save()
+        
+        # change upcoming payment
+        pays = Payment.objects.filter(user=request.user.id).filter(is_paid=False)
+        if pays.exists():
+            pays.update(card_number=data.card_number, 
+                        card_expiration_date=data.card_expiration_date, 
+                        card_holder_firstname=data.card_holder_firstname, 
+                        card_holder_lastname=data.card_holder_lastname)
         return Response({"success": "Card updated successfully"})
 
 
@@ -74,7 +82,16 @@ class PaymentHistoryView(APIView):
         page = paginator.paginate_queryset(instances, request)
         serializer = PaymentSerializer(page, many=True)
 
-        return Response({"data": serializer.data})
+        names = dict(map(lambda plan: (plan.id, plan.name), SubscriptionPlans.objects.all()))
+
+        data = {
+            "data": {
+                "lst": serializer.data,
+                "names": names
+            }
+        }
+
+        return Response(data)
 
 
 class PaymentFutureView(APIView):
@@ -233,9 +250,15 @@ class SubscriptionsView(APIView):
             is_paid=False
         )
         # Next billing cycle
-        Payment.objects.filter(id=upcoming.id).update(date_time=upcoming.date_time + datetime.timedelta(days=30))
-
-        return Response({"success": "Subscription plan updated successfully"})
+        upcoming_id = upcoming.id
+        Payment.objects.filter(id=upcoming.id).update(date_time=upcoming.date_time + (datetime.timedelta(days=365), datetime.timedelta(days=30))[subscription_plan.is_monthly])
+        data = {"success": f"Successfully updated subscription plan to {subscription.subscription_plan.name}.",
+            "price": subscription_plan.price,
+            "card_number": cardifo.card_number,
+            "name": subscription.subscription_plan.name,
+            "next_payment": str(Payment.objects.filter(id=upcoming_id)[0].date_time)
+        }
+        return Response(data)
 
     def delete(self, request, *args, **kwargs):
         subscription = get_object_or_404(Subscriptions.objects.all(), user=request.user)
