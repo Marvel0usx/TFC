@@ -5,9 +5,6 @@ import { TokenContext } from "./contexts/TokenContext";
 import { UserClassesContext } from "./contexts/ClassesContext";
 import { SubscriptionContext } from "./contexts/SubscriptionContext";
 
-import { UserClassesContext } from "./contexts/ClassesContext";
-import { SubscriptionContext } from "./contexts/SubscriptionContext";
-
 function App() {
   const [location, setLocation] = useState({x:"", y:""})
   const [userClasses, setUserClasses] = useState([])
