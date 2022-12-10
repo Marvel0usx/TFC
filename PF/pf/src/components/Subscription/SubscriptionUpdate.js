@@ -44,20 +44,21 @@ function UpdateSubscription() {
     )
 
     if (token === null) {
-        page = <>
+        page = <><div className="container">
             <h2>Please Login</h2>
-            <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link>
+            <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link></div>
         </>
     } else
     if (data.success === undefined) {
-        page = <>
+        page = <><div className="container">
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
-            <Link to={"/"} className='waves-effect waves-light btn'>Go to Home</Link>
+            <Link to={"/"} className='waves-effect waves-light btn'>Go to Home</Link></div>
         </>
     } else {
         subCxt.subid = subsID
         page = <>
+        <div className="container">
             <h2> You Are Updated! </h2>
             <p> {data.success} </p>
             <p> Life is always about changes! Have fun working out 🙌 </p>
@@ -70,6 +71,7 @@ function UpdateSubscription() {
                     <li>Your incoming payment will be at {data.next_payment.substring(0,10)}</li>
                 </ul>
             </div>
+        </div>
         </>
     }
     return (page)

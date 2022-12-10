@@ -26,7 +26,7 @@ function SubscriptionPlansList() {
     );
 
     return (
-        <>
+        <> <div className="container">
             <h2>Subscription Plans</h2>
             <div className="subscription_plans">
             {console.log(subscriptionPlans)}
@@ -40,7 +40,7 @@ function SubscriptionPlansList() {
                     </div>
                 )
             }
-            </div>
+            </div></div>
         </>
     );
 }

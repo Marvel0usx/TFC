@@ -48,12 +48,12 @@ function PaymentHistory() {
 
     let page = null;
     if (token === null) {
-        page = <>
+        page = <> <div className="container">
         <h2>Please Login</h2>
-        <Link to={"/login"}>Login</Link>
+        <Link to={"/login"}>Login</Link></div>
         </>
     } else {
-        page = <>
+        page = <> <div className="container">
             <h2>My Payment</h2>
             <>
                 <div>
@@ -92,7 +92,7 @@ function PaymentHistory() {
                     }
                 </div>        
             </>
-        </>        
+        </div></>        
     }
 
     return(page)

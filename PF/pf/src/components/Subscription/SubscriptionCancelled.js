@@ -35,21 +35,24 @@ function CancelledSubscription() {
     let page = null
     if (token === null) {
         page = <>
+         <div className="container">
             <h2>Please Login</h2>
-            <Link to={"/login"}>Login</Link>
+            <Link to={"/login"}>Login</Link></div>
         </>
     } else
     if (subCxt.subid === undefined) {
         page = <>
+         <div className="container">
             <h2>You are not subscribed yet!</h2>
-            <Link to={"/subscription/plans/all"}>Check out our subscription plans</Link>
+            <Link to={"/subscription/plans/all"}>Check out our subscription plans</Link></div>
         </>
         return (page)
     } else {
         page = <>
+         <div className="container">
             <h2>Cancelled</h2>
             <p> We are looking forward to your return! </p>
-            <Link to={"/"}><button>Go to Home</button></Link>
+            <Link to={"/"}><button>Go to Home</button></Link></div>
         </>
     }
     return (page)

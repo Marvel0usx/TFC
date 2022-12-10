@@ -42,14 +42,15 @@ function CurrentSubscription() {
     } else
     if (subscription.id === undefined) {
         subCxt.subid = undefined
-        page = <>
+        page = <> <div className="container">
             <h2>Current Subscription</h2>
             <p>You are not yet subscribed.</p>
-            <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn'> View All Subscription Plans </Link>
+            <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn'> View All Subscription Plans </Link></div>
         </>
     } else {
         subCxt.subid = subscription.id
         page = <>
+         <div className="container">
             <h2>Current Subscription</h2>
             {subscription.is_monthly ? <p>You are billed monthly</p> : <p>You are billed yearly for</p>}
             <h1><strong>${subscription.price}</strong></h1>
@@ -59,7 +60,7 @@ function CurrentSubscription() {
                 <p>{subscription.description}</p>
             </details>
             <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn' style={{margin:"2em 2em 2em 0"}}> Change Subscription </Link>
-            <Link to={"/subscription/plans/cancel"} className='waves-effect waves-light btn'> Cancel Subscription </Link>
+            <Link to={"/subscription/plans/cancel"} className='waves-effect waves-light btn'> Cancel Subscription </Link></div>
         </>
     }
 
