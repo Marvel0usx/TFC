@@ -14,7 +14,7 @@ const Navbar = () => {
         <Link to="/subscription/plans/current">Current Subscription</Link> |
         <Link to="/payment/history">Payment History</Link> |
         <Link to="/payment/future">Incoming Payment</Link> |
-        <Link to="/payment/cardinfo">Credit Card</Link> |
+        <Link to="/payment/cardinfo/view">Credit Card</Link> |
         <Link to="/logout"> Log out</Link>
     </nav>
     <Outlet/ >

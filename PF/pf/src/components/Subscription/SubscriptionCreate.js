@@ -33,13 +33,14 @@ function CreateSubscription() {
                     })
                 .then((data) => {
                     console.log(data);
-                    setData(data.data);
+                    setData(data);
                 })
                 .catch(function(error) {
                     console.log('There has been a problem with your fetch operation: ' + error.message);
                 })
         }}
     )
+    
     
     if (subCxt.subid !== undefined) {
         console.log(subCxt)

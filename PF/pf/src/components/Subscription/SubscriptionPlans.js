@@ -17,6 +17,7 @@ function SubscriptionPlansList() {
             .then(data => setSubscriptionPlans(data.data))
         }, []
     );
+    console.log(1)
 
     return (
         <>
@@ -24,12 +25,12 @@ function SubscriptionPlansList() {
             <div className="subscription_plans">
                 {
                     subscriptionPlans.map((plan) =>
-                        <div key={plan.id}>
+                        <div key={plan.id} style={{marginBottom: "1em", border: "1px solid orange"}}>
                             <div className="subscription_plans_title"> {plan.name} </div>
                             <details className="subscription_plans_description"> {plan.description} </details>
                             <div className="subscription_plans_price"> ${plan.price} </div>
                             <div className="subscription_plans_duration"> {plan.is_monthly ? "Paid Monthly": "Paid Yearly"} </div>
-                            <Link to={`/subscription/plans/create/${plan.id}`}>Subscribe</Link>
+                            <Link to={`/subscription/plans/create/${plan.id}`}><button>Subscribe</button></Link>
                         </div>
                     )
                 }
