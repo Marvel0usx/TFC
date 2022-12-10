@@ -5,15 +5,16 @@ import { SubscriptionContext } from '../../contexts/SubscriptionContext'
 
 function CancelledSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzE0MjAxLCJpYXQiOjE2NzA2Mjc4MDEsImp0aSI6IjVjNjc4MGZjNjhjNzQ1MzU5NjAzMDRiMjA4NjI5ZGI0IiwidXNlcl9pZCI6M30.c9KUQ8shQq5O_H_402jeSAMDQ4pgmOyFOmPu-T1GNJ8"
 
     useEffect(() => {
         if (subCxt.subid !== undefined) {
             fetch(`http://localhost:8000/payment/subscription/cancel/`,
             {
                 method: "DELETE", 
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then(response => response.json())

@@ -1,24 +1,17 @@
 import Button from "../Button"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {Link} from 'react-router-dom'
- 
-
-function subscribe(subscription_plan_id) {
-
-}
-
+import CreateSubscription from "./SubscriptionCreate";
+import { SubscriptionContext } from "../../contexts/SubscriptionContext";
 
 function SubscriptionPlansList() {
     const [subscriptionPlans, setSubscriptionPlans] = useState([]);
+    const { subCxt } = useContext(SubscriptionContext)
 
     useEffect(() => {
-        fetch(`https://marvel0usx-sturdy-sniffle-qv9r6x95q9f9xxv-8000.preview.app.github.dev/payment/subscription/plans/all/`,
+        fetch(`http://localhost:8000/payment/subscription/plans/all/`,
         {
-            method: "GET", 
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: "GET"
         })
             .then(response => response.json())
             .then(data => setSubscriptionPlans(data.data))
@@ -32,12 +25,15 @@ function SubscriptionPlansList() {
             <div className="subscription_plans">
                 {
                     subscriptionPlans.map((plan) =>
-                        <div>
+                        <div key={plan.id}>
                             <div className="subscription_plans_title"> {plan.name} </div>
                             <details className="subscription_plans_description"> {plan.description} </details>
-                            <div className="subscription_plans_price"> {plan.price} </div>
+                            <div className="subscription_plans_price"> ${plan.price} </div>
                             <div className="subscription_plans_duration"> Monthly Plan: element.is_monthly </div>
-                            <Button label="Subscribe!" onClick={(plan) => subscribe(plan.id)} />
+                            <Button label="Subscribe!" onClick={(plan) => {
+                                    subCxt.intend_subid = plan.id
+                                    CreateSubscription()
+                                }} />
                         </div>
                     )
                 }
