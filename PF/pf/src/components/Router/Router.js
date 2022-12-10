@@ -19,6 +19,7 @@ import ViewCardInfo from "../Payment/CardInfoView";
 import UpdateCardInfo from "../Payment/CardInfoUpdate";
 import Signup from "../User/Signup";
 import Login from "../User/Login";
+import Logout from "../User/Logout";
 
 const Router = () => {
     return (
@@ -43,7 +44,7 @@ const Router = () => {
                     <Route path="payment/cardinfo/update" element={<UpdateCardInfo />} />
                     <Route path="schedule" element={<Schedule/>}/>
                     <Route path="history" element={<History/>}/>
-                    <Route path="logout"/>
+                    <Route path="logout" element={<Logout/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
