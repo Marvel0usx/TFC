@@ -10,8 +10,11 @@ const Navbar = () => {
         <Link to="/studios/class"> Classes</Link> |
         <Link to="/schedule"> Schedule</Link> |
         <Link to="/history"> History</Link> |
+        <Link to="/subscription/plans/all">Subscription Plans</Link> |
+        <Link to="/subscription/plans/current">My Subscription</Link> |
+        <Link to="/payment/history">My Payment</Link> |
+        <Link to="/payment/cardinfo/view">Credit Card</Link> |
         <Link to="/logout"> Log out</Link>
-        
     </nav>
     <Outlet/ >
     </>)
