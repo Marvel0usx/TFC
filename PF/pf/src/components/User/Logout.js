@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Button from '../Button';
 import { TokenContext } from '../../contexts/TokenContext'
+import { useNavigate } from 'react-router-dom';
 
-const Logout () => {
+const Logout = () => {
     const { token, setToken } = useContext(TokenContext)
+    const [validate, setValidate] = useState(0)
+    const navigate = useNavigate()
+
     useEffect( () => {
         if (validate > 0){
             const requestOptions = {
@@ -38,3 +42,5 @@ const Logout () => {
 
         </>)
 }
+
+export default Logout
