@@ -48,7 +48,7 @@ function UpdateCardInfo() {
     <Link to={"/login"}>Login</Link>
     </>
   } else if (res.success === undefined) {
-    page = <>
+    page = <> <div className="container">
         <form onSubmit={handleSubmit}>
         <h2>My Wallet</h2>
         <h3>Update Credit Card Information</h3>
@@ -89,13 +89,15 @@ function UpdateCardInfo() {
         />
         </label><p style={{color:"red", fontSize:"0.8em"}}>{res.card_holder_lastname}</p><br></br>
         <input type="submit" />
-    </form>
+    </form></div>
     </>
   } else {
     page = <>
+     <div className="container">
         <h2>My Wallet</h2>
         <h3>{res.success}</h3>
         <quote>At TFC, we are committed to protecting your privacy. We collect and use your personal information only for the purposes of providing you with the services and products you have requested. We will not share your personal information with any third parties without your consent, except as required by law. We have implemented appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction. If you have any questions about our privacy practices, please contact us at admin@TFC.com</quote>
+    </div>
     </>
   }
 
