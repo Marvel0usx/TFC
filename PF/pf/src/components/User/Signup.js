@@ -1,13 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 =======
 import React, { useState, useEffect, useContext } from 'react'
 >>>>>>> bfff3e5 (signup)
+=======
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+>>>>>>> ccef999 (user comp)
 import Button from '../Button';
 import Input from "../Input/Input"
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const Signup = () => {
     const [selectedImageURL, setSelectedImageURL] = useState(null);
@@ -17,11 +23,17 @@ const Signup = () => {
 const Signup = () => {
     const [selectedImageURL, setSelectedImageURL] = useState(null);
 >>>>>>> bfff3e5 (signup)
+=======
+const Signup = () => {
+    const [selectedImageURL, setSelectedImageURL] = useState(null);
+    const [selectedImage, setSelectedImage] = useState();
+>>>>>>> ccef999 (user comp)
     const [query, setQuery] = useState({
         username: "",
         password: "",
         password2: "",
         email: "",
+<<<<<<< HEAD
 <<<<<<< HEAD
         first_name: "",
         last_name: "",
@@ -35,12 +47,22 @@ const Signup = () => {
         phone_number: ""})
     const [validate, setValidate] = useState(false)
 >>>>>>> bfff3e5 (signup)
+=======
+        first_name: "",
+        last_name: "",
+        phone_number: ""})
+    const navigate = useNavigate();
+    const [validate, setValidate] = useState(0)
+>>>>>>> ccef999 (user comp)
 
 
 
 
     useEffect( () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ccef999 (user comp)
         if (validate > 0){
             let tempForm = new FormData();
             tempForm.append("avatar", selectedImage);
@@ -51,6 +73,7 @@ const Signup = () => {
             tempForm.append("first_name", query.first_name);
             tempForm.append("last_name", query.last_name);
             tempForm.append("phone_number", query.phone_number);
+<<<<<<< HEAD
 
 
             const requestOptions = {
@@ -100,7 +123,35 @@ const Signup = () => {
             })
     }, [])
 >>>>>>> bfff3e5 (signup)
+=======
+>>>>>>> ccef999 (user comp)
 
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { },
+                body: tempForm
+            };
+            fetch(`http://localhost:8000/accounts/register/`, requestOptions)
+                .then(response=> {
+                    if (response.status === 201) throw new Error(response.status)
+                    else return response.json();
+                    })                    
+                .then(data => {
+                    console.log(data)
+                    var msg = JSON.stringify(data, null, 6);
+                    // console.log(msg);
+                    alert('Signup failed' + msg)                  
+                    })
+                .catch((error) => {
+                    console.log(error)
+                    alert('Signup Successful')
+                    navigate('/api/token')               
+                })
+        }
+    }, [validate])
+
+    const register = () => setValidate(validate + 1)
 
     return (<>
         <h2>Sign Up</h2>
@@ -116,16 +167,20 @@ const Signup = () => {
         <div>
             <Input title="Email" value={query.email} update={(value)=>setQuery({...query, email: value})} />
         </div>
-        {/* <div>
+        <div>
             <Input title="First Name" value={query.first_name} update={(value)=>setQuery({...query, first_name: value})} />
         </div>
         <div>
             <Input title="Last Name" value={query.last_name} update={(value)=>setQuery({...query, last_name: value})} />
 <<<<<<< HEAD
+<<<<<<< HEAD
         </div>       
 =======
         </div> */}       
 >>>>>>> bfff3e5 (signup)
+=======
+        </div>       
+>>>>>>> ccef999 (user comp)
         <div>
             <label for="myImage">Avatar</label>
             {selectedImageURL && (
@@ -143,15 +198,22 @@ const Signup = () => {
                 name="myImage"
                 onChange={(event) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (event.target.files[0]){
                     setSelectedImage(event.target.files[0]);
                     var imageurl = URL.createObjectURL(event.target.files[0])
 =======
                 console.log(event.target.files[0]);
+=======
+>>>>>>> ccef999 (user comp)
                 if (event.target.files[0]){
+                    setSelectedImage(event.target.files[0]);
                     var imageurl = URL.createObjectURL(event.target.files[0])
+<<<<<<< HEAD
                     setQuery({...query, avatar: imageurl})
 >>>>>>> bfff3e5 (signup)
+=======
+>>>>>>> ccef999 (user comp)
                 }
                 setSelectedImageURL(imageurl);
                 }}
@@ -161,7 +223,7 @@ const Signup = () => {
             <Input title="Phone Number" value={query.phone_number} update={(value)=>setQuery({...query, phone_number: value})} />
         </div>
         <div>
-            <Button label='Register' onClick={setValidate(true)}/>
+            <Button label='Register' onClick={register}/>
         </div>
 
         </>)
