@@ -23,7 +23,8 @@ const Logout = () => {
                     console.log(data)
                     // console.log(msg);
                     setToken(null)
-                    navigate('/home')                     
+                    navigate('/home')
+                    window.localStorage.setItem('token', null)                     
                     })
                 .catch((error) => {
                     console.log(token)
