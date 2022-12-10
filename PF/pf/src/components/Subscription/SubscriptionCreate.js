@@ -46,23 +46,23 @@ function CreateSubscription() {
     if (token === null) {
         page = <>
             <h2>Please Login</h2>
-            <Link to={"/login"}>Login</Link>
+            <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link>
         </>
     } else
     if (subCxt.subid !== undefined) {
         console.log(subCxt)
         page = <>
                 <h2> You Are Already Subscribed </h2>
-                <Link to={"/subscription/plans/all"}>Change Your Subscription Plan</Link>
-                <Link to={"/subscription/plans/current"}>View Your Subscription Plan</Link>
+                <Link to={"/subscription/plans/all"} className='waves-effect waves-light btn'>Change Your Subscription Plan</Link><br></br><br></br>
+                <Link to={"/subscription/plans/current"} className='waves-effect waves-light btn'>View Your Subscription Plan</Link>
             </>
     } else if (data.success === undefined) {
         page = <>
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
-            <Link to={"/payment/cardinfo/update"}><button>Link New Card</button></Link>
+            <Link to={"/payment/cardinfo/update"} className='waves-effect waves-light btn'>Link New Card</Link>
             <br></br>
-            <Link to={"/"}><button>Go to Home</button></Link>
+            <Link to={"/"} className='waves-effect waves-light btn'>Go to Home</Link>
         </>
     } else {
         subCxt.subid = subsID
@@ -78,6 +78,7 @@ function CreateSubscription() {
                     <li>Your incoming payment will be at {data.next_payment.substring(0,10)}</li>
                 </ul>
             </div>
+            <Link to={"/"} className='waves-effect waves-light btn'>Go to Home</Link>
         </>
     }
     return (page)

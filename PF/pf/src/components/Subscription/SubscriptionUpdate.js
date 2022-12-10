@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
 import { useParams } from 'react-router-dom'
 import { TokenContext } from '../../contexts/TokenContext';
-
+import M from 'materialize-css';
 
 function UpdateSubscription() {
     const { subCxt } = useContext(SubscriptionContext)
@@ -46,14 +46,14 @@ function UpdateSubscription() {
     if (token === null) {
         page = <>
             <h2>Please Login</h2>
-            <Link to={"/login"}>Login</Link>
+            <Link to={"/login"} className='waves-effect waves-light btn'>Login</Link>
         </>
     } else
     if (data.success === undefined) {
         page = <>
             <h2>404 Not Found</h2>
             <p>There has been a problem with your fetch operation</p>
-            <Link to={"/"}><button>Go to Home</button></Link>
+            <Link to={"/"} className='waves-effect waves-light btn'>Go to Home</Link>
         </>
     } else {
         subCxt.subid = subsID

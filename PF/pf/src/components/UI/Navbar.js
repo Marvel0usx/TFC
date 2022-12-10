@@ -34,6 +34,7 @@ const Navbar = () => {
 
     if (token) {
         return (<>
+        <div style={{position: "sticky", top:"0", zIndex:"100"}}>
             <Link to="/home"><img src="https://www.cs.toronto.edu/~kianoosh/courses/csc309/resources/images/tfc.png" alt="TFC Logo"
             style={{width:"5em", position:"absolute", left:"0", top:"0.9em"}}></img></Link>
             <nav>
@@ -62,25 +63,28 @@ const Navbar = () => {
                     </ul>
                 </div>
             </nav>
-            <Outlet/ >
+        </div>
+        <Outlet/ >
         </>)
     }
     else {
     return (<>
+        <div style={{position: "sticky", top:"0", zIndex:"100"}}>
         <Link to="/home"><img src="https://www.cs.toronto.edu/~kianoosh/courses/csc309/resources/images/tfc.png" alt="TFC Logo" 
             style={{width:"5em", position:"absolute", left:"0", top:"0.9em"}}>
         </img></Link>
-        <div className={"nav-wrapper"}>
-            <nav>
-                <ul className={"right hide-on-med-and-down"}>
-                    <li><Link to="/home"> Home</Link></li>
-                    <li><Link to="/register"> Register</Link></li>
-                    <li><Link to="/studios"> Studios</Link></li>
-                    <li><Link to="/studios/class"> Classes</Link></li>
-                    <li><Link to="/subscription/plans/all">Subscription Plans</Link></li>
-                    <li><Link to="/login"> Log in</Link></li>
-                </ul>
-            </nav>
+            <div className={"nav-wrapper"}>
+                <nav>
+                    <ul className={"right hide-on-med-and-down"}>
+                        <li><Link to="/home"> Home</Link></li>
+                        <li><Link to="/register"> Register</Link></li>
+                        <li><Link to="/studios"> Studios</Link></li>
+                        <li><Link to="/studios/class"> Classes</Link></li>
+                        <li><Link to="/subscription/plans/all">Subscription Plans</Link></li>
+                        <li><Link to="/login"> Log in</Link></li>
+                    </ul>
+                </nav>
+            </div>            
         </div>
         <Outlet/ >
         </>)

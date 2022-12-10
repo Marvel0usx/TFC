@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="min-height: 100vh; position:relative;">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -32,7 +32,7 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" style="min-height: 100vh;""></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -42,6 +42,33 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    --> 
+    
   </body>
+    <footer class="page-footer" style="position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0; z-index: 100; font-size: 0.8em;">
+    <div class="container">
+    <div class="row">
+    <div class="col l6 s12">
+    <h5 class="white-text">Stay connected with TFC</h5>
+    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+    </div>
+    <div class="col l4 offset-l2 s12">
+    <h5 class="white-text">Follow us on social media</h5>
+    <ul>
+        <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/">Facebook</a></li>
+        <li><a class="grey-text text-lighten-3" href="https://www.twitter.com/">Twitter</a></li>        
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class="footer-copyright">
+    <div class="container">
+    © 2022 Copyright Text
+    <a class="grey-text text-lighten-4 right" href="#!">Jimmy | Tian | Harry</a>
+    </div>
+    </div>
+    </footer>
 </html>
