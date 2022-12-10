@@ -34,21 +34,16 @@ class CardInfoSerializer(ModelSerializer):
         "card_holder_lastname"]
 
     def validate(self, attrs):
-        errors = []
-
-        pattern = re.compile("""^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$""")
-
-        if (not attrs["card_number"].isnumeric()) or (len(attrs["card_number"]) > 18) or (re.match(pattern, attrs["card_number"]) is None):
-            errors.append({"card_number": "Invalid card number."})
+        errors = {}
 
         if attrs["card_expiration_date"] <= datetime.date.today():
-            errors.append({"card_expiration_date": "Invalid expiration date."})
+            errors["card_expiration_date"] = "Invalid expiration date."
 
         if not attrs["card_holder_firstname"].isalpha():
-            errors.append({"card_holder_firstname": "Invalid cardholder firstname."})
+            errors["card_holder_firstname"] = "Invalid cardholder firstname."
 
         if not attrs["card_holder_lastname"].isalpha():
-            errors.append({"card_holder_lastname": "Invalid cardholder lastname."})
+            errors["card_holder_lastname"] = "Invalid cardholder lastname."
 
         if errors:
             raise ValidationError(errors)

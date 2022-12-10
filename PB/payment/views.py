@@ -21,8 +21,9 @@ class Pagination(LimitOffsetPagination):
 
 
 class CardInfoView(APIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
+
 
     def get(self, request):
         instances = CardInfo.objects.filter(user=request.user.id)
@@ -34,32 +35,41 @@ class CardInfoView(APIView):
 
     def post(self, request, *args, **kwargs):
         # Disallow more than one card.
-        if CardInfo.objects.filter(user=request.user.id).exists():
-            return EMPTY_RESPONSE
-
         data = request.data.get("data")
-        # Create an instance of cardinfo from above information
-        serializer = CardInfoSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            cardinfo_saved = serializer.save(user=request.user)
-        return Response({"success": "Card saved."})
-    
-    def put(self, request, *args, **kwargs):
-        card_record = CardInfo.objects.filter(user=request.user.id)
-        if not card_record.exists():
-            return EMPTY_RESPONSE
-        data = request.data.get("data")
-        if data is None:
-            return EMPTY_RESPONSE
-        serializer = CardInfoSerializer(instance=card_record.first(), data=data, partial=False)
-        if serializer.is_valid(raise_exception=True):
-            card_record = serializer.save()
-        return Response({"success": "Card updated successfully"})
+        if not data:
+            return Response(status=400)
+        if not CardInfo.objects.filter(user=request.user.id).exists():
+            # Create an instance of cardinfo from above information
+            serializer = CardInfoSerializer(data=data)
+            if serializer.is_valid(raise_exception=True):
+                cardinfo_saved = serializer.save(user=request.user)
+            return Response({"success": "Card saved."})
+        else:
+            card_record = CardInfo.objects.filter(user=request.user.id)
+            if not card_record.exists():
+                return EMPTY_RESPONSE
+            data = request.data.get("data")
+            if data is None:
+                return EMPTY_RESPONSE
+            serializer = CardInfoSerializer(instance=card_record.first(), data=data, partial=False)
+            if serializer.is_valid(raise_exception=True):
+                card_record = serializer.save()
+            
+            # change upcoming payment
+            pays = Payment.objects.filter(user=request.user.id).filter(is_paid=False)
+            card = CardInfo.objects.filter(user=request.user.id)[0]
+            if pays.exists():
+                pays.update(card_number=card.card_number, 
+                            card_expiration_date=card.card_expiration_date, 
+                            card_holder_firstname=card.card_holder_firstname, 
+                            card_holder_lastname=card.card_holder_lastname)
+            return Response({"success": "Card updated successfully"})
 
 
 class PaymentHistoryView(APIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
+
 
     def get(self, request):
         # Filter out payments in the past.
@@ -72,12 +82,21 @@ class PaymentHistoryView(APIView):
         page = paginator.paginate_queryset(instances, request)
         serializer = PaymentSerializer(page, many=True)
 
-        return Response({"data": serializer.data})
+        names = dict(map(lambda plan: (plan.id, plan.name), SubscriptionPlans.objects.all()))
+
+        data = {
+            "data": {
+                "lst": serializer.data,
+                "names": names
+            }
+        }
+
+        return Response(data)
 
 
 class PaymentFutureView(APIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
 
     def get(self, request):
         # Filter out upcoming payment.
@@ -105,7 +124,7 @@ class SubscriptionPlansView(APIView):
 
 
 class SubscriptionsView(APIView):
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [AllowAny]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -114,7 +133,18 @@ class SubscriptionsView(APIView):
             return EMPTY_RESPONSE
         serializer = SubscriptionSerializer(instances.first())
 
-        return Response({"data": serializer.data})
+        plan = SubscriptionPlans.objects.filter(id=instances.first().subscription_plan_id)[0]
+        incoming = PaymentSerializer(Payment.objects.filter(is_paid=False).filter(user=request.user.id)[0]).data
+        
+        data = {
+            "data": {
+                **serializer.data,
+                **SubscriptionPlansSerializer(plan).data,
+                **incoming
+            }
+        }
+        print(data)
+        return Response(data)
 
     def post(self, request, *args, **kwargs):
         data = request.data.get("data")
@@ -131,11 +161,11 @@ class SubscriptionsView(APIView):
         # If there is a plan for the user, do not repeat the subscription.
         if Subscriptions.objects.filter(user=request.user).exists():
             return EMPTY_RESPONSE
+        # Bill the card and start payment cycle.
+        cardifo = get_object_or_404(CardInfo.objects.all(), user_id=int(request.user.id))
         # Save new subscription
         if serializer.is_valid(raise_exception=True):
             subscription = serializer.save(user=request.user, subscription_plan=subscription_plan)
-        # Bill the card and start payment cycle.
-        cardifo = CardInfo.objects.get(user=request.user.id)
         Payment.objects.create(
             user=request.user,
             subscription_plan=subscription_plan,
@@ -157,8 +187,15 @@ class SubscriptionsView(APIView):
             is_paid=False
         )
         # Next billing cycle
-        Payment.objects.filter(id=upcoming.id).update(date_time=timezone.now() + datetime.timedelta(days=30))
-        return Response({"success": f"Successfully subscribed to {subscription.subscription_plan.name}."})
+        upcoming_id = upcoming.id
+        Payment.objects.filter(id=upcoming.id).update(date_time=timezone.now() + (datetime.timedelta(days=365), datetime.timedelta(days=30))[subscription_plan.is_monthly])
+        
+        return Response({"success": f"Successfully subscribed to {subscription.subscription_plan.name}.",
+            "price": subscription_plan.price,
+            "card_number": cardifo.card_number,
+            "name": subscription.subscription_plan.name,
+            "next_payment": str(Payment.objects.filter(id=upcoming_id)[0].date_time)
+        })
 
     def put(self, request, *args, **kwargs):
         # Error checking: return 404 if error found.
@@ -213,9 +250,15 @@ class SubscriptionsView(APIView):
             is_paid=False
         )
         # Next billing cycle
-        Payment.objects.filter(id=upcoming.id).update(date_time=upcoming.date_time + datetime.timedelta(days=30))
-
-        return Response({"success": "Subscription plan updated successfully"})
+        upcoming_id = upcoming.id
+        Payment.objects.filter(id=upcoming.id).update(date_time=upcoming.date_time + (datetime.timedelta(days=365), datetime.timedelta(days=30))[subscription_plan.is_monthly])
+        data = {"success": f"Successfully updated subscription plan to {subscription.subscription_plan.name}.",
+            "price": subscription_plan.price,
+            "card_number": cardifo.card_number,
+            "name": subscription.subscription_plan.name,
+            "next_payment": str(Payment.objects.filter(id=upcoming_id)[0].date_time)
+        }
+        return Response(data)
 
     def delete(self, request, *args, **kwargs):
         subscription = get_object_or_404(Subscriptions.objects.all(), user=request.user)
