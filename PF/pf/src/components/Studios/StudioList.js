@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import {Link} from 'react-router-dom'
 import Input from "../Input/Input"
 import { LocationContext } from "../../contexts/LocationContext"
+import './Studio.css'
  
 const StudioList = () => {
     const { location, setLocation } = useContext(LocationContext)
@@ -50,9 +51,10 @@ const StudioList = () => {
 
     if (mode === 0) {
 
-        return (<>
+        return (<><div className="container">
             <Button label="Search for a studio" onClick={searchSpecific}></Button>
             <Button label="Filter by closest" onClick={searchClosest}></Button>
+            
             <div>
                 <Input title="Longitude" value={location.x} update={(value)=>setLocation({...location, x: value})} />
             </div>
@@ -62,13 +64,14 @@ const StudioList = () => {
             <div>
                 <Button label='Go' onClick={go}/>
             </div>
+            </div>
             <div>
             {studios.map(studio => 
-            <div className="grid-container">
+            <div className="container">
                 <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
                 <div className="address"> Address: {studio.address} </div>
                 <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
-                <img className="studio-photo" src={studio.images} alt={"image of " + studio.name}/>
+                <img className="studio-photo" alt={"image of " + studio.name}/>
             </div>)
             }
         {page.location.prev ? <Button label="prev" onClick={() => setCurrent({...current, location: current.location - 1})} /> : <></>}
@@ -80,6 +83,7 @@ const StudioList = () => {
 
     else {
         return (<>
+        <div className='container'>
             <Button label="Search for a studio" onClick={searchSpecific}></Button>
             <Button label="Filter by closest" onClick={searchClosest}></Button>
             <div>
@@ -97,16 +101,22 @@ const StudioList = () => {
             <div>
                 <Button label='Go' onClick={go}/>
             </div>
+        <div className="row">
             {studios.map(studio => 
-            <div>
-                <Link to={`/studios/${studio.id}`}> {studio.name} </Link>
-                <div className="address"> Address: {studio.address} </div>
-                <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
-                <img className="studio-photo" src={studio.images} alt={"image of " + studio.name}/>
-            </div>)}
+                <div className="col s4">
+                    <Link className="Link" to={`/studios/${studio.id}`} > {studio.name} </Link>
+                    <div className="address"> Address: {studio.address} </div>
+                    <div className="phone-number"> Phone Number: {studio.phoneNumber} </div>
+                    <img className="studio-photo" src={studio.images} alt={"image of " + studio.name}/>
+                </div>)
+                }
+        </div>
+            
         {page.query.prev ? <Button label="prev" onClick={() => setCurrent({...current, location: current.query - 1})} /> : <></>}
         {page.query.next ? <Button label="next" onClick={() => setCurrent({...current, location: current.query + 1})} /> : <></>}
-            </>)
+            
+        </div>
+        </>)
     }
     
 }

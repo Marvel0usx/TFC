@@ -2,6 +2,8 @@ import Button from "../Button"
 import { useState, useEffect } from 'react'
 import Input from "../Input/Input"
 import GetClasses from "./GetClasses"
+import M from "materialize-css"
+import './Studio.css'
  
 const ClassList = () => {
     const [query, setQuery] = useState({name: "", coach: "", date: "", time_range: ""})
@@ -34,33 +36,34 @@ const ClassList = () => {
     }
 
     return (<>
+    <div className="container">
         <h2>Search for classes</h2>
-        <div>
-            <Input title="Name" value={query.name} update={(value)=>setQuery({...query, name: value})} />
+        <div className="row">
+            <Input title="Name" className="col s4" value={query.name} update={(value)=>setQuery({...query, name: value})} />
         </div>
-        <div>
-            <Input title="Coach" value={query.coach} update={(value)=>setQuery({...query, coach: value})} />
+        <div className="row">
+            <Input title="Coach" className="col s4" value={query.coach} update={(value)=>setQuery({...query, coach: value})} />
         </div>
-        <div>
-            <span>Date </span>
-            <input type="date" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
+        <div className="row">
+            <span className="col s1">Date </span>
+            <input type="date" className="col s2" onChange={(event) => setQuery({...query, date: event.target.value})}></input>
         </div>
-        <div>
-            <span>Time Range </span>
-            <input type="time" onChange={(event) => setTimeRange({...timeRange, start: event.target.value})}></input>
-            <span> to </span>
-            <input type="time" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
+        <div className="row">
+            <span className="col s1">Time Range </span>
+            <input type="time" className="col s1" onChange={(event) => setTimeRange({...timeRange, start: event.target.value})}></input>
+            <span className="col s1"> to </span>
+            <input type="time" className="col s1" onChange={(event) => setTimeRange({...timeRange, end: event.target.value})}></input>
         </div>
-        <div>
-            
-        </div>
-        <div>
+        <div className="row">
             <Button label='Go' onClick={go}/>
         </div>
-        <GetClasses fitnessClasses={fitnessClasses} />
+        <div className="row">
+        <GetClasses fitnessClasses={fitnessClasses}/>
+        </div>
         {console.log(page.prev)}
         {page.prev ? <Button label="prev" onClick={() => setCurrent(current - 1)} /> : <></>}
         {page.next ? <Button label="next" onClick={() => setCurrent(current + 1)} /> : <></>}
+    </div>
         </>)
     }
     
