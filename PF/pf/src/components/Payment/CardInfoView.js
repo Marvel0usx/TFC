@@ -1,29 +1,37 @@
 import { useState, useEffect, useContext } from 'react'
 import {Link} from 'react-router-dom'
 import { SubscriptionContext } from "../../contexts/SubscriptionContext";
+import { TokenContext } from '../../contexts/TokenContext';
 
 function ViewCardInfo() {
     const [cardInfo, setCardInfo] = useState([]);
     const { subCxt } = useContext(SubscriptionContext)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0OTg2LCJpYXQiOjE2NzA2Mzg1ODYsImp0aSI6IjY5ZWJlNmRlNGEyNjQ3ODliYTg4MjA1MzAzYzcxYWE0IiwidXNlcl9pZCI6M30.PTTUFvx73vj0YuBXCYPht35V50Ta5f5nkKJqlD9gWtc"
-    
+    const { token, setToken } = useContext(TokenContext)
+
     useEffect(() => {
-        fetch(`http://localhost:8000/payment/card/view/`,
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
+        if (token !== null) {
+            fetch(`http://localhost:8000/payment/card/view/`,
+            {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then(response => response.json())
             .then(data => setCardInfo(data.data))
+        }
         }, []
     );
 
     let page = null;
     console.log(cardInfo)
-    if (cardInfo === undefined) {
+    if (token === null) {
+        page = <>
+        <h2>Please Login</h2>
+        <Link to={"/login"}>Login</Link>
+        </>
+    } else if (cardInfo === undefined) {
         page = <>
             <h2>Your Wallet</h2>
             <p><em>Your wallet is empty. Please add a credit card to continue.</em></p>

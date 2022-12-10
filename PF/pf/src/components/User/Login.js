@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Button from '../Button';
 import Input from "../Input/Input"
 import { TokenContext } from '../../contexts/TokenContext';
+import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 import { useNavigate } from 'react-router-dom';
 import PasswordInput from '../Input/PasswordInput';
 
@@ -11,9 +12,29 @@ const Login = () => {
         password: "",})
     const [validate, setValidate] = useState(0)
     const { token, setToken } = useContext(TokenContext)
+    const { subCxt } = useContext(SubscriptionContext)
+    const [subscription, setSubscription] = useState({})
+
+    const checkSubs = () => {
+        fetch(`http://localhost:8000/payment/subscription/view/`,
+        {
+            method: "GET", 
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                let data = response.json();
+                subCxt.subid = data.data.id;
+                return data;
+            }
+        })
+        .then(data => setSubscription(data.data))
+        .then(console.log(subscription));
+    }
     const navigate = useNavigate();
-
-
 
     useEffect( () => {
         if (validate > 0){
@@ -39,6 +60,9 @@ const Login = () => {
                     // console.log(msg);
                     //localStorage.setItem("token", JSON.stringify(data.token));              
                     setToken(data.access)
+                    if (token !== null) {
+                        checkSubs()                        
+                    }
                     navigate('/home')                     
                     })
                 .catch((error) => {
