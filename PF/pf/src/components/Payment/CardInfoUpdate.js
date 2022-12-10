@@ -2,10 +2,11 @@ import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { SubscriptionContext } from '../../contexts/SubscriptionContext' 
 import { useParams } from 'react-router-dom'
+import { TokenContext } from '../../contexts/TokenContext';
 
 function UpdateCardInfo() {
   const [inputs, setInputs] = useState({});
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzI0OTg2LCJpYXQiOjE2NzA2Mzg1ODYsImp0aSI6IjY5ZWJlNmRlNGEyNjQ3ODliYTg4MjA1MzAzYzcxYWE0IiwidXNlcl9pZCI6M30.PTTUFvx73vj0YuBXCYPht35V50Ta5f5nkKJqlD9gWtc"
+  const { token, setToken } = useContext(TokenContext)
   const [ res, setRes ] = useState({});
 
   const handleChange = (event) => {
@@ -17,7 +18,7 @@ function UpdateCardInfo() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(inputs);
-
+    if (token !== null) {    
     fetch(`http://localhost:8000/payment/card/edit/`,
     {
         method: "POST", 
@@ -35,12 +36,18 @@ function UpdateCardInfo() {
         console.log('There has been a problem with your fetch operation: ' + error.message);
         
     })
+    }
   }
 
   console.log(res)
 
   let page = null;
-  if (res.success === undefined) {
+  if (token === null) {
+    page = <>
+    <h2>Please Login</h2>
+    <Link to={"/login"}>Login</Link>
+    </>
+  } else if (res.success === undefined) {
     page = <>
         <form onSubmit={handleSubmit}>
         <h2>My Wallet</h2>
