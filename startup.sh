@@ -22,7 +22,9 @@ python manage.py migrate --run-syncdb
 
 cd ..
 
-cd PF\pf
+cd ./PF/pf
 
 echo Install frontend requirements
-npm install
+npm install react-router-dom
+npm install materialize-css@next 
+npm run build

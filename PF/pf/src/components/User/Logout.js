@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import Button from '../Button';
 import { TokenContext } from '../../contexts/TokenContext'
 import { useNavigate } from 'react-router-dom';
+import { SubscriptionContext } from '../../contexts/SubscriptionContext';
 
 const Logout = () => {
     const { token, setToken } = useContext(TokenContext)
     const [validate, setValidate] = useState(0)
     const navigate = useNavigate()
+    const { subCxt } = useContext(SubscriptionContext)
 
     useEffect( () => {
         if (validate > 0){
@@ -23,6 +25,7 @@ const Logout = () => {
                     console.log(data)
                     // console.log(msg);
                     setToken(null)
+                    subCxt.subid = undefined
                     navigate('/home')
                     window.localStorage.setItem('token', null)                     
                     })

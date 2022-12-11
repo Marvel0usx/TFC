@@ -13,4 +13,9 @@ echo Make migrations
 python manage.py makemigrations
 python manage.py migrate --run-syncdb
 
+cd ..
+cd PF
+cd pf
+npm build
+
 pause
