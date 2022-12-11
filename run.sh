@@ -5,9 +5,9 @@
 
 # Run server
 cd ./PB
-python manage.py runserver
+python manage.py runserver &
 
 cd ../PF/pf
-npm start
+npm start &
 
 
